@@ -14,6 +14,7 @@ public class User {
 	private String nickname;
 	private String password;
 	private String email;
+	private ArrayList<UserChallenge> challenges;
 	
 	// Constructor without parameters
 	public User() { }
@@ -23,6 +24,7 @@ public class User {
 		this.nickname = nickname;		
 		this.email = email;
 		this.password = password;
+		this.challenges =new ArrayList<UserChallenge>();
 	}
 	
 	// Check if a password is correct
@@ -54,7 +56,20 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	
 
+
+	public ArrayList<UserChallenge> getChallenges() {
+		return challenges;
+	}
+
+	public void setChallenges(ArrayList<UserChallenge> challenges) {
+		this.challenges = challenges;
+	}
+	public void addChallenge(Challenge challenge) {
+		this.challenges.add(new UserChallenge(challenge));
+	}
 
 	// hashCode and equals
 	@Override
