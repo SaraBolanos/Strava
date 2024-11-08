@@ -7,73 +7,64 @@ package es.deusto.sd.strava.entity;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Optional;
 
 public class User {
 	
+	private long id;
 	private String username;
 	private String email;
 	private ArrayList<UserChallenge> challenges;
-	private String token;
-	private float weight; //in kg
-	private float height; //in cm
-	private int maxheartRate; //bpm
-	private int restHeartRate; //bpm
+	private String token; //Token returned by google or facebook
+	private Optional<Float> weight; //in kg
+	private Optional<Float> height; //in cm
+	private Optional<Integer> maxheartRate; //bpm
+	private Optional<Integer> restHeartRate; //bpm
 	
 	// Constructor without parameters
 	public User() { }
 	
 	// Constructor with parameters
-	public User(String username, String email) {
-		this.setUsername(username);		
+	public User(String username, String email, String token) {
+		this.setUsername(username);;		
 		this.setEmail(email);
-		this.challenges =new ArrayList<UserChallenge>();
-	}
-	
-	// Check if two users are the same. We consider 2 users are the same if  they have the same mail and username
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		return Objects.equals(getEmail(), other.getEmail()) && 
-			   Objects.equals(getUsername(), other.getUsername());
-	}
-	
-	//  Getters and setters
-	public int getRestHeartRate() {
-		return restHeartRate;
 	}
 
-	public void setRestHeartRate(int restHeartRate) {
+	public User(long id, String username, String email, String token, Optional<Float> weight, Optional<Float> height,
+			Optional<Integer> maxheartRate, Optional<Integer> restHeartRate) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.email = email;
+		this.token = token;
+		this.weight = weight;
+		this.height = height;
+		this.maxheartRate = maxheartRate;
 		this.restHeartRate = restHeartRate;
 	}
 
-	public int getMaxheartRate() {
-		return maxheartRate;
+	public long getId() {
+		return id;
 	}
 
-	public void setMaxheartRate(int maxheartRate) {
-		this.maxheartRate = maxheartRate;
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	public float getHeight() {
-		return height;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setHeight(float height) {
-		this.height = height;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public float getWeight() {
-		return weight;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setWeight(float weight) {
-		this.weight = weight;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getToken() {
@@ -84,16 +75,13 @@ public class User {
 		this.token = token;
 	}
 
-	public String getEmail() {
-		return email;
+	public Optional<Float> getWeight() {
+		return weight;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setWeight(Optional<Float> weight) {
+		this.weight = weight;
 	}
-	
-	
-
 
 	public ArrayList<UserChallenge> getChallenges() {
 		return challenges;
@@ -109,12 +97,33 @@ public class User {
 	// hashCode and equals
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, nickname);
-	public String getUsername() {
-		return username;
+		return Objects.hash(email, username);
+	}
+	
+	public Optional<Float> getHeight(){
+		return height;
+	}
+	
+	public void setHeight(Optional<Float> height) {
+		this.height = height;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public Optional<Integer> getMaxheartRate() {
+		return maxheartRate;
 	}
+
+	public void setMaxheartRate(Optional<Integer> maxheartRate) {
+		this.maxheartRate = maxheartRate;
+	}
+
+	public Optional<Integer> getRestHeartRate() {
+		return restHeartRate;
+	}
+
+	public void setRestHeartRate(Optional<Integer> restHeartRate) {
+		this.restHeartRate = restHeartRate;
+	}
+
+	
+	
 }
