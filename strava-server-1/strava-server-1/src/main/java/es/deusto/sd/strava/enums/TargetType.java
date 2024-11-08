@@ -1,5 +1,5 @@
 package es.deusto.sd.strava.enums;
 
-public enum TragetType {
+public enum TargetType {
 		Time,Distance
 }

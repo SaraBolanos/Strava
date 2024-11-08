@@ -1,12 +1,12 @@
 package es.deusto.sd.strava.entity;
 
-import java.lang.classfile.TypeAnnotation.TargetType;
 import java.sql.Date;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 import es.deusto.sd.strava.enums.Sport;
+import es.deusto.sd.strava.enums.TargetType;
 
 public class Challenge {
 	private static final AtomicLong counter = new AtomicLong(0); 

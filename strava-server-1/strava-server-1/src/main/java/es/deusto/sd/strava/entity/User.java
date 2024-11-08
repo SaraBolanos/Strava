@@ -5,6 +5,7 @@
 */
 package es.deusto.sd.strava.entity;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class User {
