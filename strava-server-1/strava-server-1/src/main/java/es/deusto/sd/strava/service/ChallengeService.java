@@ -1,5 +1,6 @@
 package es.deusto.sd.strava.service;
 
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -12,13 +13,26 @@ import es.deusto.sd.strava.entity.Challenge;
 import es.deusto.sd.strava.entity.User;
 import es.deusto.sd.strava.entity.UserChallenge;
 import es.deusto.sd.strava.enums.Sport;
+import es.deusto.sd.strava.enums.TargetType;
 
 public class ChallengeService {
 
 	public final ArrayList<Challenge> challengeList = new ArrayList<Challenge>();
 	
+	public ChallengeService() {
 	
-	
+		User user1 =new User();
+		User user2 =new User();
+    
+    // Add some example challenges
+		challengeList.add(new Challenge("5k Running Challenge", "2024-01-01", "2024-01-31", 30.0f, TargetType.TIME, Sport.RUNNING, user1));
+        challengeList.add(new Challenge("Cycling Endurance", "2024-03-01", "2024-03-15", 200.0f, TargetType.DISTANCE, Sport.CYCLING, user2));
+        challengeList.add(new Challenge("10k Running Challenge", "2024-02-01", "2024-02-28", 45.0f, TargetType.TIME, Sport.RUNNING, user1));
+        challengeList.add(new Challenge("Cycling Sprint Challenge", "2024-04-01", "2024-04-30", 150.0f, TargetType.DISTANCE, Sport.CYCLING, user2));
+        challengeList.add(new Challenge("1 Hour Running Challenge", "2024-05-01", "2024-05-15", 60, TargetType.TIME, Sport.RUNNING, user1));
+
+
+	}
 	
 	public Challenge createChallenge(Challenge challenge) {
 		

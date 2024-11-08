@@ -5,6 +5,7 @@
 */
 package es.deusto.sd.strava.entity;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class User {
@@ -109,6 +110,7 @@ public class User {
 	@Override
 	public int hashCode() {
 		return Objects.hash(email, nickname);
+	}
 	public String getUsername() {
 		return username;
 	}
