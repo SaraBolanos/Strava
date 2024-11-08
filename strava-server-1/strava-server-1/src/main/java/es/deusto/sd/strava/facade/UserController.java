@@ -37,15 +37,15 @@ public class UserController {
 	        }
 	    )
 	@PostMapping
-	public ResponseEntity<User> createUser(@RequestParam("username") String accountType,
-										   @RequestParam("acountType") String username,
+	public ResponseEntity<User> createUser(@RequestParam("username") String username,
+										   @RequestParam("accountType") String accountType,
 										   @RequestParam("email") String email,
 										   @RequestParam("password") String password,
 										   @RequestParam("weight") Optional<Float> weight,
 										   @RequestParam("height") Optional<Float> height,
 										   @RequestParam("maxheartRate") Optional<Integer> maxheartRate,
 										   @RequestParam("restHeartRate") Optional<Integer> restHeartRate){
-		if(accountType != "Google" && accountType != "Facebook") {
+		if(!accountType.equals("Google") && !accountType.equals("Facebook")) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		

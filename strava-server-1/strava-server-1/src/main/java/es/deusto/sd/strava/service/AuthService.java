@@ -23,7 +23,7 @@ public class AuthService {
     private static Map<String, User> tokenStore = new HashMap<>(); 
 
     // Login method that checks if the user exists in the database and validates the password
-    public Optional<String> login(String email, String password) {
+   /* public Optional<String> login(String email, String password) {
         User user = userRepository.get(email);
         
         if (user != null && user.checkPassword(password)) {
@@ -34,7 +34,7 @@ public class AuthService {
         } else {
         	return Optional.empty();
         }
-    }
+    }*/
     
     // Logout method to remove the token from the session store
     public Optional<Boolean> logout(String token) {

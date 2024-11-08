@@ -20,9 +20,9 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-/*@RestController
-@RequestMapping("/auth")
-@Tag(name = "Authorization Controller", description = "Login and logout operations")*/
+@RestController
+@RequestMapping("/user")
+@Tag(name = "Authorization Controller", description = "Login and logout operations")
 public class AuthController {
 
    /* private AuthService authService;
