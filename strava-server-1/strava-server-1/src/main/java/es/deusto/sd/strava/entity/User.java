@@ -11,7 +11,6 @@ import java.util.Optional;
 
 public class User {
 	
-	private long id;
 	private String username;
 	private String email;
 	private ArrayList<UserChallenge> challenges;
@@ -30,10 +29,10 @@ public class User {
 		this.setEmail(email);
 	}
 
-	public User(long id, String username, String email, String token, Optional<Float> weight, Optional<Float> height,
-			Optional<Integer> maxheartRate, Optional<Integer> restHeartRate) {
+	public User(String username, String email, String token,
+			Optional<Float> weight, Optional<Float> height, Optional<Integer> maxheartRate,
+			Optional<Integer> restHeartRate) {
 		super();
-		this.id = id;
 		this.username = username;
 		this.email = email;
 		this.token = token;
@@ -41,14 +40,6 @@ public class User {
 		this.height = height;
 		this.maxheartRate = maxheartRate;
 		this.restHeartRate = restHeartRate;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public String getUsername() {

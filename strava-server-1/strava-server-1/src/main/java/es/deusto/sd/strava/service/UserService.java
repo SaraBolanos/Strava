@@ -16,7 +16,7 @@ import es.deusto.sd.strava.entity.User;
 @Service
 public class UserService {
 	// Auxiliary map to store the dishes as a repository.
-    private final Map<Long, User> users = new HashMap<>();
+    private final Map<String, User> users = new HashMap<>();
     // AtomicLong to generate unique IDs for the dishes.
     private final AtomicLong idGenerator = new AtomicLong(0);
     
@@ -32,14 +32,23 @@ public class UserService {
     		//here would go the Google logic
     		byte[] array = new byte[32];
     	    new Random().nextBytes(array);
-    	    token = new String(array, Charset.forName("UTF-8"));
+    	    token = "Google" + idGenerator.incrementAndGet();
     	}else {
     		byte[] array = new byte[32];
     	    new Random().nextBytes(array);
-    	    token = new String(array, Charset.forName("UTF-8"));
+    	    token = "Facebook" + idGenerator.incrementAndGet();
     	}
-    	User newUser = new User(idGenerator.incrementAndGet(),username, email,token, weight, height, maxheartRate, restHeartRate);
-    	users.put(newUser.getId(), newUser);
+    	User newUser = new User(username, email,token, weight, height, maxheartRate, restHeartRate);
+    	users.put(token, newUser);
     	return newUser;
     }
+    
+    public Optional<User> getUserByToken(String token) {
+    	User user = users.get(token);
+		if(user!=null) {
+			return Optional.of(user);
+		}else {
+			return Optional.empty();
+		}
+	}
 }
