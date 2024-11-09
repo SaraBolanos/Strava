@@ -9,36 +9,28 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Service;
+
 import es.deusto.sd.strava.entity.Challenge;
 import es.deusto.sd.strava.entity.User;
 import es.deusto.sd.strava.entity.UserChallenge;
 import es.deusto.sd.strava.enums.Sport;
 import es.deusto.sd.strava.enums.TargetType;
 
+@Service
 public class ChallengeService {
 
 	public final ArrayList<Challenge> challengeList = new ArrayList<Challenge>();
 	
-	public ChallengeService() {
-	
-		User user1 =new User();
-		User user2 =new User();
-    
-    // Add some example challenges
-		challengeList.add(new Challenge("5k Running Challenge", "2024-01-01", "2024-01-31", 30.0f, TargetType.TIME, Sport.RUNNING, user1));
-        challengeList.add(new Challenge("Cycling Endurance", "2024-03-01", "2024-03-15", 200.0f, TargetType.DISTANCE, Sport.CYCLING, user2));
-        challengeList.add(new Challenge("10k Running Challenge", "2024-02-01", "2024-02-28", 45.0f, TargetType.TIME, Sport.RUNNING, user1));
-        challengeList.add(new Challenge("Cycling Sprint Challenge", "2024-04-01", "2024-04-30", 150.0f, TargetType.DISTANCE, Sport.CYCLING, user2));
-        challengeList.add(new Challenge("1 Hour Running Challenge", "2024-05-01", "2024-05-15", 60, TargetType.TIME, Sport.RUNNING, user1));
-
-
-	}
-	
+		
 	public Challenge createChallenge(Challenge challenge) {
 		
 		challengeList.add(challenge);
+		System.out.println("added" + challenge.getName());
 		return challenge;
 	}
+	
+	public List<Challenge> getAllChallengesTest(){return challengeList;}
 	
 	
 	public List<Challenge> getAllChallenges(String dateString, Sport sport){

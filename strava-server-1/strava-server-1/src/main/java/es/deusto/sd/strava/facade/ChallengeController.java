@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import es.deusto.sd.strava.entity.Challenge;
 import es.deusto.sd.strava.entity.User;
 import es.deusto.sd.strava.enums.Sport;
 import es.deusto.sd.strava.service.ChallengeService;
 
+@RestController
 public class ChallengeController {
 
 	private final ChallengeService challengeService;
@@ -28,6 +30,11 @@ public class ChallengeController {
             @RequestParam(value = "sport", required = false) Sport sport,
             @RequestParam(value = "date", required = false) String date) {             
         return new ResponseEntity<>(challengeService.getAllChallenges(date, sport), HttpStatus.OK);
+    }
+    
+    @GetMapping("/challenges/all")	///test!
+    public ResponseEntity<List<Challenge>> getAllChallenges() {             
+        return new ResponseEntity<>(challengeService.getAllChallengesTest(), HttpStatus.OK);
     }
 
     // Create a new dish
