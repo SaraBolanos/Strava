@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,14 +35,19 @@ public class SessionController {
 		if(!accountType.equals("Google") && !accountType.equals("Facebook")) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		
 		Optional<Session> newSession = sessionService.logIn(accountType, email, password, tempkey);
 		if(newSession.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}else{
 			return new ResponseEntity<>(newSession.get() ,HttpStatus.CREATED);
 		}
-		
-		
+
 	}
 	
+	@DeleteMapping
+	public ResponseEntity<Session> logOut(@CookieValue("sessionToken") String sessionToken){
+		sessionService.logOut(sessionToken);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 }

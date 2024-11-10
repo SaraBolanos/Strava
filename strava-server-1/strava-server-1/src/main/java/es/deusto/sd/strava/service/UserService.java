@@ -25,7 +25,7 @@ public class UserService {
     	
     	String token;
     	
-    	if(accountType == "Google") {
+    	if(accountType.equals("Google")) {
     		//here would go the Google logic
     	    token = "Google" + idGenerator.incrementAndGet();
     	}else {
