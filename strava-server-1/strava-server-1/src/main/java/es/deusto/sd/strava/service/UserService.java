@@ -51,4 +51,8 @@ public class UserService {
 			return Optional.empty();
 		}
 	}
+    
+    public boolean checkIfUserExists(String token) {
+    	return users.containsKey(token);
+    }
 }
