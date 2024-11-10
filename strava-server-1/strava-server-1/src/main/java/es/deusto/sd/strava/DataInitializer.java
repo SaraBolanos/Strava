@@ -35,11 +35,13 @@ public class DataInitializer {
 			// Create some users
 			
 			User user1 =new User();
-			user1.setUsername("kevin");
+			user1.setUsername("user1");
 			user1.setToken("123");
 			userService.putUser(user1);
 			
 			User user2 =new User();
+			user2.setUsername("user2");
+			user2.setToken("456");
 			userService.putUser(user2);
 	    
 	    // Add some example challenges
