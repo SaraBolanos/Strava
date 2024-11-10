@@ -1,14 +1,11 @@
 package es.deusto.sd.strava.service;
 
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import es.deusto.sd.strava.entity.User;
 
@@ -33,14 +30,11 @@ public class UserService {
     	
     	String token;
     	
-    	if(accountType == "Google") {
+    	if(accountType.equals("Google")) {
     		//here would go the Google logic
-    		byte[] array = new byte[32];
-    	    new Random().nextBytes(array);
     	    token = "Google" + idGenerator.incrementAndGet();
     	}else {
-    		byte[] array = new byte[32];
-    	    new Random().nextBytes(array);
+    		//here Would Go the Facebook logic
     	    token = "Facebook" + idGenerator.incrementAndGet();
     	}
     	User newUser = new User(username, email,token, weight, height, maxheartRate, restHeartRate);
@@ -56,4 +50,8 @@ public class UserService {
 			return Optional.empty();
 		}
 	}
+    
+    public boolean checkIfUserExists(String token) {
+    	return users.containsKey(token);
+    }
 }
