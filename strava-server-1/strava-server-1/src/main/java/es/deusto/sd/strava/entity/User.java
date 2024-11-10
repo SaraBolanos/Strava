@@ -13,7 +13,7 @@ public class User {
 	
 	private String username;
 	private String email;
-	private ArrayList<UserChallenge> challenges;
+	private ArrayList<UserChallenge> challenges = new ArrayList<UserChallenge>();
 	private String token; //Token returned by google or facebook
 	private Optional<Float> weight; //in kg
 	private Optional<Float> height; //in cm

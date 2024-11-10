@@ -24,7 +24,12 @@ public class UserService {
     	
     }
     
-    public User createUser(String accountType, String username, String email, String password, Optional<Float> weight, Optional<Float> height, Optional<Integer> maxheartRate, Optional<Integer> restHeartRate) {
+    
+    public void putUser(User newUser) {		//only for testing purpose
+    	users.put(newUser.getToken(), newUser);
+	}
+
+	public User createUser(String accountType, String username, String email, String password, Optional<Float> weight, Optional<Float> height, Optional<Integer> maxheartRate, Optional<Integer> restHeartRate) {
     	
     	String token;
     	
