@@ -6,9 +6,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import es.deusto.sd.strava.entity.Session;
+import es.deusto.sd.strava.entity.User;
 
 @Service
 public class SessionService {
@@ -47,6 +47,13 @@ public class SessionService {
 		if(sessions.containsKey(sessionToken)) {
 			sessions.remove(sessionToken);
 		}
+	}
+	
+	public Optional<User> getUserBySessionToken(String sessionToken){
+		if(!sessions.containsKey(sessionToken)) {
+			return Optional.empty();
+		}
+		return userService.getUserByToken(sessions.get(sessionToken).getUserToken());
 	}
 	
 }
