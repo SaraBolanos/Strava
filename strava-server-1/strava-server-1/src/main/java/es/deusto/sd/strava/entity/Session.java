@@ -9,5 +9,23 @@ public class Session {
 		this.sessionToken = sessionToken;
 		this.userToken = userToken;
 	}
+
+	public String getSessionToken() {
+		return sessionToken;
+	}
+
+	public void setSessionToken(String sessionToken) {
+		this.sessionToken = sessionToken;
+	}
+
+	public String getUserToken() {
+		return userToken;
+	}
+
+	public void setUserToken(String userToken) {
+		this.userToken = userToken;
+	}
+	
+	
 	
 }
