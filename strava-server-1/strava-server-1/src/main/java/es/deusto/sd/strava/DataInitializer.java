@@ -43,11 +43,11 @@ public class DataInitializer {
 			userService.putUser(user2);
 	    
 	    // Add some example challenges
-			challengeService.createChallenge(new Challenge("5k Running Challenge", "2024-01-01", "2024-10-12", 30.0f, TargetType.TIME, Sport.RUNNING, user1));
-			challengeService.createChallenge(new Challenge("Cycling Endurance", "2024-03-01", "2025-03-15", 200.0f, TargetType.DISTANCE, Sport.CYCLING, user2));
-			challengeService.createChallenge(new Challenge("10k Running Challenge", "2024-02-01", "2025-02-28", 45.0f, TargetType.TIME, Sport.RUNNING, user1));
-			challengeService.createChallenge(new Challenge("Cycling Sprint Challenge", "2024-04-01", "2025-04-30", 150.0f, TargetType.DISTANCE, Sport.CYCLING, user2));
-			challengeService.createChallenge(new Challenge("1 Hour Running Challenge", "2024-05-01", "2025-05-15", 60, TargetType.TIME, Sport.RUNNING, user1));
+			challengeService.createChallenge("5k Running Challenge", "2024-01-01", "2024-10-12", 30.0f, TargetType.TIME, Sport.RUNNING, user1);
+			challengeService.createChallenge("Cycling Endurance", "2024-03-01", "2025-03-15", 200.0f, TargetType.DISTANCE, Sport.CYCLING, user2);
+			challengeService.createChallenge("10k Running Challenge", "2024-02-01", "2025-02-28", 45.0f, TargetType.TIME, Sport.RUNNING, user1);
+			challengeService.createChallenge("Cycling Sprint Challenge", "2024-04-01", "2025-04-30", 150.0f, TargetType.DISTANCE, Sport.CYCLING, user2);
+			challengeService.createChallenge("1 Hour Running Challenge", "2024-05-01", "2025-05-15", 60, TargetType.TIME, Sport.RUNNING, user1);
 			
 			
 			challengeService.acceptChallenge(2, user1);

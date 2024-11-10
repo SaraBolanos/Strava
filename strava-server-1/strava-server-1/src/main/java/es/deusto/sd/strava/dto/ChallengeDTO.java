@@ -15,6 +15,7 @@ public class ChallengeDTO {
 	private float target;
 	private TargetType targetType;
 	private Sport sport;
+	private String creator; //only name
 	
 	public ChallengeDTO()
 	{
@@ -22,7 +23,7 @@ public class ChallengeDTO {
 	}
 
 	public ChallengeDTO(long id, String name, String startDate, String endDate, float target, TargetType targetType,
-			Sport sport) {
+			Sport sport, String creator) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -31,8 +32,19 @@ public class ChallengeDTO {
 		this.target = target;
 		this.targetType = targetType;
 		this.sport = sport;
+		this.creator = creator;
+	}
+	
+	
+
+
+	public String getCreator() {
+		return creator;
 	}
 
+	public void setCreator(String creator) {
+		this.creator = creator;
+	}
 
 	public long getId() {
 		return id;

@@ -23,8 +23,8 @@ public class ChallengeService {
 	public final ArrayList<Challenge> challengeList = new ArrayList<Challenge>();
 	
 		
-	public Challenge createChallenge(Challenge challenge) {
-		
+	public Challenge createChallenge(String name, String startDate, String endDate, float target, TargetType targetType, Sport sport, User user) {
+		Challenge challenge = new Challenge (name, startDate, endDate,target, targetType, sport, user);
 		challengeList.add(challenge);
 		System.out.println("added" + challenge.getName());
 		return challenge;
@@ -109,7 +109,6 @@ public class ChallengeService {
 		challengeToAccept.ifPresent(challenge -> user.addChallenge(challenge));
 
 	    //challenge.ifPresent(user::addChallenge);
-
 		
 	    return challengeToAccept.orElse(null);  
 	
