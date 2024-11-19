@@ -18,9 +18,7 @@ import es.deusto.sd.strava.entity.Challenge;
 import es.deusto.sd.strava.entity.User;
 import es.deusto.sd.strava.enums.Sport;
 import es.deusto.sd.strava.enums.TargetType;
-import es.deusto.sd.strava.service.StravaService;
 import es.deusto.sd.strava.service.UserService;
-import es.deusto.sd.strava.service.AuthService;
 import es.deusto.sd.strava.service.ChallengeService;
 
 @Configuration
