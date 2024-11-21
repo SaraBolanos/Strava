@@ -17,7 +17,7 @@ import es.deusto.sd.strava.entity.User;
 import es.deusto.sd.strava.service.UserService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @Tag(name = "User Controller", description = "Operations related to users")
 public class UserController {
 	

@@ -17,7 +17,7 @@ import es.deusto.sd.strava.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping("/user/session")
+@RequestMapping("/users/sessions")
 @Tag(name = "User Session", description = "Operations related to users")
 public class SessionController {
 	
