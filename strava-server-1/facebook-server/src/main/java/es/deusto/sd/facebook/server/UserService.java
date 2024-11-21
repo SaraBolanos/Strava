@@ -1,4 +1,4 @@
-package es.deusto.sd.facebook.service;
+package es.deusto.sd.facebook.server;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,8 +6,6 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Service;
-
-import es.deusto.sd.facebook.entity.User;
 
 
 @Service
@@ -18,7 +16,11 @@ public class UserService {
     private final AtomicLong idGenerator = new AtomicLong(0);
     
     public UserService() {  
-    	
+    	users.put(idGenerator.incrementAndGet(), new User("m.sannadi@brkcf.com", "brknuncaserinde"));
+    	users.put(idGenerator.incrementAndGet(), new User("amongus@vent.sus", "imposter"));
+    	users.put(idGenerator.incrementAndGet(), new User("cirno@fumo.info", "frozenfrogs"));
+    	users.put(idGenerator.incrementAndGet(), new User("limmy@bbc.com", "ripBenryHarvey"));
+    	users.put(idGenerator.incrementAndGet(), new User("hideo.kojima@hideokojimaproductions.com", "kojimahideo"));
     }
 
 	public boolean login(String email, String password) {
@@ -39,8 +41,4 @@ public class UserService {
     	}
     	return Optional.empty();
 	}
-    
-    public boolean checkIfUserExists(String token) {
-    	return users.containsKey(token);
-    }
 }

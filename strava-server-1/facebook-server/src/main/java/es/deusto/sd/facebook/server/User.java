@@ -1,15 +1,13 @@
-package es.deusto.sd.facebook.entity;
+package es.deusto.sd.facebook.server;
 
 public class User {
 	private String email;
 	private String password;
-	private String token;
 	
-	public User(String email, String password, String token) {
+	public User(String email, String password) {
 		super();
 		this.email = email;
 		this.password = password;
-		this.token = token;
 	}
 
 	public String getEmail() {
@@ -26,14 +24,6 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
 	}
 	
 }
