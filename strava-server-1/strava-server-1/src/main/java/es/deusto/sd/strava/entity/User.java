@@ -24,18 +24,19 @@ public class User {
 	public User() { }
 	
 	// Constructor with parameters
-	public User(String username, String email, String token) {
+	public User(String username, String email) {
 		this.setUsername(username);;		
 		this.setEmail(email);
+		this.token = null;
 	}
 
-	public User(String username, String email, String token,
+	public User(String username, String email,
 			Optional<Float> weight, Optional<Float> height, Optional<Integer> maxheartRate,
 			Optional<Integer> restHeartRate) {
 		super();
 		this.username = username;
 		this.email = email;
-		this.token = token;
+		this.token = null;
 		this.weight = weight;
 		this.height = height;
 		this.maxheartRate = maxheartRate;

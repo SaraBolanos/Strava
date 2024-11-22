@@ -4,14 +4,12 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import es.deusto.sd.strava.entity.User;
 import es.deusto.sd.strava.service.UserService;
@@ -29,20 +27,48 @@ public class UserController {
 	
 	//Create user
 	@PostMapping
-	public ResponseEntity<User> createUser(@RequestParam("username") String username,
-										   @RequestParam("accountType") String accountType,
-										   @RequestParam("email") String email,
-										   @RequestParam("password") String password,
-										   @RequestParam("weight") Optional<Float> weight,
-										   @RequestParam("height") Optional<Float> height,
-										   @RequestParam("maxheartRate") Optional<Integer> maxheartRate,
-										   @RequestParam("restHeartRate") Optional<Integer> restHeartRate){
+	public ResponseEntity<User> createUser(@RequestParam String username,
+										   @RequestParam String accountType,
+										   @RequestParam String email,
+										   @RequestParam String password,
+										   @RequestParam Optional<Float> weight,
+										   @RequestParam Optional<Float> height,
+										   @RequestParam Optional<Integer> maxheartRate,
+										   @RequestParam Optional<Integer> restHeartRate){
 		if(!accountType.equals("Google") && !accountType.equals("Facebook")) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
-		User newUser = userService.createUser(accountType, username, email, password, weight, height, maxheartRate, restHeartRate);
-		return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+		Optional<User> newUser = userService.createUser(accountType, username, email, password, weight, height, maxheartRate, restHeartRate);
+		
+		if(newUser.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
+		
+		return new ResponseEntity<>(newUser.get(), HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/logout")
+	public ResponseEntity<User> logout(@RequestParam String sessiontoken){
+		userService.logOut(sessiontoken);
+		return new ResponseEntity<User>(HttpStatus.OK);
+	}
+	
+	@GetMapping("/login")
+	public ResponseEntity<User> login(@RequestParam String email,
+								@RequestParam String password,
+								@RequestParam String accountType){
+		if(!accountType.equals("Google") && !accountType.equals("Facebook")) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		Optional<User> loggedUser = userService.logIn(accountType, email, password);
+		
+		if(loggedUser.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
+		
+		return new ResponseEntity<>(loggedUser.get(), HttpStatus.CREATED);
 		
 	}
 }
