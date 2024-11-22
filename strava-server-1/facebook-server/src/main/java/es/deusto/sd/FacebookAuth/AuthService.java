@@ -1,4 +1,4 @@
-package es.deusto.sd.facebook.server;
+package es.deusto.sd.FacebookAuth;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

@@ -1,10 +1,10 @@
-package es.deusto.sd.facebook.server;
+package es.deusto.sd.FacebookAuth;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 
 public class AuthServer {
-	private static int numClients = 0;
+private static int numClients = 0;
 	
 	public static void main(String args[]) {
 		if (args.length < 1) {
@@ -18,6 +18,7 @@ public class AuthServer {
 			System.out.println(" - FacebookAuth: Waiting for connections '" + tcpServerSocket.getInetAddress().getHostAddress() + ":" + tcpServerSocket.getLocalPort() + "' ...");
 			
 			while (true) {
+				new AuthService(tcpServerSocket.accept());
 				System.out.println(" - FacebookAuth: New client connection accepted. Client number: " + ++numClients);
 				
 			}
@@ -25,5 +26,4 @@ public class AuthServer {
 			System.err.println("# FacebookAuth: IO error:" + e.getMessage());
 		}
 	}
-	
 }

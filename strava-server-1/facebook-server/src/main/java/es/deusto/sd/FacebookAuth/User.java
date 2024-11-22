@@ -1,4 +1,4 @@
-package es.deusto.sd.facebook.server;
+package es.deusto.sd.FacebookAuth;
 
 public class User {
 	private String email;
@@ -25,5 +25,4 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
 }

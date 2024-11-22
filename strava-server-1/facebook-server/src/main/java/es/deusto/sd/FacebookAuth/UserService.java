@@ -1,18 +1,12 @@
-package es.deusto.sd.facebook.server;
+package es.deusto.sd.FacebookAuth;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.springframework.stereotype.Service;
-
-
-@Service
 public class UserService {
-	// Auxiliary map to store the dishes as a repository.
     private final Map<Long, User> users = new HashMap<>();
-    // AtomicLong to generate unique IDs for the dishes.
     private final AtomicLong idGenerator = new AtomicLong(0);
     
     public UserService() {  
