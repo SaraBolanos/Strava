@@ -10,29 +10,33 @@ public class Workout {
 	private Sport sport;
 	private float distance;
 	private Date startDate;
+	private float duration;
 	private User user;
 	
 	
 	
 	
 	
+	public Workout() {
+		super();
+	}
+	public Workout(long id, String title, Sport sport, float distance, Date startDate, float duration, User user) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.sport = sport;
+		this.distance = distance;
+		this.startDate = startDate;
+		this.duration = duration;
+		this.user = user;
+	}
 	public long getId() {
 		return id;
 	}
 	public void setId(long id) {
 		this.id = id;
 	}
-	public Workout() {
-		super();
-	}
-	public Workout(String title, Sport sport, float distance, Date startDate, User user) {
-		super();
-		this.title = title;
-		this.sport = sport;
-		this.distance = distance;
-		this.startDate = startDate;
-		this.user = user;
-	}
+	
 	public Sport getSport() {
 		return sport;
 	}
@@ -62,6 +66,12 @@ public class Workout {
 	}
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
+	}
+	public float getDuration() {
+		return duration;
+	}
+	public void setDuration(float duration) {
+		this.duration = duration;
 	}
 	
 	

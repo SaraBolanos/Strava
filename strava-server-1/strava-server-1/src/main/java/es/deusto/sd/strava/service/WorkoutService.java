@@ -21,8 +21,9 @@ public class WorkoutService {
     public final ArrayList<Workout> workoutList = new ArrayList<>();
 
     // Create a new workout
-    public Workout createWorkout(String title, Sport sport, float distance,Date date, User user) {
-        Workout workout = new Workout(title, sport, distance, date, user);
+    public Workout createWorkout(int id, String title, Sport sport, float distance, Date date, float duration, User user) {
+        // Create a new Workout object with the provided data, including the new duration field
+        Workout workout = new Workout(id, title, sport, distance, date, duration, user); // 0 is a placeholder for ID
         workoutList.add(workout);
         System.out.println("Added workout: " + workout.getTitle());
         return workout;
@@ -34,11 +35,12 @@ public class WorkoutService {
     }
 
     // Get filtered workouts by date and sport
-    public List<Workout> getFilteredWorkouts(String dateString, Sport sport) {
+    public List<Workout> getFilteredWorkouts(User user, String dateString, Sport sport) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate filterDate = dateString != null ? LocalDate.parse(dateString, formatter) : null;
 
         return workoutList.stream()
+                .filter(workout -> workout.getUser().equals(user)) // Ensure workouts belong to the specified user
                 .filter(workout -> sport == null || sport.equals(workout.getSport())) // Filter by sport if specified
                 .filter(workout -> {
                     if (filterDate == null) return true; // If no date is specified, include all
@@ -49,6 +51,7 @@ public class WorkoutService {
                 })
                 .collect(Collectors.toList());
     }
+
     // Get workouts by a specific user
     public List<Workout> getWorkoutsByUser(User user) {
         return workoutList.stream()
@@ -67,5 +70,14 @@ public class WorkoutService {
     // Delete a workout by ID
     public boolean deleteWorkout(long id) {
         return workoutList.removeIf(workout -> workout.getId() == id);
+    }
+
+    // Get unfinished workouts (those that have not completed yet)
+    public List<Workout> getUnfinishedWorkouts(User user) {
+        // Assuming unfinished workouts are those that haven't reached the target distance or duration yet
+        return workoutList.stream()
+                .filter(workout -> workout.getUser().equals(user))
+                .filter(workout -> workout.getDistance() < 10) // Example condition: less than 10 km completed
+                .collect(Collectors.toList());
     }
 }

@@ -10,20 +10,18 @@ public class WorkoutDTO {
 	private Sport sport;
 	private float distance;
 	private Date StartDate;
-	private Date EndDate;
 	private float duration;
 	
 
 	public WorkoutDTO() {
 	}
 	
-	public WorkoutDTO(String title, Sport sport, float distance, Date startDate, Date endDate, float duration) {
+	public WorkoutDTO(String title, Sport sport, float distance, Date startDate,float duration) {
 		super();
 		Title = title;
 		this.sport = sport;
 		this.distance = distance;
 		StartDate = startDate;
-		EndDate = endDate;
 		this.duration = duration;
 	}
 	
@@ -56,12 +54,7 @@ public class WorkoutDTO {
 	public void setStartDate(Date startDate) {
 		StartDate = startDate;
 	}
-	public Date getEndDate() {
-		return EndDate;
-	}
-	public void setEndDate(Date endDate) {
-		EndDate = endDate;
-	}
+	
 	public float getDuration() {
 		return duration;
 	}
