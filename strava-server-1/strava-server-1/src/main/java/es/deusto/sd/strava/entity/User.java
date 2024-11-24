@@ -14,7 +14,7 @@ public class User {
 	private String username;
 	private String email;
 	private ArrayList<UserChallenge> challenges = new ArrayList<UserChallenge>();
-	private String token; //Token returned by google or facebook
+	private String token; //Token, null if user is logged out.
 	private Optional<Float> weight; //in kg
 	private Optional<Float> height; //in cm
 	private Optional<Integer> maxheartRate; //bpm
