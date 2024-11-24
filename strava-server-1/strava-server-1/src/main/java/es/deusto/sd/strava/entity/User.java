@@ -1,121 +1,199 @@
-/**
- * This code is based on solutions provided by my brain and 
- * adapted using coffee. It has been kinda reviewed 
- * and validated to ensure some correctness and that it is mostly free of errors.
-*/
 package es.deusto.sd.strava.entity;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Optional;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
+@Table(name = "users")
+@Entity
 public class User {
-	
-	private String username;
-	private String email;
-	private ArrayList<UserChallenge> challenges = new ArrayList<UserChallenge>();
-	private String token; //Token returned by google or facebook
-	private Optional<Float> weight; //in kg
-	private Optional<Float> height; //in cm
-	private Optional<Integer> maxheartRate; //bpm
-	private Optional<Integer> restHeartRate; //bpm
-	
-	// Constructor without parameters
-	public User() { }
-	
-	// Constructor with parameters
-	public User(String username, String email) {
-		this.setUsername(username);;		
-		this.setEmail(email);
-		this.token = null;
-	}
 
-	public User(String username, String email,
-			Optional<Float> weight, Optional<Float> height, Optional<Integer> maxheartRate,
-			Optional<Integer> restHeartRate) {
-		super();
-		this.username = username;
-		this.email = email;
-		this.token = null;
-		this.weight = weight;
-		this.height = height;
-		this.maxheartRate = maxheartRate;
-		this.restHeartRate = restHeartRate;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-	public String getUsername() {
-		return username;
-	}
+    @Column(nullable = false, unique = true)
+    private String username;
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    @Column(nullable = false, unique = true)
+    private String email;
 
-	public String getEmail() {
-		return email;
-	}
+    /*
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private ArrayList<UserChallenge> challenges = new ArrayList<>();
+    */
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    @Column
+    private String token; // Token returned by Google or Facebook
 
-	public String getToken() {
-		return token;
-	}
+    // Use Float directly, nullable can represent the absence of a value
+    @Column
+    private Float weight; // in kg
 
-	public void setToken(String token) {
-		this.token = token;
-	}
+    // Use Float directly, nullable can represent the absence of a value
+    @Column
+    private Float height; // in cm
 
-	public Optional<Float> getWeight() {
-		return weight;
-	}
+    // Use Integer directly, nullable can represent the absence of a value
+    @Column
+    private Integer maxHeartRate; // bpm
 
-	public void setWeight(Optional<Float> weight) {
-		this.weight = weight;
-	}
+    // Use Integer directly, nullable can represent the absence of a value
+    @Column
+    private Integer restHeartRate; // bpm
 
-	public ArrayList<UserChallenge> getChallenges() {
-		return challenges;
-	}
+    // Constructor without parameters
+    public User() {
+    }
+    
 
-	public void setChallenges(ArrayList<UserChallenge> challenges) {
-		this.challenges = challenges;
-	}
-	public void addChallenge(Challenge challenge) {
-		this.challenges.add(new UserChallenge(challenge));
-	}
+    // Constructor with parameters
+    public User(String username, String email) {
+        this.username = username;
+        this.email = email;
+        this.token = null;
+    }
+    /*
+    public User() {
+        this.username = "";
+        this.email = "";
+        this.token = "";
+        this.weight = 0f;
+        this.height = 0f;
+        this.maxHeartRate = 0;
+        this.restHeartRate = 0;
+    }
+    */
 
-	// hashCode and equals
-	@Override
-	public int hashCode() {
-		return Objects.hash(email, username);
-	}
-	
-	public Optional<Float> getHeight(){
-		return height;
-	}
-	
-	public void setHeight(Optional<Float> height) {
-		this.height = height;
-	}
+    public User(String username, String email, Float weight, Float height, Integer maxHeartRate, Integer restHeartRate) {
+        this.username = username;
+        this.email = email;
+        this.token = null;
+        this.weight = weight;
+        this.height = height;
+        this.maxHeartRate = maxHeartRate;
+        this.restHeartRate = restHeartRate;
+    }
 
-	public Optional<Integer> getMaxheartRate() {
-		return maxheartRate;
-	}
+    // Getters and setters
+    public long getId() {
+        return id;
+    }
 
-	public void setMaxheartRate(Optional<Integer> maxheartRate) {
-		this.maxheartRate = maxheartRate;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public Optional<Integer> getRestHeartRate() {
-		return restHeartRate;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setRestHeartRate(Optional<Integer> restHeartRate) {
-		this.restHeartRate = restHeartRate;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	
-	
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Float getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Float weight) {
+        this.weight = weight;
+    }
+/*
+    public ArrayList<UserChallenge> getChallenges() {
+        return challenges;
+    }
+    */
+    /*
+
+    public void setChallenges(ArrayList<UserChallenge> challenges) {
+        // Clear the existing collection to avoid replacing it
+        this.challenges.clear();
+        
+        // Add all the new challenges while maintaining the bidirectional relationship
+        for (UserChallenge challenge : challenges) {
+            addChallenge(challenge);
+        }
+    }
+
+    public void addChallenge(UserChallenge userChallenge) {
+        // Add to the collection
+        this.challenges.add(userChallenge);
+        
+        // Maintain bidirectional relationship
+        userChallenge.setUser(this);
+    }
+
+    public void removeChallenge(UserChallenge userChallenge) {
+        // Remove from the collection
+        this.challenges.remove(userChallenge);
+        
+        // Break the bidirectional relationship
+        userChallenge.setUser(null);
+    }
+    */
+
+
+    public Float getHeight() {
+        return height;
+    }
+
+    public void setHeight(Float height) {
+        this.height = height;
+    }
+
+    public Integer getMaxHeartRate() {
+        return maxHeartRate;
+    }
+
+    public void setMaxHeartRate(Integer maxHeartRate) {
+        this.maxHeartRate = maxHeartRate;
+    }
+
+    public Integer getRestHeartRate() {
+        return restHeartRate;
+    }
+
+    public void setRestHeartRate(Integer restHeartRate) {
+        this.restHeartRate = restHeartRate;
+    }
+
+    // hashCode and equals
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, username);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        User user = (User) obj;
+        return Objects.equals(email, user.email) &&
+               Objects.equals(username, user.username);
+    }
 }

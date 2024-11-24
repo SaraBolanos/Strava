@@ -47,7 +47,7 @@ public class ChallengeController {
     
     @GetMapping("/challenges/all")	///test!
     public ResponseEntity<List<ChallengeDTO>> getAllChallenges() {  
-    	List<Challenge> challenges = challengeService.getAllChallengesTest();
+    	List<Challenge> challenges = challengeService.getAllChallengesTEST();
     	
         return new ResponseEntity<>(challengesToDTOs(challenges), HttpStatus.OK);
     }

@@ -1,36 +1,71 @@
-package es.deusto.sd.strava.entity;
+
+/*package es.deusto.sd.strava.entity;
 
 import java.sql.Date;
 import java.time.LocalTime;
 
 import es.deusto.sd.strava.enums.Sport;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class Workout {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(nullable = false)
     private String title;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Sport sport;
+
+    @Column(nullable = false)
     private float distance;
+
+    @Column(nullable = false)
     private Date startDate;
-    private LocalTime startTime; // Cambiado a LocalTime para representar la hora de inicio
+
+    @Column(nullable = false)
+    private LocalTime startTime;
+
+    @Column(nullable = false)
     private float duration;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    // Default constructor
     public Workout() {
         super();
     }
 
+    // Constructor with parameters
     public Workout(long id, String title, Sport sport, float distance, Date startDate, LocalTime startTime, float duration, User user) {
-        super();
         this.id = id;
         this.title = title;
         this.sport = sport;
         this.distance = distance;
         this.startDate = startDate;
-        this.startTime = startTime; // Asignación del nuevo parámetro
+        this.startTime = startTime;
         this.duration = duration;
         this.user = user;
     }
 
+    // Getters and setters
     public long getId() {
         return id;
     }
@@ -79,11 +114,11 @@ public class Workout {
         this.startDate = startDate;
     }
 
-    public LocalTime getStartTime() { // Nuevo método getter
+    public LocalTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) { // Nuevo método setter
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
@@ -94,4 +129,4 @@ public class Workout {
     public void setDuration(float duration) {
         this.duration = duration;
     }
-}
+}*/

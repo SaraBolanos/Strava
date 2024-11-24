@@ -1,16 +1,16 @@
 package es.deusto.sd.strava.service;
 
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import es.deusto.sd.strava.dao.ChallengeRepository;
+import es.deusto.sd.strava.dao.UserChallengeRepository;
+import es.deusto.sd.strava.dao.UserRepository;
 import es.deusto.sd.strava.entity.Challenge;
 import es.deusto.sd.strava.entity.User;
 import es.deusto.sd.strava.entity.UserChallenge;
@@ -20,115 +20,74 @@ import es.deusto.sd.strava.enums.TargetType;
 @Service
 public class ChallengeService {
 
-	public final ArrayList<Challenge> challengeList = new ArrayList<Challenge>();
-	
-		
-	public Challenge createChallenge(String name, String startDate, String endDate, float target, TargetType targetType, Sport sport, User user) {
-		Challenge challenge = new Challenge (name, startDate, endDate,target, targetType, sport, user);
-		challengeList.add(challenge);
-		System.out.println("added" + challenge.getName());
-		return challenge;
-	}
-	
-	public List<Challenge> getAllChallengesTest(){return challengeList;}
-	
-	
-	public List<Challenge> getAllChallenges(String dateString, Sport sport){
-		LocalDate today = LocalDate.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		List<Challenge> activeChallenges = challengeList.stream()
-                .filter(challenge -> {
-                    LocalDate start = LocalDate.parse(challenge.getStartDate(), formatter);
-                    LocalDate end = LocalDate.parse(challenge.getEndDate(), formatter);
-                    return (today.isEqual(start) || today.isAfter(start)) && (today.isEqual(end) || today.isBefore(end));
-                })
-                .collect(Collectors.toList());
-		
-		
-		if (sport != null) {
-			if (dateString!=null) { //filter por ambos
-				return challengeList.stream()
-			             .filter(challenge -> sport.equals(challenge.getSport()))
-			             .filter(challenge -> {
-			 	            LocalDate start = LocalDate.parse(challenge.getStartDate(), formatter);
-			 	            LocalDate end = LocalDate.parse(challenge.getEndDate(), formatter);
-			 	            LocalDate date = LocalDate.parse(dateString, formatter);
-			 	            return (date.isEqual(start) || date.isAfter(start)) && (date.isEqual(end) || date.isBefore(end));
-			 	        })
-			             .collect(Collectors.toList());
-				
-			}
-			else {	//filter only sport
-				return activeChallenges.stream()
-			             .filter(challenge -> sport.equals(challenge.getSport()))
-			             .collect(Collectors.toList());
-			}	
-			
-		}
-		if(dateString!=null) {//filter por date
-			challengeList.stream()
-	        .filter(challenge -> {
-	            LocalDate start = LocalDate.parse(challenge.getStartDate(), formatter);
-	            LocalDate end = LocalDate.parse(challenge.getEndDate(), formatter);
-	            LocalDate date = LocalDate.parse(dateString, formatter);
-	            return (date.isEqual(start) || date.isAfter(start)) && (date.isEqual(end) || date.isBefore(end));
-	        })
-	        .collect(Collectors.toList());
-		}
-		
-		
-		return activeChallenges;
-		
-		 
-}
-	
-	public List<Challenge> getAcceptedChallenges(User user){
-		
-		
-		return user.getChallenges().stream()
-                .map(UserChallenge::getChallenge)  // Get the Challenge from each UserChallenge
-                .collect(Collectors.toList());
-	
-	}
-	
-	public List<Challenge> getUnfinishedChallenges(User user){
-		
-		
-		return user.getChallenges().stream()
-				.filter(challenge -> { return challenge.isFinished()==false;})
-                .map(UserChallenge::getChallenge)  // Get the Challenge from each UserChallenge
-                .collect(Collectors.toList());
-	
-	}
-	
-	public Challenge acceptChallenge(long id, User user){
-		Optional<Challenge> challengeToAccept = challengeList.stream()
-	            .filter(challenge -> challenge.getId() == id)
-	            .findFirst();
-		
-		challengeToAccept.ifPresent(challenge -> user.addChallenge(challenge));
+    private final ChallengeRepository challengeRepository;
+    private final UserChallengeRepository userChallengeRepository;
+    private final UserRepository userRepository;
 
-	    //challenge.ifPresent(user::addChallenge);
-		
-	    return challengeToAccept.orElse(null);  
-	
-	}
-	
-	public float getPercentageOfAchievement(long id, User user){
-		Optional<UserChallenge> userChallengeToCheck = user.getChallenges().stream().filter(userChallenge -> {return userChallenge.getChallenge().getId()==id;}).findFirst();
-		
-		if (userChallengeToCheck.isPresent()) {
-	        UserChallenge userChallenge = userChallengeToCheck.get();
-	        
-	        return (userChallenge.getProgress() / userChallenge.getChallenge().getTarget()) * 100;
-	        
-	    }
-	    
-	    return 0f;  // Return 0 if not present or if target is 0
-		
-			
-	}
-	
-	
-	
+    public ChallengeService(ChallengeRepository challengeRepository, UserChallengeRepository userChallengeRepository, UserRepository userRepository) {
+        this.challengeRepository = challengeRepository;
+        this.userChallengeRepository = userChallengeRepository;
+        this.userRepository = userRepository;
+    }
+
+    // Create a new challenge
+    public Challenge createChallenge(String name, String startDate, String endDate, float target, TargetType targetType, Sport sport, User user) {
+        Challenge challenge = new Challenge(name, startDate, endDate, target, targetType, sport, user);
+        return challengeRepository.save(challenge);  // Save challenge to the database
+    }
+    public List<Challenge> getAllChallengesTEST() {
+    	return challengeRepository.findAll();
+    }
+
+    // Get all challenges
+    public List<Challenge> getAllChallenges(String dateString, Sport sport) {
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");      
+
+        if (sport != null) {
+            if (dateString != null) { // Filter by both sport and date
+            	
+            	return challengeRepository.findActiveChallengesBySportAndDate(sport, LocalDate.parse(dateString, formatter));
+            
+               
+            } else { // Filter only by sport
+                return challengeRepository.findActiveChallengesBySport(sport);
+            }
+        }
+        if (dateString != null) { // Filter only by date
+        	return challengeRepository.findActiveChallengesByDate(LocalDate.parse(dateString, formatter));
+        }
+
+        return challengeRepository.findActiveChallenges();
+    }
+
+    // Get accepted challenges for a user
+    public List<Challenge> getAcceptedChallenges(User user) {
+        return userChallengeRepository.findAcceptedUserChallenges(user.getId());
+    }
+
+    // Get unfinished challenges for a user
+    public List<Challenge> getUnfinishedChallenges(User user) {
+    	return userChallengeRepository.findUnfinishedChallengesForUser(user.getId());
+    }
+
+    // Accept a challenge
+    public Challenge acceptChallenge(long id, User user) {
+        Optional<Challenge> challengeToAccept = challengeRepository.findById(id);
+
+        challengeToAccept.ifPresent(challenge -> {
+        	UserChallenge userChallenge = new UserChallenge(challenge, user);
+            userChallengeRepository.save(userChallenge);  // Save the association to the database
+        });
+
+        return challengeToAccept.orElse(null);
+    }
+
+    // Get percentage of achievement for a challenge
+    public float getPercentageOfAchievement(long id, User user) {
+    	Float percentage = userChallengeRepository.getPercentageOfAchievement(user.getId(), id);
+
+        // If the result is null, return 0f
+        return (percentage != null) ? percentage : 0f;
+    }
 }
