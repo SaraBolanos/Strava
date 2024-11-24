@@ -2,11 +2,11 @@ package es.deusto.sd.strava.service;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -21,11 +21,11 @@ public class WorkoutService {
     public final ArrayList<Workout> workoutList = new ArrayList<>();
 
     // Create a new workout
-    public Workout createWorkout(int id, String title, Sport sport, float distance, Date date, float duration, User user) {
-        // Create a new Workout object with the provided data, including the new duration field
-        Workout workout = new Workout(id, title, sport, distance, date, duration, user); // 0 is a placeholder for ID
+    public Workout createWorkout(int id, String title, Sport sport, float distance, Date date, LocalTime startTime, float duration, User user) {
+        // Create a new Workout object with the provided data
+        Workout workout = new Workout(id, title, sport, distance, date, startTime, duration, user);
         workoutList.add(workout);
-        System.out.println("Added workout: " + workout.getTitle());
+        System.out.println("Added workout: " + workout.getTitle() + " at " + workout.getStartTime());
         return workout;
     }
 
