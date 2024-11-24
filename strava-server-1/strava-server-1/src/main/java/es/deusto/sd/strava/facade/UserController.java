@@ -31,10 +31,10 @@ public class UserController {
 										   @RequestParam String accountType,
 										   @RequestParam String email,
 										   @RequestParam String password,
-										   @RequestParam Optional<Float> weight,
-										   @RequestParam Optional<Float> height,
-										   @RequestParam Optional<Integer> maxheartRate,
-										   @RequestParam Optional<Integer> restHeartRate){
+										   @RequestParam Float weight,
+										   @RequestParam Float height,
+										   @RequestParam Integer maxheartRate,
+										   @RequestParam Integer restHeartRate){
 		if(!accountType.equals("Google") && !accountType.equals("Facebook")) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}

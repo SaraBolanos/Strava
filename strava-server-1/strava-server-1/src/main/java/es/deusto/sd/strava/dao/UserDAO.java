@@ -1,6 +1,7 @@
-package es.deusto.sd.dao;
+package es.deusto.sd.strava.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,9 +13,9 @@ import es.deusto.sd.strava.entity.User;
 @Repository
 public interface UserDAO extends JpaRepository<User, Long>  {
 	
-	List<User> FindByEmail(String Email);
+	Optional<User> findByEmail(String Email);
 
-	List<User> FindByUsername(String Username);
+	Optional<User> findByUsername(String Username);
 	
 	User findById(long id);
 	

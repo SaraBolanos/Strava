@@ -1,4 +1,4 @@
-package es.deusto.sd.strava.facade;
+/*package es.deusto.sd.strava.facade;
 
 import java.sql.Date;
 import java.text.ParseException;
@@ -42,7 +42,7 @@ public class WorkoutController {
             @RequestParam(value = "sport", required = false) Sport sport,
             @RequestParam(value = "date", required = false) String date) {
 
-        Optional<User> user = userService.getUserById(userId); //Esto no se como conseguir el User
+        Optional<User> user = java.util.Optional.empty();// = userService.getUserById(userId); //Esto no se como conseguir el User
         
         if (user.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);  // User not found
@@ -111,4 +111,4 @@ public class WorkoutController {
         workouts.forEach(workout -> dtos.add(workoutToDTO(workout)));
         return dtos;
     }
-}
+}*/

@@ -86,7 +86,7 @@ public class ChallengeService {
 		
 		
 		return user.getChallenges().stream()
-                .map(UserChallenge::getChallenge)  // Get the Challenge from each UserChallenge
+                .map(Challenge::getChallenge)  // Get the Challenge from each UserChallenge
                 .collect(Collectors.toList());
 	
 	}

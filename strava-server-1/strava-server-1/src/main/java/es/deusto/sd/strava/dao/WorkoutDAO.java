@@ -1,4 +1,4 @@
-package es.deusto.sd.dao;
+/*package es.deusto.sd.strava.dao;
 
 import java.util.List;
 
@@ -16,4 +16,4 @@ public interface WorkoutDAO extends JpaRepository<Workout, Long>  {
 	Workout findById(long id);
 	
 	
-}
+}*/

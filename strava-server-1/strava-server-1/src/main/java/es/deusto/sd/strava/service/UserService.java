@@ -38,7 +38,7 @@ public class UserService {
     	//users.put(newUser.getToken(), newUser);
 	}
 
-	public Optional<User> createUser(String accountType, String username, String email, String password, Optional<Float> weight, Optional<Float> height, Optional<Integer> maxheartRate, Optional<Integer> restHeartRate) {
+	public Optional<User> createUser(String accountType, String username, String email, String password, Float weight, Float height, Integer maxheartRate, Integer restHeartRate) {
     	if(accountType=="Google") {
     		if(!AuthGoogle(email, password)) {
     			return Optional.empty();

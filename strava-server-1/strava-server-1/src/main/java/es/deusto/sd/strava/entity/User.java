@@ -6,19 +6,56 @@
 package es.deusto.sd.strava.entity;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import jakarta.persistence.Id;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.AssertFalse;
+
+
+@Entity
+@Table(name = "users")
 public class User {
+
+    
+    
+    @Id
+    @Column(unique = true, nullable = false)
+    private String username;
+
+    @Column(nullable = true)
+    private String email;
+
+    @Column(nullable = true, columnDefinition = "FLOAT")
+    private Float weight; // in kg
+
+    @Column(nullable = true, columnDefinition = "FLOAT")
+    private Float height; // in cm
+
+    @Column(nullable = true, columnDefinition = "INTEGER")
+    private Integer maxHeartRate; // bpm
+
+    @Column(nullable = true, columnDefinition = "INTEGER")
+    private Integer restHeartRate; // bpm
+
+    @Column(nullable = true)
+    private String token; // Token returned by Google or Facebook
+
+
+
 	
-	private String username;
-	private String email;
-	private ArrayList<UserChallenge> challenges = new ArrayList<UserChallenge>();
-	private String token; //Token returned by google or facebook
-	private Optional<Float> weight; //in kg
-	private Optional<Float> height; //in cm
-	private Optional<Integer> maxheartRate; //bpm
-	private Optional<Integer> restHeartRate; //bpm
+	
+	
 	
 	// Constructor without parameters
 	public User() { }
@@ -31,15 +68,15 @@ public class User {
 	}
 
 	public User(String username, String email,
-			Optional<Float> weight, Optional<Float> height, Optional<Integer> maxheartRate,
-			Optional<Integer> restHeartRate) {
+			Float weight, Float height, Integer maxheartRate,
+			Integer restHeartRate) {
 		super();
 		this.username = username;
 		this.email = email;
 		this.token = null;
 		this.weight = weight;
 		this.height = height;
-		this.maxheartRate = maxheartRate;
+		this.maxHeartRate = maxheartRate;
 		this.restHeartRate = restHeartRate;
 	}
 
@@ -67,55 +104,41 @@ public class User {
 		this.token = token;
 	}
 
-	public Optional<Float> getWeight() {
+	
+
+	public Float getWeight() {
 		return weight;
 	}
 
-	public void setWeight(Optional<Float> weight) {
+	public void setWeight(Float weight) {
 		this.weight = weight;
 	}
 
-	public ArrayList<UserChallenge> getChallenges() {
-		return challenges;
-	}
-
-	public void setChallenges(ArrayList<UserChallenge> challenges) {
-		this.challenges = challenges;
-	}
-	public void addChallenge(Challenge challenge) {
-		this.challenges.add(new UserChallenge(challenge));
-	}
-
-	// hashCode and equals
-	@Override
-	public int hashCode() {
-		return Objects.hash(email, username);
-	}
-	
-	public Optional<Float> getHeight(){
+	public Float getHeight() {
 		return height;
 	}
-	
-	public void setHeight(Optional<Float> height) {
+
+	public void setHeight(Float height) {
 		this.height = height;
 	}
 
-	public Optional<Integer> getMaxheartRate() {
-		return maxheartRate;
+	public Integer getMaxHeartRate() {
+		return maxHeartRate;
 	}
 
-	public void setMaxheartRate(Optional<Integer> maxheartRate) {
-		this.maxheartRate = maxheartRate;
+	public void setMaxHeartRate(Integer maxHeartRate) {
+		this.maxHeartRate = maxHeartRate;
 	}
 
-	public Optional<Integer> getRestHeartRate() {
+	public Integer getRestHeartRate() {
 		return restHeartRate;
 	}
 
-	public void setRestHeartRate(Optional<Integer> restHeartRate) {
+	public void setRestHeartRate(Integer restHeartRate) {
 		this.restHeartRate = restHeartRate;
 	}
 
+	
 	
 	
 }

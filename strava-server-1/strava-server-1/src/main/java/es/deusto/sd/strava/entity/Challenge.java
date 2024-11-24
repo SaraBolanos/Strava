@@ -6,20 +6,62 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.hibernate.annotations.ManyToAny;
+
 import es.deusto.sd.strava.enums.Sport;
 import es.deusto.sd.strava.enums.TargetType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 
+
+@Entity
+@Table(name = "challenges")
 public class Challenge {
-	private static final AtomicLong counter = new AtomicLong(0); 
-	private long id;
-	private String name;
-	private String startDate;
-	private String endDate;
-	private float target;
-	private TargetType targetType;
-	private Sport sport;
-	private User creator;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String description;
+
+    @Column(nullable = false)
+    private String startDate;
+
+    @Column(nullable = false)
+    private String endDate;
+
+    @Column(nullable = false)
+    private float target;
+
+    @Enumerated(EnumType.STRING) // or EnumType.ORDINAL
+    @Column(name = "targetType", nullable = false)
+    private TargetType targetType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "sport", nullable = false)
+    private Sport sport;
+
+    @ManyToOne
+    @JoinColumn(name = "creator_id", nullable = false)
+    private User creator;
+
+
 	
+	
+private static final AtomicLong counter = new AtomicLong(0); 
 	public static AtomicLong getCounter() {
 		return counter;
 	}
@@ -38,7 +80,6 @@ public class Challenge {
 		this.creator = user;
 	}
 	
-	//
 	
 	
 
