@@ -12,9 +12,11 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.deusto.sd.strava.entity.User;
+import es.deusto.sd.strava.repository.UserRepository;
 
 
 @Service
@@ -28,7 +30,8 @@ public class UserService {
     private static String serverIP = "0.0.0.0";
 	private static int serverPort = 9500;
     private static String DELIMITER = "#";
-    
+    @Autowired
+    private UserRepository userRepository;
     public UserService() {  
     	
     }
@@ -36,9 +39,10 @@ public class UserService {
     
     public void putUser(User newUser) {		//only for testing purpose
     	//users.put(newUser.getToken(), newUser);
+    	userRepository.save(newUser);
 	}
 
-	public Optional<User> createUser(String accountType, String username, String email, String password, Optional<Float> weight, Optional<Float> height, Optional<Integer> maxheartRate, Optional<Integer> restHeartRate) {
+	public Optional<User> createUser(String accountType, String username, String email, String password, Float weight, Float height, Integer maxheartRate, Integer restHeartRate) {
     	if(accountType=="Google") {
     		if(!AuthGoogle(email, password)) {
     			return Optional.empty();

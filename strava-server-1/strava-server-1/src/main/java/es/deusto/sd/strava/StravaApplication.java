@@ -7,8 +7,13 @@ package es.deusto.sd.strava;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
 
 @SpringBootApplication
+@EnableJpaRepositories(basePackages = "es.deusto.sd.strava.repository")  // Asegúrate de que este paquete esté correctamente configurado
+@EntityScan(basePackages = "es.deusto.sd.strava.entity")  
 public class StravaApplication {
 
 	public static void main(String[] args) {

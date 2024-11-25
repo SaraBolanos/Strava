@@ -1,7 +1,8 @@
 package es.deusto.sd.strava.dto;
 
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 import es.deusto.sd.strava.enums.Sport;
 import es.deusto.sd.strava.enums.TargetType;
@@ -17,7 +18,7 @@ public class ChallengeDTO {
 	private Sport sport;
 	private String creator; //only name
 	
-	public ChallengeDTO()
+	public ChallengeDTO(Long long1, String string, LocalDate localDate, LocalDate localDate2, float f, TargetType targetType2, Sport sport2, String string2)
 	{
 		
 	}

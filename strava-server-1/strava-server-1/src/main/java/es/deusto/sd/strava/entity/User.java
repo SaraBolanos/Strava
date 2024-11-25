@@ -1,121 +1,156 @@
-/**
- * This code is based on solutions provided by my brain and 
- * adapted using coffee. It has been kinda reviewed 
- * and validated to ensure some correctness and that it is mostly free of errors.
-*/
 package es.deusto.sd.strava.entity;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "app_user")
 public class User {
-	
-	private String username;
-	private String email;
-	private ArrayList<UserChallenge> challenges = new ArrayList<UserChallenge>();
-	private String token; //Token returned by google or facebook
-	private Optional<Float> weight; //in kg
-	private Optional<Float> height; //in cm
-	private Optional<Integer> maxheartRate; //bpm
-	private Optional<Integer> restHeartRate; //bpm
-	
-	// Constructor without parameters
-	public User() { }
-	
-	// Constructor with parameters
-	public User(String username, String email) {
-		this.setUsername(username);;		
-		this.setEmail(email);
-		this.token = null;
-	}
 
-	public User(String username, String email,
-			Optional<Float> weight, Optional<Float> height, Optional<Integer> maxheartRate,
-			Optional<Integer> restHeartRate) {
-		super();
-		this.username = username;
-		this.email = email;
-		this.token = null;
-		this.weight = weight;
-		this.height = height;
-		this.maxheartRate = maxheartRate;
-		this.restHeartRate = restHeartRate;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // El ID se genera automáticamente
+    private Long id;
 
-	public String getUsername() {
-		return username;
-	}
+    private String username;
+    private String email;
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserChallenge> challenges = new ArrayList<>();
 
-	public String getEmail() {
-		return email;
-	}
+    private String token; // Token devuelto por Google o Facebook
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    private Float weight; // Peso en kg
+    private Float height; // Altura en cm
+    private Integer maxheartRate; // Máximo ritmo cardíaco en bpm
+    private Integer restHeartRate; // Ritmo cardíaco en reposo en bpm
 
-	public String getToken() {
-		return token;
-	}
+    @ManyToOne
+    @JoinColumn(name = "creator_id") // La columna que almacena la referencia al creador
+    private User creator; // El creador es otro usuario
 
-	public void setToken(String token) {
-		this.token = token;
-	}
+    // Constructor sin parámetros
+    public User() { }
 
-	public Optional<Float> getWeight() {
-		return weight;
-	}
+    // Constructor con parámetros
+    public User(String username, String email) {
+        this.username = username;
+        this.email = email;
+        this.token = null;
+        this.challenges = new ArrayList<>(); // Inicializar la lista de desafíos
+    }
 
-	public void setWeight(Optional<Float> weight) {
-		this.weight = weight;
-	}
+    public User(String username, String email, Float weight, Float height, Integer maxheartRate, Integer restHeartRate) {
+        this.username = username;
+        this.email = email;
+        this.token = null;
+        this.weight = weight;
+        this.height = height;
+        this.maxheartRate = maxheartRate;
+        this.restHeartRate = restHeartRate;
+        this.challenges = new ArrayList<>(); // Inicializar la lista de desafíos
+    }
 
-	public ArrayList<UserChallenge> getChallenges() {
-		return challenges;
-	}
+    // Getters y Setters
+    public Long getId() {
+        return id;
+    }
 
-	public void setChallenges(ArrayList<UserChallenge> challenges) {
-		this.challenges = challenges;
-	}
-	public void addChallenge(Challenge challenge) {
-		this.challenges.add(new UserChallenge(challenge));
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	// hashCode and equals
-	@Override
-	public int hashCode() {
-		return Objects.hash(email, username);
-	}
-	
-	public Optional<Float> getHeight(){
-		return height;
-	}
-	
-	public void setHeight(Optional<Float> height) {
-		this.height = height;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public Optional<Integer> getMaxheartRate() {
-		return maxheartRate;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public void setMaxheartRate(Optional<Integer> maxheartRate) {
-		this.maxheartRate = maxheartRate;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public Optional<Integer> getRestHeartRate() {
-		return restHeartRate;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setRestHeartRate(Optional<Integer> restHeartRate) {
-		this.restHeartRate = restHeartRate;
-	}
+    public String getToken() {
+        return token;
+    }
 
-	
-	
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Float getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Float weight) {
+        this.weight = weight;
+    }
+
+    public Float getHeight() {
+        return height;
+    }
+
+    public void setHeight(Float height) {
+        this.height = height;
+    }
+
+    public Integer getMaxheartRate() {
+        return maxheartRate;
+    }
+
+    public void setMaxheartRate(Integer maxheartRate) {
+        this.maxheartRate = maxheartRate;
+    }
+
+    public Integer getRestHeartRate() {
+        return restHeartRate;
+    }
+
+    public void setRestHeartRate(Integer restHeartRate) {
+        this.restHeartRate = restHeartRate;
+    }
+
+    public List<UserChallenge> getChallenges() {
+        return challenges;
+    }
+
+    public void setChallenges(List<UserChallenge> challenges) {
+        this.challenges = challenges;
+    }
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
+
+    // Método para agregar un desafío
+    public void addChallenge(UserChallenge userChallenge) {
+        this.challenges.add(userChallenge);
+    }
+
+    // Sobrescritura de hashCode y equals
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, email);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        User user = (User) obj;
+        return Objects.equals(username, user.username) &&
+               Objects.equals(email, user.email);
+    }
 }

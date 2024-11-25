@@ -5,8 +5,7 @@
  */
 package es.deusto.sd.strava;
 
-import java.util.Calendar;
-import java.util.Date;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +13,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import es.deusto.sd.strava.entity.Challenge;
 import es.deusto.sd.strava.entity.User;
 import es.deusto.sd.strava.enums.Sport;
 import es.deusto.sd.strava.enums.TargetType;
@@ -32,30 +30,32 @@ public class DataInitializer {
 		return args -> {			
 			// Create some users
 			
-			User user1 =new User();
+			User user1 = new User();
 			user1.setUsername("user1");
 			user1.setToken("123");
+			// No establecer el ID manualmente
 			userService.putUser(user1);
-			
-			User user2 =new User();
+
+			User user2 = new User();
 			user2.setUsername("user2");
 			user2.setToken("456");
+			// No establecer el ID manualmente
 			userService.putUser(user2);
-	    
+
 	    // Add some example challenges
-			challengeService.createChallenge("5k Running Challenge", "2024-01-01", "2024-10-12", 30.0f, TargetType.TIME, Sport.RUNNING, user1);
-			challengeService.createChallenge("Cycling Endurance", "2024-03-01", "2025-03-15", 200.0f, TargetType.DISTANCE, Sport.CYCLING, user2);
-			challengeService.createChallenge("10k Running Challenge", "2024-02-01", "2025-02-28", 45.0f, TargetType.TIME, Sport.RUNNING, user1);
-			challengeService.createChallenge("Cycling Sprint Challenge", "2024-04-01", "2025-04-30", 150.0f, TargetType.DISTANCE, Sport.CYCLING, user2);
-			challengeService.createChallenge("1 Hour Running Challenge", "2024-05-01", "2025-05-15", 60, TargetType.TIME, Sport.RUNNING, user1);
+			challengeService.createChallenge("5k Running Challenge", "2024-01-01", "2024-10-12", 30.0f, TargetType.TIME, Sport.RUNNING, user1.getId());
+			challengeService.createChallenge("Cycling Endurance", "2024-03-01", "2025-03-15", 200.0f, TargetType.DISTANCE, Sport.CYCLING, user2.getId());
+			challengeService.createChallenge("10k Running Challenge", "2024-02-01", "2025-02-28", 45.0f, TargetType.TIME, Sport.RUNNING, user1.getId());
+			challengeService.createChallenge("Cycling Sprint Challenge", "2024-04-01", "2025-04-30", 150.0f, TargetType.DISTANCE, Sport.CYCLING, user2.getId());
+			challengeService.createChallenge("1 Hour Running Challenge", "2024-05-01", "2025-05-15", 60, TargetType.TIME, Sport.RUNNING, user1.getId());
 			
-			
+			challengeService.acceptChallenge(1, user1);
 			challengeService.acceptChallenge(2, user1);
 			
 			
 			logger.info("Challenges saved:");
 			
-			challengeService.getAllChallengesTest().forEach(challenge2 -> {
+			challengeService.getAllChallenges("2024-11-25",Sport.CYCLING).forEach(challenge2 -> {
 	            logger.info(challenge2.getName());
 	        });
 			

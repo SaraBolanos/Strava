@@ -1,6 +1,6 @@
 package es.deusto.sd.strava.facade;
 
-import java.sql.Date;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;

@@ -1,5 +1,6 @@
 package es.deusto.sd.strava.dto;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -15,7 +16,7 @@ public class WorkoutDTO {
 	private float duration;
 	
 
-	public WorkoutDTO() {
+	public WorkoutDTO(String string, Sport sport2, float f, LocalDate localDate, LocalTime localTime, float g) {
 	}
 	
 	public WorkoutDTO(String title, Sport sport, float distance, Date startDate,LocalTime startTime,float duration) {

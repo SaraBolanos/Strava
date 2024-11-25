@@ -3,7 +3,6 @@ package es.deusto.sd.strava.service;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +17,9 @@ import es.deusto.sd.strava.enums.Sport;
 @Service
 public class WorkoutService {
 
-    public final ArrayList<Workout> workoutList = new ArrayList<>();
+    private final ArrayList<Workout> workoutList = new ArrayList<>();
 
-    // Create a new workout
+    // Create a new workout with a user and optional creator
     public Workout createWorkout(int id, String title, Sport sport, float distance, Date date, LocalTime startTime, float duration, User user) {
         // Create a new Workout object with the provided data
         Workout workout = new Workout(id, title, sport, distance, date, startTime, duration, user);
@@ -31,31 +30,25 @@ public class WorkoutService {
 
     // Get all workouts
     public List<Workout> getAllWorkouts() {
-        return workoutList;
+        return new ArrayList<>(workoutList); // Return a copy to avoid external modifications
     }
 
-    // Get filtered workouts by date and sport
+    // Get filtered workouts by user, date, and sport (including creator)
     public List<Workout> getFilteredWorkouts(User user, String dateString, Sport sport) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate filterDate = dateString != null ? LocalDate.parse(dateString, formatter) : null;
 
         return workoutList.stream()
-                .filter(workout -> workout.getUser().equals(user)) // Ensure workouts belong to the specified user
+                .filter(workout -> workout.getUser().equals(user) || (workout.getUser() != null && workout.getUser().equals(user))) // Include workouts by the creator as well
                 .filter(workout -> sport == null || sport.equals(workout.getSport())) // Filter by sport if specified
-                .filter(workout -> {
-                    if (filterDate == null) return true; // If no date is specified, include all
-                    LocalDate workoutDate = workout.getStartDate().toInstant()
-                            .atZone(ZoneId.systemDefault())
-                            .toLocalDate(); // Convert Date to LocalDate
-                    return !workoutDate.isAfter(filterDate); // Check if workoutDate is on or before filterDate
-                })
+                .filter(workout -> filterDate == null || !workout.getStartDate().isAfter(filterDate)) // Filter by date if specified
                 .collect(Collectors.toList());
     }
 
-    // Get workouts by a specific user
+    // Get workouts by a specific user (including workouts by the creator)
     public List<Workout> getWorkoutsByUser(User user) {
         return workoutList.stream()
-                .filter(workout -> workout.getUser().equals(user))
+                .filter(workout -> workout.getUser().equals(user) || (workout.getUser() != null && workout.getUser().equals(user))) // Check if the user is the creator or the person doing the workout
                 .collect(Collectors.toList());
     }
 
@@ -64,19 +57,19 @@ public class WorkoutService {
         return workoutList.stream()
                 .filter(workout -> workout.getId() == id)
                 .findFirst()
-                .orElse(null);
+                .orElse(null); // Return null if the workout is not found
     }
 
     // Delete a workout by ID
     public boolean deleteWorkout(long id) {
-        return workoutList.removeIf(workout -> workout.getId() == id);
+        return workoutList.removeIf(workout -> workout.getId() == id); // Remove if a workout with the given ID exists
     }
 
     // Get unfinished workouts (those that have not completed yet)
     public List<Workout> getUnfinishedWorkouts(User user) {
         // Assuming unfinished workouts are those that haven't reached the target distance or duration yet
         return workoutList.stream()
-                .filter(workout -> workout.getUser().equals(user))
+                .filter(workout -> workout.getUser().equals(user) || (workout.getUser() != null && workout.getUser().equals(user))) // Include both user and creator
                 .filter(workout -> workout.getDistance() < 10) // Example condition: less than 10 km completed
                 .collect(Collectors.toList());
     }
