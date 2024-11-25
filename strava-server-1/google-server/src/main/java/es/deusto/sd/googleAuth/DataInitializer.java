@@ -5,61 +5,37 @@
  */
 package es.deusto.sd.googleAuth;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.Transactional;
 
-import es.deusto.sd.strava.entity.Challenge;
-import es.deusto.sd.strava.entity.User;
-import es.deusto.sd.strava.enums.Sport;
-import es.deusto.sd.strava.enums.TargetType;
-import es.deusto.sd.strava.service.UserService;
-import es.deusto.sd.strava.service.ChallengeService;
+import es.deusto.sd.googleAuth.dao.UserRepository;
+import es.deusto.sd.googleAuth.entity.User;
 
 @Configuration
 public class DataInitializer {
-
-	private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
-	
-	
+		
 	@Bean
-    CommandLineRunner initData(ChallengeService challengeService, UserService userService) {
-		return args -> {			
+	@Transactional
+    CommandLineRunner initData(UserRepository userRepository) {
+		return args -> {	
+			//Check if database already exists
+			if(userRepository.count()>0) {
+				return;
+			}
+			
 			// Create some users
+			User peter = new User("peter.clement@advance.uk","itEndsToday");
+			User julia = new User("julia.salisbury@advance.uk","onlyGettingStarted");
+			User theking = new User("kingofallcosmos@katamrai.damacy", "SkyFullOfStars");
+			User waymond = new User("waymond.wang@everything.everywhere","allAtOnce");
+			User caitlyn = new User("caitlyn@kirammam.plt","AMongoose");// ඞ
+			User vi = new User("vi@undercity.zn","OilSlick");
 			
-			User user1 =new User();
-			user1.setUsername("user1");
-			user1.setToken("123");
-			userService.putUser(user1);
-			
-			User user2 =new User();
-			user2.setUsername("user2");
-			user2.setToken("456");
-			userService.putUser(user2);
-	    
-	    // Add some example challenges
-			challengeService.createChallenge("5k Running Challenge", "2024-01-01", "2024-10-12", 30.0f, TargetType.TIME, Sport.RUNNING, user1);
-			challengeService.createChallenge("Cycling Endurance", "2024-03-01", "2025-03-15", 200.0f, TargetType.DISTANCE, Sport.CYCLING, user2);
-			challengeService.createChallenge("10k Running Challenge", "2024-02-01", "2025-02-28", 45.0f, TargetType.TIME, Sport.RUNNING, user1);
-			challengeService.createChallenge("Cycling Sprint Challenge", "2024-04-01", "2025-04-30", 150.0f, TargetType.DISTANCE, Sport.CYCLING, user2);
-			challengeService.createChallenge("1 Hour Running Challenge", "2024-05-01", "2025-05-15", 60, TargetType.TIME, Sport.RUNNING, user1);
-			
-			
-			challengeService.acceptChallenge(2, user1);
-			
-			
-			logger.info("Challenges saved:");
-			
-			challengeService.getAllChallengesTest().forEach(challenge2 -> {
-	            logger.info(challenge2.getName());
-	        });
-			
-			
+			userRepository.saveAll(List.of(peter, julia, theking, waymond, caitlyn, vi));
 		};
 	}
 			
