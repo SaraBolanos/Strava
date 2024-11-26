@@ -17,6 +17,7 @@ public class FacebookAuthGateway implements IFacebookAuthGateway {
     	
     }
     
+    @Override
     public boolean verifyFacebookAuth(String email, String password) {
     	String message = email+DELIMITER+password;
     	String response = null;
