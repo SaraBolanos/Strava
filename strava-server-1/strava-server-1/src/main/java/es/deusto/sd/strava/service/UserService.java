@@ -9,9 +9,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.stereotype.Service;
 
 import es.deusto.sd.strava.entity.User;
-import es.deusto.sd.strava.external.IFacebookAuthGateway;
-import es.deusto.sd.strava.external.IGoogleAuthGateway;
-
+import es.deusto.sd.strava.external.AuthGatewayFactory;
+import es.deusto.sd.strava.external.IAuthGateway;
 
 @Service
 public class UserService {
@@ -20,13 +19,7 @@ public class UserService {
     // AtomicLong to generate unique IDs for the dishes.
     private final AtomicLong idGenerator = new AtomicLong(0);
     
-    private final IGoogleAuthGateway iGoogleAuthGateway;
-    private final IFacebookAuthGateway iFacebookAuthGateway;
-    
-    public UserService(IGoogleAuthGateway iGoogleAuthGateway, IFacebookAuthGateway iFacebookAuthGateway) {
-    	this.iGoogleAuthGateway = iGoogleAuthGateway;
-    	this.iFacebookAuthGateway = iFacebookAuthGateway;
-    }
+    public UserService() {}
     
     
     public void putUser(User newUser) {		//only for testing purpose
@@ -86,11 +79,8 @@ public class UserService {
     }
     
     private boolean verifyAccount(String accountType, String email, String password) {
-    	if(accountType=="Google") {
-    		return iGoogleAuthGateway.verifyGoogleAuth(email, password);
-    	}else {
-    		return iFacebookAuthGateway.verifyFacebookAuth(email, password);
-    	}
+    	IAuthGateway gateway = AuthGatewayFactory.createAuthGateway(accountType);
+    	return gateway.verifyAuth(email, password);
     }
     
 }

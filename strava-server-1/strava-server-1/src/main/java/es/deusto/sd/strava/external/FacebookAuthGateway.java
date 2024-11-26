@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class FacebookAuthGateway implements IFacebookAuthGateway {
+public class FacebookAuthGateway implements IAuthGateway {
 	//data for socket connection
     private static String serverIP = "0.0.0.0";
 	private static int serverPort = 9550;
@@ -18,7 +18,7 @@ public class FacebookAuthGateway implements IFacebookAuthGateway {
     }
     
     @Override
-    public boolean verifyFacebookAuth(String email, String password) {
+    public boolean verifyAuth(String email, String password) {
     	String message = email+DELIMITER+password;
     	String response = null;
     	

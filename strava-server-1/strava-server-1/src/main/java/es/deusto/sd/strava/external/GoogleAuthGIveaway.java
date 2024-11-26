@@ -5,7 +5,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class GoogleAuthGIveaway implements IGoogleAuthGateway{
+public class GoogleAuthGIveaway implements IAuthGateway{
 	
 	private final String API_URL = "localhost:9500/auth/verify";
 	
@@ -16,7 +16,7 @@ public class GoogleAuthGIveaway implements IGoogleAuthGateway{
     }
 
 	@Override
-	public boolean verifyGoogleAuth(String email, String password) {
+	public boolean verifyAuth(String email, String password) {
 		
 		String url = API_URL + "?email=" + email + "&password=" + password;
 		
