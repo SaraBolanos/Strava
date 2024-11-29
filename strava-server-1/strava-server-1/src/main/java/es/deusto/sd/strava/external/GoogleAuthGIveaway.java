@@ -7,7 +7,7 @@ import java.net.http.HttpResponse;
 
 public class GoogleAuthGIveaway implements IAuthGateway{
 	
-	private final String API_URL = "localhost:9500/auth/verify";
+	private final String API_URL = "http://localhost:9500/auth/verify";
 	
 	private final HttpClient httpClient;
     
