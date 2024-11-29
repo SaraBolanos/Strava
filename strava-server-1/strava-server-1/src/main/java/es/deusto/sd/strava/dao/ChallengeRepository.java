@@ -19,21 +19,14 @@ import es.deusto.sd.strava.enums.Sport;
 public interface ChallengeRepository extends JpaRepository<Challenge, Long>  {
 	
 	
+	@Query(value = "SELECT uc.* FROM user_challenge uc " +
+            "JOIN challenge c ON uc.challenge_id = c.id " +
+            "WHERE TO_DATE(c.start_date, 'YYYY-MM-DD') <= CURRENT_DATE " +
+            "AND TO_DATE(c.end_date, 'YYYY-MM-DD') >= CURRENT_DATE " +
+            "AND c.sport = :sport", 
+    nativeQuery = true)		//esto necesito para usar TO_DATE(x, 'YYYY-MM-DD'), para compararlo
+List<UserChallenge> findActiveChallengesBySport(@Param("sport") String sport);
 	
-	
-
-	//Optional<Challenge> findById(long id);
-	
-	 // Find all active challenges for a specific user and sport (challenge date is between start and end date)
-    /*@Query("SELECT uc FROM UserChallenge uc WHERE uc.challenge.startDate <= CURRENT_DATE " +
-           "AND uc.challenge.endDate >= CURRENT_DATE " +
-           "AND uc.challenge.sport = :sport")
-    List<Challenge> findActiveChallengesBySport(Sport sport);
-    */
-	@Query("SELECT uc FROM UserChallenge uc WHERE uc.challenge.sport = :sport")
-	    List<Challenge> findActiveChallengesBySport(Sport sport);
-	
-    
     @Query("SELECT c FROM Challenge c WHERE c.sport = :sport " +
   	       "AND :date BETWEEN c.startDate AND c.endDate")
   List<Challenge> findActiveChallengesBySportAndDate(@Param("sport") Sport sport, 
@@ -43,14 +36,18 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long>  {
     @Query("SELECT uc FROM UserChallenge uc WHERE uc.challenge.startDate <= :date " +
            "AND uc.challenge.endDate >= :date")
     List<Challenge> findActiveChallengesByDate(LocalDate date);
+    
     /*
     // Find all active challenges for a specific user (challenge date is between start and end date)
     @Query("SELECT uc FROM UserChallenge uc WHERE uc.challenge.startDate <= CURRENT_DATE " +
            "AND uc.challenge.endDate >= CURRENT_DATE")
     List<Challenge> findActiveChallenges();
     */
-    
-    @Query("SELECT uc FROM UserChallenge uc")		//später zurück wirft error
-     List<Challenge> findActiveChallenges();
+    @Query(value = "SELECT uc.* FROM user_challenge uc " +
+            "JOIN challenge c ON uc.challenge_id = c.id " +
+            "WHERE TO_DATE(c.start_date, 'YYYY-MM-DD') <= CURRENT_DATE " +
+            "AND TO_DATE(c.end_date, 'YYYY-MM-DD') >= CURRENT_DATE", 
+    nativeQuery = true) //esto necesito para usar TO_DATE(x, 'YYYY-MM-DD'), para compararlo
+    List<Challenge> findActiveChallenges();
     
 }

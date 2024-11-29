@@ -33,7 +33,7 @@ public class User {
     private ArrayList<UserChallenge> challenges = new ArrayList<>();
     */
 
-    @Column(nullable = true)
+    @Column(nullable = true, unique = true)
     private String token; // Token returned by Google or Facebook
 
     // Use Float directly, nullable can represent the absence of a value
