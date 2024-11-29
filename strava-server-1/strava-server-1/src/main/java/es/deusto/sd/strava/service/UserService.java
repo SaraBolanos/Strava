@@ -40,16 +40,8 @@ public class UserService {
     	userRepository.save(newUser);
 	}
 
+	
 	public Optional<User> createUser(String accountType, String username, String email, String password, Float weight, Float height, Integer maxheartRate, Integer restHeartRate) {
-    	if(accountType=="Google") {
-    		if(!AuthGoogle(email, password)) {
-    			return Optional.empty();
-    		}
-    	}else {
-    		if(!AuthFacebook(email, password)) {
-    			return Optional.empty();
-    		}
-	public Optional<User> createUser(String accountType, String username, String email, String password, Optional<Float> weight, Optional<Float> height, Optional<Integer> maxheartRate, Optional<Integer> restHeartRate) {
 		if(!verifyAccount(accountType,email,password)) {
     		return Optional.empty();
     	}

@@ -32,12 +32,15 @@ public class DataInitializer {
 			
 			User user1 = new User();
 			user1.setUsername("user1");
+			user1.setEmail("example@gmail.com");
 			user1.setToken("123");
 			// No establecer el ID manualmente
 			userService.putUser(user1);
 
 			User user2 = new User();
 			user2.setUsername("user2");
+			user2.setEmail("example@gmail.com");
+
 			user2.setToken("456");
 			// No establecer el ID manualmente
 			userService.putUser(user2);

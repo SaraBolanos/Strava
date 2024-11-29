@@ -13,26 +13,29 @@ public class User {
 
 	
 
-	private String token; //Token, null if user is logged out.
-	private Optional<Float> weight; //in kg
-	private Optional<Float> height; //in cm
-	private Optional<Integer> maxheartRate; //bpm
-	private Optional<Integer> restHeartRate; //bpm
-	
-	
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // El ID se genera automáticamente
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String username;
+
+    @Column(nullable = false)
     private String email;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private String token; // Token, null si el usuario está desconectado.
+    private Float weight; // Peso en kg
+    private Float height; // Altura en cm
+    private Integer maxheartRate; // Frecuencia cardíaca máxima (bpm)
+    private Integer restHeartRate; // Frecuencia cardíaca en reposo (bpm)
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserChallenge> challenges = new ArrayList<>();
 
-   
-    @JoinColumn(name = "creator_id") // La columna que almacena la referencia al creador
-    private User creator; // El creador es otro usuario
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
+    private User creator; // El creador de este usuario
+
 
     // Constructor sin parámetros
     public User() { }
@@ -45,7 +48,7 @@ public class User {
         this.challenges = new ArrayList<>(); // Inicializar la lista de desafíos
     }
 
-    public User(String username, String email, Optional<Float> weight, Optional<Float> height,  Optional<Integer> maxHeartRate,  Optional<Integer> restHeartRate) {
+    public User(String username, String email, Float weight, Float height,  Integer maxHeartRate,  Integer restHeartRate) {
         this.username = username;
         this.email = email;
         this.token = null;
@@ -89,36 +92,36 @@ public class User {
         this.token = token;
     }
 
-    public Optional<Float> getWeight() {
+    public Float getWeight() {
         return weight;
     }
 
     public void setWeight(Float weight) {
-        this.weight = Optional.of(weight);
+        this.weight = weight;
     }
 
-    public Optional<Float> getHeight() {
+    public Float getHeight() {
         return height;
     }
 
     public void setHeight(Float height) {
-        this.height = Optional.ofNullable(height);
+        this.height = (height);
     }
 
-    public Optional<Integer> getMaxheartRate() {
+    public Integer getMaxheartRate() {
         return maxheartRate;
     }
 
     public void setMaxheartRate(Integer maxheartRate) {
-        this.maxheartRate = Optional.ofNullable(maxheartRate);
+        this.maxheartRate = (maxheartRate);
     }
 
-    public Optional<Integer> getRestHeartRate() {
+    public Integer getRestHeartRate() {
         return restHeartRate;
     }
 
     public void setRestHeartRate(Integer restHeartRate) {
-        this.restHeartRate = Optional.ofNullable(restHeartRate);
+        this.restHeartRate = restHeartRate;
     }
 
     public List<UserChallenge> getChallenges() {
