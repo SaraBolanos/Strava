@@ -3,6 +3,7 @@ package es.deusto.sd.strava.entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import jakarta.persistence.*;
 
@@ -10,6 +11,15 @@ import jakarta.persistence.*;
 @Table(name = "app_user")
 public class User {
 
+	
+
+	private String token; //Token, null if user is logged out.
+	private Optional<Float> weight; //in kg
+	private Optional<Float> height; //in cm
+	private Optional<Integer> maxheartRate; //bpm
+	private Optional<Integer> restHeartRate; //bpm
+	
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // El ID se genera automáticamente
     private Long id;
@@ -20,14 +30,7 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserChallenge> challenges = new ArrayList<>();
 
-    private String token; // Token devuelto por Google o Facebook
-
-    private Float weight; // Peso en kg
-    private Float height; // Altura en cm
-    private Integer maxheartRate; // Máximo ritmo cardíaco en bpm
-    private Integer restHeartRate; // Ritmo cardíaco en reposo en bpm
-
-    @ManyToOne
+   
     @JoinColumn(name = "creator_id") // La columna que almacena la referencia al creador
     private User creator; // El creador es otro usuario
 
@@ -42,13 +45,13 @@ public class User {
         this.challenges = new ArrayList<>(); // Inicializar la lista de desafíos
     }
 
-    public User(String username, String email, Float weight, Float height, Integer maxheartRate, Integer restHeartRate) {
+    public User(String username, String email, Optional<Float> weight, Optional<Float> height,  Optional<Integer> maxHeartRate,  Optional<Integer> restHeartRate) {
         this.username = username;
         this.email = email;
         this.token = null;
         this.weight = weight;
         this.height = height;
-        this.maxheartRate = maxheartRate;
+        this.maxheartRate = maxHeartRate;
         this.restHeartRate = restHeartRate;
         this.challenges = new ArrayList<>(); // Inicializar la lista de desafíos
     }
@@ -86,36 +89,36 @@ public class User {
         this.token = token;
     }
 
-    public Float getWeight() {
+    public Optional<Float> getWeight() {
         return weight;
     }
 
     public void setWeight(Float weight) {
-        this.weight = weight;
+        this.weight = Optional.of(weight);
     }
 
-    public Float getHeight() {
+    public Optional<Float> getHeight() {
         return height;
     }
 
     public void setHeight(Float height) {
-        this.height = height;
+        this.height = Optional.ofNullable(height);
     }
 
-    public Integer getMaxheartRate() {
+    public Optional<Integer> getMaxheartRate() {
         return maxheartRate;
     }
 
     public void setMaxheartRate(Integer maxheartRate) {
-        this.maxheartRate = maxheartRate;
+        this.maxheartRate = Optional.ofNullable(maxheartRate);
     }
 
-    public Integer getRestHeartRate() {
+    public Optional<Integer> getRestHeartRate() {
         return restHeartRate;
     }
 
     public void setRestHeartRate(Integer restHeartRate) {
-        this.restHeartRate = restHeartRate;
+        this.restHeartRate = Optional.ofNullable(restHeartRate);
     }
 
     public List<UserChallenge> getChallenges() {
