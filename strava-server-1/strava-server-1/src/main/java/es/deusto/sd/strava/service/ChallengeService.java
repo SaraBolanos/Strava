@@ -51,7 +51,7 @@ public class ChallengeService {
             
                
             } else { // Filter only by sport
-                return challengeRepository.findActiveChallengesBySport(sport);
+                return challengeRepository.findActiveChallengesBySport(sport.toString());
             }
         }
         if (dateString != null) { // Filter only by date

@@ -25,7 +25,7 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long>  {
             "AND TO_DATE(c.end_date, 'YYYY-MM-DD') >= CURRENT_DATE " +
             "AND c.sport = :sport", 
     nativeQuery = true)		//esto necesito para usar TO_DATE(x, 'YYYY-MM-DD'), para compararlo
-List<UserChallenge> findActiveChallengesBySport(@Param("sport") String sport);
+List<Challenge> findActiveChallengesBySport(@Param("sport") String sport);
 	
     @Query("SELECT c FROM Challenge c WHERE c.sport = :sport " +
   	       "AND :date BETWEEN c.startDate AND c.endDate")
