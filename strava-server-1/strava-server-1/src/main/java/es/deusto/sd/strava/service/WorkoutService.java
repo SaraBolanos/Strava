@@ -1,4 +1,4 @@
-/*package es.deusto.sd.strava.service;
+package es.deusto.sd.strava.service;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -80,4 +80,4 @@ public class WorkoutService {
                 .filter(workout -> workout.getDistance() < 10) // Example condition: less than 10 km completed
                 .collect(Collectors.toList());
     }
-}*/
+}

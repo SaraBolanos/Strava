@@ -1,11 +1,5 @@
 package es.deusto.sd.strava.service;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.EOFException;
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -15,7 +9,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.stereotype.Service;
 
 import es.deusto.sd.strava.entity.User;
-
+import es.deusto.sd.strava.external.AuthGatewayFactory;
+import es.deusto.sd.strava.external.IAuthGateway;
 
 @Service
 public class UserService {
@@ -24,14 +19,7 @@ public class UserService {
     // AtomicLong to generate unique IDs for the dishes.
     private final AtomicLong idGenerator = new AtomicLong(0);
     
-    //data for socket connection
-    private static String serverIP = "0.0.0.0";
-	private static int serverPort = 9500;
-    private static String DELIMITER = "#";
-    
-    public UserService() {  
-    	
-    }
+    public UserService() {}
     
     
     public void putUser(User newUser) {		//only for testing purpose
@@ -39,14 +27,8 @@ public class UserService {
 	}
 
 	public Optional<User> createUser(String accountType, String username, String email, String password, Optional<Float> weight, Optional<Float> height, Optional<Integer> maxheartRate, Optional<Integer> restHeartRate) {
-    	if(accountType=="Google") {
-    		if(!AuthGoogle(email, password)) {
-    			return Optional.empty();
-    		}
-    	}else {
-    		if(!AuthFacebook(email, password)) {
-    			return Optional.empty();
-    		}
+		if(!verifyAccount(accountType,email,password)) {
+    		return Optional.empty();
     	}
 		
 		User newUser = new User(username, email, weight, height, maxheartRate, restHeartRate);
@@ -80,14 +62,8 @@ public class UserService {
     }
     
     public Optional<User> logIn(String accountType, String email, String password){
-    	if(accountType=="Google") {
-    		if(!AuthGoogle(email, password)) {
-    			return Optional.empty();
-    		}
-    	}else {
-    		if(!AuthFacebook(email, password)) {
-    			return Optional.empty();
-    		}
+    	if(!verifyAccount(accountType,email,password)) {
+    		return Optional.empty();
     	}
     	
     	Optional<User> user = getUserByEmail(email);
@@ -102,33 +78,9 @@ public class UserService {
     	return user;
     }
     
-    private boolean AuthGoogle(String email, String password) {
-    	return false;
+    private boolean verifyAccount(String accountType, String email, String password) {
+    	IAuthGateway gateway = AuthGatewayFactory.createAuthGateway(accountType);
+    	return gateway.verifyAuth(email, password);
     }
     
-    private boolean AuthFacebook(String email, String password) {
-    	String message = email+DELIMITER+password;
-    	String response = null;
-    	
-    	try (Socket socket = new Socket(serverIP, serverPort);
-    			//Streams to send and receive information are created from the Socket
-    			DataInputStream in = new DataInputStream(socket.getInputStream());
-    			DataOutputStream out = new DataOutputStream(socket.getOutputStream())) {
-    		out.writeUTF(message);
-    		System.out.println(" - Sending data to '" + socket.getInetAddress().getHostAddress() + ":" + socket.getPort() + "' -> '" + message + "'");
-    		response = in.readUTF();
-    		
-    	}catch (UnknownHostException e) {
-			System.err.println("# FacebookAuth. SocketClient: Socket error: " + e.getMessage());	
-		} catch (EOFException e) {
-			System.err.println("# FacebookAuth. SocketClient: EOF error: " + e.getMessage());
-		} catch (IOException e) {
-			System.err.println("# FacebookAuth. SocketClient: IO error: " + e.getMessage());
-		}
-    	if(response.equals("200")) {
-    		return true;
-    	}else {
-    		return false;
-    	}
-    }
 }

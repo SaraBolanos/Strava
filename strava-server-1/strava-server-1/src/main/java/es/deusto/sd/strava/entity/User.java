@@ -2,6 +2,8 @@ package es.deusto.sd.strava.entity;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Optional;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,23 +33,23 @@ public class User {
     private ArrayList<UserChallenge> challenges = new ArrayList<>();
     */
 
-    @Column
+    @Column(nullable = true, unique = true)
     private String token; // Token returned by Google or Facebook
 
     // Use Float directly, nullable can represent the absence of a value
-    @Column
+    @Column(nullable = true)
     private Float weight; // in kg
 
     // Use Float directly, nullable can represent the absence of a value
-    @Column
+    @Column(nullable = true)
     private Float height; // in cm
 
     // Use Integer directly, nullable can represent the absence of a value
-    @Column
+    @Column(nullable = true)
     private Integer maxHeartRate; // bpm
 
     // Use Integer directly, nullable can represent the absence of a value
-    @Column
+    @Column(nullable = true)
     private Integer restHeartRate; // bpm
 
     // Constructor without parameters
@@ -73,14 +75,14 @@ public class User {
     }
     */
 
-    public User(String username, String email, Float weight, Float height, Integer maxHeartRate, Integer restHeartRate) {
+    public User(String username, String email, Optional<Float> weight, Optional<Float> height, Optional<Integer> maxHeartRate, Optional<Integer> restHeartRate) {
         this.username = username;
         this.email = email;
         this.token = null;
-        this.weight = weight;
-        this.height = height;
-        this.maxHeartRate = maxHeartRate;
-        this.restHeartRate = restHeartRate;
+        this.weight = weight.orElse(null);
+        this.height = height.orElse(null);
+        this.maxHeartRate = maxHeartRate.orElse(null);
+        this.restHeartRate = restHeartRate.orElse(null);
     }
 
     // Getters and setters
@@ -116,12 +118,12 @@ public class User {
         this.token = token;
     }
 
-    public Float getWeight() {
-        return weight;
+    public Optional<Float> getWeight() {
+        return Optional.ofNullable(weight);
     }
 
-    public void setWeight(Float weight) {
-        this.weight = weight;
+    public void setWeight(Optional<Float> weight) {
+        this.weight = weight.orElse(height);
     }
 /*
     public ArrayList<UserChallenge> getChallenges() {
@@ -158,28 +160,28 @@ public class User {
     */
 
 
-    public Float getHeight() {
-        return height;
+    public Optional<Float> getHeight() {
+        return Optional.ofNullable(height);
     }
 
-    public void setHeight(Float height) {
-        this.height = height;
+    public void setHeight(Optional<Float> height) {
+        this.height = height.orElse(weight);
     }
 
-    public Integer getMaxHeartRate() {
-        return maxHeartRate;
+    public Optional<Integer> getMaxHeartRate() {
+        return Optional.ofNullable(maxHeartRate);
     }
 
-    public void setMaxHeartRate(Integer maxHeartRate) {
-        this.maxHeartRate = maxHeartRate;
+    public void setMaxHeartRate(Optional<Integer> maxHeartRate) {
+        this.maxHeartRate = maxHeartRate.orElse(null);
     }
 
-    public Integer getRestHeartRate() {
-        return restHeartRate;
+    public Optional<Integer> getRestHeartRate() {
+        return Optional.ofNullable(restHeartRate);
     }
 
-    public void setRestHeartRate(Integer restHeartRate) {
-        this.restHeartRate = restHeartRate;
+    public void setRestHeartRate(Optional<Integer> restHeartRate) {
+        this.restHeartRate = restHeartRate.orElse(null);
     }
 
     // hashCode and equals

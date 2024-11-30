@@ -41,7 +41,7 @@ public class DataInitializer {
    
             User user2 = new User();
             user2.setUsername("user2");
-            user2.setToken("456");
+            //user2.setToken("456");
             user2.setEmail("e2");
             userRepository.save(user2);
 

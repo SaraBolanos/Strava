@@ -1,4 +1,4 @@
-/*package es.deusto.sd.strava.facade;
+package es.deusto.sd.strava.facade;
 
 import java.sql.Date;
 import java.text.ParseException;
@@ -117,4 +117,4 @@ public class WorkoutController {
         workouts.forEach(workout -> dtos.add(workoutToDTO(workout)));
         return dtos;
     }
-}*/
+}

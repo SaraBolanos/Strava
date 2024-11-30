@@ -1,5 +1,5 @@
 
-/*package es.deusto.sd.strava.entity;
+package es.deusto.sd.strava.entity;
 
 import java.sql.Date;
 import java.time.LocalTime;
@@ -129,4 +129,4 @@ public class Workout {
     public void setDuration(float duration) {
         this.duration = duration;
     }
-}*/
+}
