@@ -1,29 +1,25 @@
 package es.deusto.sd.strava.dao;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import es.deusto.sd.strava.entity.User;
-import es.deusto.sd.strava.entity.UserChallenge;
-import es.deusto.sd.strava.enums.Sport;
 
+import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>  {
-	
-	//List<User> FindByEmail(String Email);
+public interface UserRepository extends JpaRepository<User, Long> {
 
-	//List<User> FindByUsername(String Username);
-	
-	User findById(long id);
-	
+    // Find users by email
+    @Query("SELECT u FROM User u WHERE u.email = :email")
+    List<User> findByEmail(@Param("email") String email);
 
+    // Find users by username
+    @Query("SELECT u FROM User u WHERE u.username = :username")
+    List<User> findByUsername(@Param("username") String username);
 
- 
-	
+    // Find user by id (already provided by JpaRepository)
+    User findById(long id);
 }
