@@ -34,7 +34,6 @@ public class WorkoutService {
     }
 
     // Retrieves filtered workouts based on user, sport, and date (optional filters)
- // Retrieves filtered workouts based on user, sport, and date (optional filters)
     public List<Workout> getFilteredWorkouts(User user, String filterDate, Sport sport) {
         List<Workout> userWorkouts = workoutRepository.findByUser(user); // Fetch workouts for the user
 
@@ -48,7 +47,7 @@ public class WorkoutService {
                         LocalDate workoutDate = workout.getStartDate().toLocalDate(); // Convert SQL Date to LocalDate
                         return !workoutDate.isAfter(parsedDate); // Include workouts on or before the filter date
                     } catch (Exception e) {
-                        // Log or handle invalid date format if needed
+                        
                         return false; // Exclude workouts if the date format is invalid
                     }
                 })
