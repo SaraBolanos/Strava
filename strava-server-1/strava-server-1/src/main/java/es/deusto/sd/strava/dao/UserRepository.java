@@ -13,11 +13,11 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     // Find users by email
-    @Query("SELECT u FROM User u WHERE u.email = :email")
+    @Query(value = "SELECT u FROM User u WHERE u.email = :email", nativeQuery = true)
     User findByEmail(@Param("email") String email);
 
     // Find users by username
-    @Query("SELECT u FROM User u WHERE u.username = :username")
+    @Query(value = "SELECT u FROM User u WHERE u.username = :username", nativeQuery = true)
     User findByUsername(@Param("username") String username);
 
     // Find user by id (already provided by JpaRepository)

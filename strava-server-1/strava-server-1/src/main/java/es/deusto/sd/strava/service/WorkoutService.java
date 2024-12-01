@@ -3,14 +3,12 @@ package es.deusto.sd.strava.service;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import es.deusto.sd.strava.dao.WorkoutRepository;
 import es.deusto.sd.strava.entity.User;
 import es.deusto.sd.strava.entity.Workout;
 import es.deusto.sd.strava.enums.Sport;
@@ -18,66 +16,62 @@ import es.deusto.sd.strava.enums.Sport;
 @Service
 public class WorkoutService {
 
-    public final ArrayList<Workout> workoutList = new ArrayList<>();
+    private final WorkoutRepository workoutRepository;
 
-    // Create a new workout
+    public WorkoutService(WorkoutRepository workoutRepository) {
+        this.workoutRepository = workoutRepository;
+    }
+
+    // Creates a new workout and saves it to the database
     public Workout createWorkout(int id, String title, Sport sport, float distance, Date date, LocalTime startTime, float duration, User user) {
-        // Create a new Workout object with the provided data
         Workout workout = new Workout(id, title, sport, distance, date, startTime, duration, user);
-        workoutList.add(workout);
-        System.out.println("Added workout: " + workout.getTitle() + " at " + workout.getStartTime());
-        return workout;
+        return workoutRepository.save(workout); // Save workout in the database
     }
 
-    // Get all workouts
+    // Retrieves all workouts from the database
     public List<Workout> getAllWorkouts() {
-        return workoutList;
+        return workoutRepository.findAll();
     }
 
-    // Get filtered workouts by date and sport
-    public List<Workout> getFilteredWorkouts(User user, String dateString, Sport sport) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate filterDate = dateString != null ? LocalDate.parse(dateString, formatter) : null;
+    // Retrieves filtered workouts based on user, sport, and date (optional filters)
+ // Retrieves filtered workouts based on user, sport, and date (optional filters)
+    public List<Workout> getFilteredWorkouts(User user, String filterDate, Sport sport) {
+        List<Workout> userWorkouts = workoutRepository.findByUser(user); // Fetch workouts for the user
 
-        return workoutList.stream()
-                .filter(workout -> workout.getUser().equals(user)) // Ensure workouts belong to the specified user
+        return userWorkouts.stream()
                 .filter(workout -> sport == null || sport.equals(workout.getSport())) // Filter by sport if specified
                 .filter(workout -> {
-                    if (filterDate == null) return true; // If no date is specified, include all
-                    LocalDate workoutDate = workout.getStartDate().toInstant()
-                            .atZone(ZoneId.systemDefault())
-                            .toLocalDate(); // Convert Date to LocalDate
-                    return !workoutDate.isAfter(filterDate); // Check if workoutDate is on or before filterDate
+                    if (filterDate == null) return true; // Include all workouts if no date filter is provided
+                    
+                    try {
+                        LocalDate parsedDate = LocalDate.parse(filterDate); // Parse the filter date
+                        LocalDate workoutDate = workout.getStartDate().toLocalDate(); // Convert SQL Date to LocalDate
+                        return !workoutDate.isAfter(parsedDate); // Include workouts on or before the filter date
+                    } catch (Exception e) {
+                        // Log or handle invalid date format if needed
+                        return false; // Exclude workouts if the date format is invalid
+                    }
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    // Get workouts by a specific user
+
+    // Retrieves all workouts created by a specific user
     public List<Workout> getWorkoutsByUser(User user) {
-        return workoutList.stream()
-                .filter(workout -> workout.getUser().equals(user))
-                .collect(Collectors.toList());
+        return workoutRepository.findByUser(user);
     }
 
-    // Get a specific workout by ID
-    public Workout getWorkoutById(long id) {
-        return workoutList.stream()
-                .filter(workout -> workout.getId() == id)
-                .findFirst()
-                .orElse(null);
+    // Retrieves a specific workout by its ID
+    public Optional<Workout> getWorkoutById(long id) {
+        return workoutRepository.findById(id);
     }
 
-    // Delete a workout by ID
+    // Deletes a workout by its ID
     public boolean deleteWorkout(long id) {
-        return workoutList.removeIf(workout -> workout.getId() == id);
-    }
-
-    // Get unfinished workouts (those that have not completed yet)
-    public List<Workout> getUnfinishedWorkouts(User user) {
-        // Assuming unfinished workouts are those that haven't reached the target distance or duration yet
-        return workoutList.stream()
-                .filter(workout -> workout.getUser().equals(user))
-                .filter(workout -> workout.getDistance() < 10) // Example condition: less than 10 km completed
-                .collect(Collectors.toList());
+        if (workoutRepository.existsById(id)) {
+            workoutRepository.deleteById(id); // Remove the workout from the database
+            return true;
+        }
+        return false;
     }
 }
