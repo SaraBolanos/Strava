@@ -1,5 +1,10 @@
 package es.deusto.sd.strava;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Calendar;
+import java.sql.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -14,6 +19,7 @@ import es.deusto.sd.strava.entity.User;
 import es.deusto.sd.strava.enums.Sport;
 import es.deusto.sd.strava.enums.TargetType;
 import es.deusto.sd.strava.service.UserService;
+import es.deusto.sd.strava.service.WorkoutService;
 import es.deusto.sd.strava.service.ChallengeService;
 
 @Configuration
@@ -22,7 +28,7 @@ public class DataInitializer {
     private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
 	
     @Bean
-    CommandLineRunner initData(ChallengeService challengeService, UserRepository userRepository) {
+    CommandLineRunner initData(ChallengeService challengeService, UserRepository userRepository, WorkoutService workoutService) {
         return args -> {
         	if(userRepository.count()==0) {
 				return;
@@ -75,10 +81,24 @@ public class DataInitializer {
 
 			logger.info("Challenges saved:");
 			
+			
+			
+			
 			challengeService.getAllChallengesTEST().forEach(challenge2 -> {
 	            logger.info(challenge2.getName());
 	        });
 			
+			//Create some workouts and log the actions
+			logger.info("Initializing test challenges...");
+			
+			
+			workoutService.createWorkout(1, "Easy Run", Sport.RUNNING, 10.0f, Date.valueOf("2024-12-01"), LocalTime.of(6, 30), 1.0f, user2);
+            logger.info("'Easy Run' logged for user2");
+
+			workoutService.createWorkout(2, "Long Run", Sport.RUNNING, 20.0f, Date.valueOf("2024-12-02"), LocalTime.of(6, 30), 2.0f, user1);
+			 logger.info("'Long Run' logged for user1");
+			 
+			 logger.info("Runs saved:");
 			
 		};
 	}
