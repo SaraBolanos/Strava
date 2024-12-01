@@ -19,10 +19,9 @@ import es.deusto.sd.strava.enums.Sport;
 public interface ChallengeRepository extends JpaRepository<Challenge, Long>  {
 	
 	
-	@Query(value = "SELECT uc.* FROM user_challenge uc " +
-            "JOIN challenge c ON uc.challenge_id = c.id " +
-            "WHERE TO_DATE(c.start_date, 'YYYY-MM-DD') <= CURRENT_DATE " +
-            "AND TO_DATE(c.end_date, 'YYYY-MM-DD') >= CURRENT_DATE " +
+	@Query(value = "SELECT c.* FROM challenge c " +
+            "WHERE CAST(c.start_date AS DATE) <= CURRENT_DATE " +
+            "AND CAST(c.end_date AS DATE) >= CURRENT_DATE " +
             "AND c.sport = :sport", 
     nativeQuery = true)		//esto necesito para usar TO_DATE(x, 'YYYY-MM-DD'), para compararlo
 List<Challenge> findActiveChallengesBySport(@Param("sport") String sport);
@@ -33,8 +32,8 @@ List<Challenge> findActiveChallengesBySport(@Param("sport") String sport);
   	                                                   @Param("date") LocalDate date);
     
     // Find all active challenges for a specific user (challenge date is between start and end date)
-    @Query("SELECT uc FROM UserChallenge uc WHERE uc.challenge.startDate <= :date " +
-           "AND uc.challenge.endDate >= :date")
+    @Query(value= "SELECT c FROM challenge c WHERE CAST(c.startDate AS DATE) <= :date " +
+           "AND CAST(c.endDate AS DATE) >= :date", nativeQuery = true)
     List<Challenge> findActiveChallengesByDate(LocalDate date);
     
     /*
@@ -43,10 +42,9 @@ List<Challenge> findActiveChallengesBySport(@Param("sport") String sport);
            "AND uc.challenge.endDate >= CURRENT_DATE")
     List<Challenge> findActiveChallenges();
     */
-    @Query(value = "SELECT uc.* FROM user_challenge uc " +
-            "JOIN challenge c ON uc.challenge_id = c.id " +
-            "WHERE TO_DATE(c.start_date, 'YYYY-MM-DD') <= CURRENT_DATE " +
-            "AND TO_DATE(c.end_date, 'YYYY-MM-DD') >= CURRENT_DATE", 
+    @Query(value = "SELECT c.* FROM challenge c " +
+            "WHERE CAST(c.start_date AS DATE) <= CURRENT_DATE " +
+            "AND CAST(c.end_date AS DATE) >= CURRENT_DATE", 
     nativeQuery = true) //esto necesito para usar TO_DATE(x, 'YYYY-MM-DD'), para compararlo
     List<Challenge> findActiveChallenges();
     
