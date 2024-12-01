@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "google.server.url",
+    "type": "java.lang.String",
+    "description": "A description for 'google.server.url'"
+  },
+  {
+    "name": "google.server.url",
+    "type": "java.lang.String",
+    "description": "A description for 'google.server.url'"
+  },
+  {
+    "name": "google.server.port",
+    "type": "java.lang.String",
+    "description": "A description for 'google.server.port'"
+  }
+]}
