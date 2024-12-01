@@ -38,6 +38,10 @@ public class UserController {
 		if(!accountType.equals("Google") && !accountType.equals("Facebook")) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		//Check if user already exists
+		if(userService.getUserByEmail(email).isPresent()) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
 		
 		Optional<User> newUser = userService.createUser(accountType, username, email, password, weight, height, maxheartRate, restHeartRate);
 		

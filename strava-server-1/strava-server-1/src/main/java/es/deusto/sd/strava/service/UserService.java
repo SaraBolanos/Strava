@@ -1,25 +1,22 @@
 package es.deusto.sd.strava.service;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Service;
 
+import es.deusto.sd.strava.dao.UserRepository;
 import es.deusto.sd.strava.entity.User;
 import es.deusto.sd.strava.external.AuthGatewayFactory;
 import es.deusto.sd.strava.external.IAuthGateway;
 
 @Service
 public class UserService {
-	// Auxiliary map to store the dishes as a repository.
-    private final Map<Long, User> users = new HashMap<>();
-    // AtomicLong to generate unique IDs for the dishes.
-    private final AtomicLong idGenerator = new AtomicLong(0);
+	private final UserRepository userRepository;
     
-    public UserService() {}
+    public UserService(UserRepository userRepository) {
+    	this.userRepository = userRepository;
+    }
     
     
     public void putUser(User newUser) {		//only for testing purpose
@@ -32,32 +29,25 @@ public class UserService {
     	}
 		
 		User newUser = new User(username, email, weight, height, maxheartRate, restHeartRate);
-    	users.put(idGenerator.incrementAndGet(), newUser);
+		userRepository.save(newUser);
     	return Optional.of(newUser);
     }
     
     public Optional<User> getUserByToken(String token) {
-    	for(User user : users.values()) {
-    		if(user.getToken().equals(token)) {
-    			return Optional.of(user);
-    		}
-    	}
-		return Optional.empty();
+    	User user = userRepository.findByToken(token);
+		return Optional.ofNullable(user);
 	}
     
     public Optional<User> getUserByEmail(String email) {
-    	for(User user : users.values()) {
-    		if(user.getEmail().equals(email)) {
-    			return Optional.of(user);
-    		}
-    	}
-		return Optional.empty();
+    	User user = userRepository.findByEmail(email);
+    	return Optional.ofNullable(user);
 	}
     
     public void logOut(String sessionToken) {
     	Optional<User> user = getUserByToken(sessionToken);
     	if(user.isPresent()) {
     		user.get().setToken(null);
+    		userRepository.save(user.get());
     	}
     }
     
@@ -74,6 +64,7 @@ public class UserService {
     	
     	String uuid = UUID.randomUUID().toString();
     	user.get().setToken(uuid);
+    	userRepository.save(user.get());
     	
     	return user;
     }
