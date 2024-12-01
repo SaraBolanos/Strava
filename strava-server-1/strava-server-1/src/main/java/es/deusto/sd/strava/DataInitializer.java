@@ -32,7 +32,9 @@ public class DataInitializer {
     @Bean
     CommandLineRunner initData(ChallengeService challengeService) {
         return args -> {
-        	
+        	if(userRepository.count()>0) {
+				return;
+			}
             // Create some test users and log the actions
             logger.info("Initializing test users...");
                       
