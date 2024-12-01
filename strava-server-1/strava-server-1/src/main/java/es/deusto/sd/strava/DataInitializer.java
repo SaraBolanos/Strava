@@ -18,21 +18,13 @@ import es.deusto.sd.strava.service.ChallengeService;
 
 @Configuration
 public class DataInitializer {
-	private final UserRepository userRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
-    
-    public DataInitializer( UserRepository userRepository) {
-        
-        this.userRepository = userRepository;
-    }
-    
-   
 	
     @Bean
-    CommandLineRunner initData(ChallengeService challengeService) {
+    CommandLineRunner initData(ChallengeService challengeService, UserRepository userRepository) {
         return args -> {
-        	if(userRepository.count()>0) {
+        	if(userRepository.count()==0) {
 				return;
 			}
             // Create some test users and log the actions

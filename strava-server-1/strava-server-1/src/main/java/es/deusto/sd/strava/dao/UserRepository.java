@@ -7,8 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import es.deusto.sd.strava.entity.User;
 
-import java.util.List;
-
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
@@ -22,4 +20,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // Find user by id (already provided by JpaRepository)
     User findById(long id);
+    
+    @Query("SELECT u FROM User u WHERE u.token = :token")
+    User findByToken(@Param("token") String token);
+    
+    /*@Query("INSERT INTO User (username,email,token,weight,height,maxHeartRate,restHeartRate) VALUES (:username,:email,null,:weight,:height,:maxHeartRate,:restHeartRate)")
+    void addUser(@Param("username") String username,
+    			 @Param("email") String email,
+    			 @Param("weight") float weight,
+    			 @Param("height") float height,
+    			 @Param("maxHeartRate") int maxHeartRate,
+    			 @Param("restHeartRate") int restHeartRate);*/
 }
