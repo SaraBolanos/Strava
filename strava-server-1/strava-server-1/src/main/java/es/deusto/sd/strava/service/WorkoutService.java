@@ -35,7 +35,7 @@ public class WorkoutService {
 
     // Retrieves filtered workouts based on user, sport, and date (optional filters)
     public List<Workout> getFilteredWorkouts(User user, String filterDate, Sport sport) {
-        List<Workout> userWorkouts = workoutRepository.findByUser(user); // Fetch workouts for the user
+        List<Workout> userWorkouts = workoutRepository.findByUserId(user.getId()); // Fetch workouts for the user
 
         return userWorkouts.stream()
                 .filter(workout -> sport == null || sport.equals(workout.getSport())) // Filter by sport if specified

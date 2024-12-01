@@ -20,7 +20,7 @@ public interface WorkoutRepository extends JpaRepository<Workout, Long> {
     
     //Find workouts by creator id
     @Query("SELECT w FROM Workout w WHERE w.user_id = :user_id")
-    List<Workout> findByUser(@Param("user_id") long id);
+    List<Workout> findByUserId(@Param("user_id") long id);
 
     // Find workout by id
     @Query("SELECT w FROM Workout w WHERE w.id = :id")
