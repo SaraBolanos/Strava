@@ -30,22 +30,24 @@ public class DataInitializer {
     @Bean
     CommandLineRunner initData(ChallengeService challengeService, UserRepository userRepository, WorkoutService workoutService) {
         return args -> {
-        	/*if(userRepository.count()==0) {
-				return;
-			}*/
-            // Create some test users and log the actions
-            logger.info("Initializing test users...");
-                      
-            User user1 = new User("user167", "e234j14751");
-            user1.setToken("123");
-            userRepository.save(user1);
-   
-            User user2 = new User();
-            user2.setUsername("user2");
-            user2.setToken("456");
-            user2.setEmail("e2");
-            userRepository.save(user2);
-
+        	User user1;
+        	User user2;
+        	if(userRepository.count()==0) {
+        		// Create some test users and log the actions
+        		logger.info("Initializing test users...");
+                
+                user1 = new User("PeterClementAdvance", "peter.clement@advance.uk");
+                userRepository.save(user1);
+       
+                user2 = new User("MaroanSannadi", "m.sannadi@brkcf.com");
+                userRepository.save(user2);
+                logger.info("Done");
+			}else {
+				logger.info("Users Exist");
+				user1 = userRepository.findByEmail("peter.clement@advance.uk");
+				user2 = userRepository.findByEmail("m.sannadi@brkcf.com");
+			}
+            
 
             // Add some example challenges and log the actions
             logger.info("Initializing test challenges...");
