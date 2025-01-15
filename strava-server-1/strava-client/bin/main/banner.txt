@@ -1,0 +1,8 @@
+[31m :: Software Design 2024-25 :: 								[0m
+[31mStrava  ____ _ _            _   [0m
+[33mStrava / ___| (_) ___ _ __ | |_ [0m
+[32mStrava| |   | | |/ _ \ '_ \| __|[0m
+[32mStrava\ |___| | |  __/ | | | |_ [0m
+[34mStrava \____|_|_|\___|_| |_|\__|[0m
+[34m                                                                  [0m
+[34m :: Strava Client :: Spring Boot ${spring-boot.version} ::	    [0m
