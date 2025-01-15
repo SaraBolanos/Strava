@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import es.deusto.sd.strava.dto.SignupRequestDTO;
+import es.deusto.sd.strava.dto.UserDTO;
 import es.deusto.sd.strava.entity.User;
 import es.deusto.sd.strava.service.UserService;
 
@@ -29,7 +30,7 @@ public class UserController {
 	
 	//Create user
 	@PostMapping
-	public ResponseEntity<User> createUser(@RequestBody SignupRequestDTO signupRequestDTO){
+	public ResponseEntity<UserDTO> createUser(@RequestBody SignupRequestDTO signupRequestDTO){
 		if(!signupRequestDTO.getMethod().equals("Google") && !signupRequestDTO.getMethod().equals("Facebook")) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
@@ -51,7 +52,7 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 		
-		return new ResponseEntity<>(newUser.get(), HttpStatus.CREATED);
+		return new ResponseEntity<>(userToDTO(newUser.get()), HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/logout")
@@ -61,7 +62,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/login")
-	public ResponseEntity<User> login(@RequestParam String email,
+	public ResponseEntity<UserDTO> login(@RequestParam String email,
 								@RequestParam String password,
 								@RequestParam String accountType){
 		if(!accountType.equals("Google") && !accountType.equals("Facebook")) {
@@ -74,7 +75,11 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 		
-		return new ResponseEntity<>(loggedUser.get(), HttpStatus.CREATED);
+		return new ResponseEntity<>(userToDTO(loggedUser.get()), HttpStatus.CREATED);
 		
+	}
+	
+	public UserDTO userToDTO(User user) {
+		return new UserDTO(user.getUsername(), user.getToken(), user.getWeight(), user.getHeight(), user.getMaxHeartRate(), user.getRestHeartRate());
 	}
 }

@@ -9,12 +9,13 @@ import es.deusto.sd.strava.client.data.Article;
 import es.deusto.sd.strava.client.data.Category;
 import es.deusto.sd.strava.client.data.Credentials;
 import es.deusto.sd.strava.client.data.SignupRequest;
+import es.deusto.sd.strava.client.data.User;
 
 public interface IStravaServiceProxy {
 	// Method for user login
-	String login(Credentials credentials);
+	User login(Credentials credentials);
 	
-	String signup(SignupRequest signupRequest);
+	User signup(SignupRequest signupRequest);
 
 	// Method for user logout
 	void logout(String token);

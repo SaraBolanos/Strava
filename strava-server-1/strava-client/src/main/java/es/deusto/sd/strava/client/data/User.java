@@ -1,34 +1,18 @@
-package es.deusto.sd.strava.dto;
+package es.deusto.sd.strava.client.data;
+
 
 import java.util.Optional;
 
-public class UserDTO {
+public class User {
 
 	private String username;
 	private String token;
 
 	private Optional<Float> weight; //in kg
 	private Optional<Float> height; //in cm
-	private Optional<Integer> maxheartRate; //bpm
+	private Optional<Integer> maxHeartRate; //bpm
 	private Optional<Integer> restHeartRate; //bpm
 	
-	public UserDTO() {
-		
-	}
-	
-	public UserDTO(String username, String token, Optional<Float> weight, Optional<Float> height,
-			Optional<Integer> maxheartRate, Optional<Integer> restHeartRate) {
-		super();
-		this.username = username;
-		this.token = token;
-		this.weight = weight;
-		this.height = height;
-		this.maxheartRate = maxheartRate;
-		this.restHeartRate = restHeartRate;
-	}
-
-
-
 	public String getUsername() {
 		return username;
 	}
@@ -55,10 +39,10 @@ public class UserDTO {
 		this.height = height;
 	}
 	public Optional<Integer> getMaxheartRate() {
-		return maxheartRate;
+		return maxHeartRate;
 	}
 	public void setMaxheartRate(Optional<Integer> maxheartRate) {
-		this.maxheartRate = maxheartRate;
+		this.maxHeartRate = maxheartRate;
 	}
 	public Optional<Integer> getRestHeartRate() {
 		return restHeartRate;
@@ -70,3 +54,4 @@ public class UserDTO {
 	
 	
 }
+

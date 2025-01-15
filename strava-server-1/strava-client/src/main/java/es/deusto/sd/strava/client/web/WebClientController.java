@@ -20,6 +20,7 @@ import es.deusto.sd.strava.client.data.Credentials;
 import es.deusto.sd.strava.client.proxies.IStravaServiceProxy;
 import jakarta.servlet.http.HttpServletRequest;
 import es.deusto.sd.strava.client.data.SignupRequest;
+import es.deusto.sd.strava.client.data.User;
 
 @Controller
 public class WebClientController {
@@ -27,14 +28,14 @@ public class WebClientController {
 	@Autowired
 	private IStravaServiceProxy stravaServiceProxy;
 
-	private String token; // Stores the session token
+	private User user; // Stores the session token
 
 	// Add current URL and token to all views
 	@ModelAttribute
 	public void addAttributes(Model model, HttpServletRequest request) {
 		String currentUrl = ServletUriComponentsBuilder.fromRequestUri(request).toUriString();
 		model.addAttribute("currentUrl", currentUrl); // Makes current URL available in all templates
-		model.addAttribute("token", token); // Makes token available in all templates
+		model.addAttribute("user", user); // Makes token available in all templates
 	}
 
 	@GetMapping("/")
@@ -47,6 +48,11 @@ public class WebClientController {
 		return "signup";
 	}
 	
+	@GetMapping("/sessions")
+	public String sessionspage(Model model) {
+		return "sessions";
+	}
+	
 	@PostMapping("/signup")
 	public String performRegister(@RequestParam("email") String email, @RequestParam("password") String password,
 			@RequestParam("method")String method,@RequestParam("username") String username, @RequestParam("weight") Optional<Float> weight,
@@ -54,10 +60,10 @@ public class WebClientController {
 			@RequestParam("restheartrate")Optional<Integer> restheartrate,Model model) {
 		SignupRequest signupRequest = new SignupRequest(email, password, method, username, weight, height, maxheartrate, restheartrate);
 		try {
-			token = stravaServiceProxy.signup(signupRequest);
+			user = stravaServiceProxy.signup(signupRequest);
 			
 			// Redirect to the original page or root if redirectUrl is null
-			return "redirect:menu";
+			return "redirect:sessions";
 		} catch (RuntimeException e) {
 			model.addAttribute("errorMessage", e.getMessage());
 			return "signup"; // Return to login page with error message
@@ -70,10 +76,10 @@ public class WebClientController {
 		Credentials credentials = new Credentials(email, password, method);
 
 		try {
-			token = stravaServiceProxy.login(credentials);
+			user = stravaServiceProxy.login(credentials);
 
 			// Redirect to the original page or root if redirectUrl is null
-			return "redirect:menu";
+			return "redirect:sessions";
 		} catch (RuntimeException e) {
 			redirectAttrs.addFlashAttribute("errorMessage", e.getMessage());
 			return "redirect:/"; // Return to login page with error message
@@ -84,8 +90,8 @@ public class WebClientController {
 	public String performLogout(@RequestParam(value = "redirectUrl", defaultValue = "/") String redirectUrl,
 			Model model) {
 		try {
-			stravaServiceProxy.logout(token);
-			token = null; // Clear the token after logout
+			stravaServiceProxy.logout(user.getToken());
+			user = null; // Clear the token after logout
 			model.addAttribute("successMessage", "Logout successful.");
 		} catch (RuntimeException e) {
 			model.addAttribute("errorMessage", "Logout failed: " + e.getMessage());

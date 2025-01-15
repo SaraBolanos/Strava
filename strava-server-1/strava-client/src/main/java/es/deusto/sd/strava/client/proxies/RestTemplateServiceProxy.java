@@ -19,6 +19,7 @@ import es.deusto.sd.strava.client.data.Article;
 import es.deusto.sd.strava.client.data.Category;
 import es.deusto.sd.strava.client.data.Credentials;
 import es.deusto.sd.strava.client.data.SignupRequest;
+import es.deusto.sd.strava.client.data.User;
 
 @Service
 public class RestTemplateServiceProxy implements IStravaServiceProxy{
@@ -33,11 +34,11 @@ public class RestTemplateServiceProxy implements IStravaServiceProxy{
     }
 
     @Override
-    public String login(Credentials credentials) {
+    public User login(Credentials credentials) {
         String url = apiBaseUrl + "/users/login?email={email}&password={password}&accountType={accountType}";
         
         try {
-        	return restTemplate.getForObject(url, String.class, Map.of("email",credentials.email(),"password",credentials.password(),"accountType",credentials.accountType()));
+        	return restTemplate.getForObject(url, User.class, Map.of("email",credentials.email(),"password",credentials.password(),"accountType",credentials.accountType()));
             //return restTemplate.postForObject(url, credentials, String.class);
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {
@@ -49,11 +50,11 @@ public class RestTemplateServiceProxy implements IStravaServiceProxy{
     }
     
     @Override
-    public String signup(SignupRequest signupRequest) {
+    public User signup(SignupRequest signupRequest) {
     	String url = apiBaseUrl + "/users";
         
         try {
-            return restTemplate.postForObject(url, signupRequest, String.class);
+            return restTemplate.postForObject(url, signupRequest, User.class);
         }catch (HttpStatusCodeException e) {
 	            switch (e.getStatusCode().value()) {
 	        	case 400 -> throw new RuntimeException("Sign up failed: Missing parameters.");
