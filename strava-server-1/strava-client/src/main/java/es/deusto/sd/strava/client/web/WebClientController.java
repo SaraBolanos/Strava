@@ -1,6 +1,7 @@
 package es.deusto.sd.strava.client.web;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import es.deusto.sd.strava.client.data.Category;
 import es.deusto.sd.strava.client.data.Credentials;
 import es.deusto.sd.strava.client.proxies.IStravaServiceProxy;
 import jakarta.servlet.http.HttpServletRequest;
+import es.deusto.sd.strava.client.data.SignupRequest;
 
 @Controller
 public class WebClientController {
@@ -39,21 +41,42 @@ public class WebClientController {
 	public String home(Model model) {
 		return "index";
 	}
+	
+	@GetMapping("/signup")
+	public String registerpage(Model model) {
+		return "signup";
+	}
+	
+	@PostMapping("/signup")
+	public String performRegister(@RequestParam("email") String email, @RequestParam("password") String password,
+			@RequestParam("method")String method,@RequestParam("username") String username, @RequestParam("weight") Optional<Float> weight,
+			@RequestParam("height")Optional<Float> height,@RequestParam("maxheartrate")Optional<Integer> maxheartrate,
+			@RequestParam("restheartrate")Optional<Integer> restheartrate,Model model) {
+		SignupRequest signupRequest = new SignupRequest(email, password, method, username, weight, height, maxheartrate, restheartrate);
+		try {
+			token = stravaServiceProxy.signup(signupRequest);
+			
+			// Redirect to the original page or root if redirectUrl is null
+			return "redirect:menu";
+		} catch (RuntimeException e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			return "signup"; // Return to login page with error message
+		}
+	}
 
 	@PostMapping("/login")
 	public String performLogin(@RequestParam("email") String email, @RequestParam("password") String password,
-			@RequestParam("method")String method,
-			@RequestParam(value = "redirectUrl", required = false) String redirectUrl, Model model) {
+			@RequestParam("method")String method, RedirectAttributes redirectAttrs) {
 		Credentials credentials = new Credentials(email, password, method);
 
 		try {
 			token = stravaServiceProxy.login(credentials);
 
 			// Redirect to the original page or root if redirectUrl is null
-			return "redirect:" + (redirectUrl != null && !redirectUrl.isEmpty() ? redirectUrl : "/");
+			return "redirect:menu";
 		} catch (RuntimeException e) {
-			model.addAttribute("errorMessage", "Login failed: " + e.getMessage());
-			return "login"; // Return to login page with error message
+			redirectAttrs.addFlashAttribute("errorMessage", e.getMessage());
+			return "redirect:/"; // Return to login page with error message
 		}
 	}
 

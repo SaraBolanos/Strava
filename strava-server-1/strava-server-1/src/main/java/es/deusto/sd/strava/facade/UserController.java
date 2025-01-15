@@ -6,11 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import es.deusto.sd.strava.dto.SignupRequestDTO;
 import es.deusto.sd.strava.entity.User;
 import es.deusto.sd.strava.service.UserService;
 
@@ -27,23 +29,23 @@ public class UserController {
 	
 	//Create user
 	@PostMapping
-	public ResponseEntity<User> createUser(@RequestParam String username,
-										   @RequestParam String accountType,
-										   @RequestParam String email,
-										   @RequestParam String password,
-										   @RequestParam Optional<Float> weight,
-										   @RequestParam Optional<Float> height,
-										   @RequestParam Optional<Integer> maxheartRate,
-										   @RequestParam Optional<Integer> restHeartRate){
-		if(!accountType.equals("Google") && !accountType.equals("Facebook")) {
+	public ResponseEntity<User> createUser(@RequestBody SignupRequestDTO signupRequestDTO){
+		if(!signupRequestDTO.getMethod().equals("Google") && !signupRequestDTO.getMethod().equals("Facebook")) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		//Check if user already exists
-		if(userService.getUserByEmail(email).isPresent()) {
+		if(userService.getUserByEmail(signupRequestDTO.getEmail()).isPresent()) {
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 		
-		Optional<User> newUser = userService.createUser(accountType, username, email, password, weight, height, maxheartRate, restHeartRate);
+		Optional<User> newUser = userService.createUser(signupRequestDTO.getMethod(), 
+														signupRequestDTO.getUsername(), 
+														signupRequestDTO.getEmail(), 
+														signupRequestDTO.getPassword(),
+														signupRequestDTO.getWeight(), 
+														signupRequestDTO.getHeight(), 
+														signupRequestDTO.getMaxHeartRate(), 
+														signupRequestDTO.getRestHeartRate());
 		
 		if(newUser.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);

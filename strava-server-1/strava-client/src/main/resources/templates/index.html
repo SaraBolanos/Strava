@@ -40,7 +40,7 @@
 <body class="text-center">
 
   <main class="form-signin">
-    <form id="login">
+    <form id="login" th:action="@{/login}" method="post" >
       <input type="hidden" name="method" id="method">
       <img class="mb-4"
         src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Strava_Logo.svg/1024px-Strava_Logo.svg.png"
@@ -48,16 +48,18 @@
       <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
       <div class="form-floating">
-        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+        <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
         <label for="floatingInput">Email address</label>
       </div>
       <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
         <label for="floatingPassword">Password</label>
       </div>
 	  <!-- Error message -->
+	  <p th:if="${okMessage}" th:text="${errorMessage}" class="text-success mt-3"></p>
 	  <p th:if="${errorMessage}" th:text="${errorMessage}" class="text-danger mt-3"></p>
-      <button class="w-100 btn btn-lg btn-primary mb-3" type="button" onclick="login('Google')">Google sign-in</button>
+	  <a class="mb-3" href="/signup">Not registered? Click here to create an account</a>
+      <button class="w-100 btn btn-lg btn-primary mb-3 mt-3" type="button" onclick="login('Google')">Google sign-in</button>
       <button class="w-100 btn btn-lg btn-primary" type="button" onclick="login('Facebook')">Facebook sign-in</button>
     </form>
   </main>
