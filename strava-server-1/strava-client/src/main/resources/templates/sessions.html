@@ -1,135 +1,208 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-  <meta name="generator" content="Hugo 0.84.0">
-  <title>Training Sessions</title>
-
-  <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/starter-template/">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-
-
-  <!-- Bootstrap core CSS -->
-  <link th:href="@{/assets/dist/css/bootstrap.min.css}" rel="stylesheet">
-
-  <style>
-    .bd-placeholder-img {
-      font-size: 1.125rem;
-      text-anchor: middle;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      user-select: none;
-    }
-
-    @media (min-width: 768px) {
-      .bd-placeholder-img-lg {
-        font-size: 3.5rem;
-      }
-    }
-  </style>
-
-
-  <!-- Custom styles for this template -->
-  <link th:href="@{/starter-template.css}" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activities - Strava</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font-awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .btn-strava {
+            margin-top:20px;
+            background-color: #fc4c02;
+            border-color: #fc4c02;
+            color: white;
+        }
+        
+        .btn-strava:hover {
+            background-color: #e03d00;
+            border-color: #e03d00;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: white;
+            padding: 10px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .navbar {
+            padding: 0 1rem;
+        }
+        .navbar .navbar-brand img {
+            max-width: 100px;
+        }
+        .navbar-nav {
+            margin-left: 0 !important;
+            display: flex;
+            flex-direction: row;
+        }
+        .navbar-nav .nav-item {
+            margin-right: 1rem;
+        }
+        .navbar-nav a {
+            color: #555;
+        }
+        .navbar-nav a:hover {
+            color: #fc4c02;
+        }
+        .content {
+            padding: 20px;
+        }
+        footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #6c757d;
+            margin-top: auto;
+        }
+        footer .footer-logo {
+            color: #fc4c02;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #fc4c02;
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
 
-  <div class="col-lg-8 mx-auto p-3 py-md-5">
-    <header class="d-flex align-items-center pb-3 mb-5 border-bottom">
-      <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" class="me-2" viewBox="0 0 118 94" role="img">
-          <title>Bootstrap</title>
-          <path fill-rule="evenodd" clip-rule="evenodd"
-            d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z"
-            fill="currentColor"></path>
-        </svg>
-        <span class="fs-4">Strava</span>
-      </a>
-    </header>
+<header class="bg-white shadow-sm">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Strava_Logo.svg/1024px-Strava_Logo.svg.png" alt="Logo">
+            </a>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Activities</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Statistics</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Challenges</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Settings</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+</header>
 
-    <main>
-      <h1 th:text="'Welcome ' + ${user.getUsername()} +', these are your training sessions:'"></h1>
+<div class="content">
+    <h2>Activities</h2>
+    
+    <!-- Tabla de entrenamientos -->
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Activity</th>
+                <th>Duration</th>
+                <th>Distance</th>
+                <th>Calories</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>15/01/2025</td>
+                <td>Running</td>
+                <td>45 min</td>
+                <td>7 km</td>
+                <td>600 kcal</td>
+            </tr>
+            <tr>
+                <td>14/01/2025</td>
+                <td>Cycling</td>
+                <td>1h 20 min</td>
+                <td>30 km</td>
+                <td>700 kcal</td>
+            </tr>
+            <tr>
+                <td>13/01/2025</td>
+                <td>Swimming</td>
+                <td>40 min</td>
+                <td>1 km</td>
+                <td>350 kcal</td>
+            </tr>
+        </tbody>
+    </table>
 
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#sessionModal">New Training Session</button>
+    <button type="button" class="btn btn-strava" data-bs-toggle="modal" data-bs-target="#sessionModal">New Training Session</button>
+</div>
 
-	  <table id="sessionTable" class="stripe" style="width:100%">
-	          <thead>
-	              <tr>
-	                  <th>Title</th>
-	                  <th>Sport</th>
-	                  <th>Distance</th>
-	                  <th>Start date</th>
-	                  <th>Start time</th>
-	                  <th>Duration</th>
-	              </tr>
-	          </thead>
-			  <tbody>
-			  </tbody>
-		</table>
-    </main>
+<footer>
+    <div class="container">
+        <p class="footer-logo">STRAVA</p>
+        <p>Created for the subject <strong>Software Design</strong>. <strong>Universidad de Deusto</strong> (2024).</p>
+    </div>
+</footer>
 
-    <footer class="pt-5 my-5 text-muted border-top">
-      Created by the Bootstrap team &middot; &copy; 2021
-    </footer>
+<!-- Modal -->
+<div class="modal fade" id="sessionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="sessionModalLabel">New Trainning Session</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="newSessions">
+                    <h5>Title</h5>
+                    <input type="text" class="form-control" id="title" name="title">
+                    <h5>Sport</h5>
+                    <input type="text" class="form-control" id="sport" name="sport">
+                    <h5>Distance</h5>
+                    <input type="number" class="form-control" id="distance" name="distance">
+                    <h5>Start date</h5>
+                    <input type="date" class="form-control" id="startDate" name="startDate">
+                    <h5>Start time</h5>
+                    <input type="time" class="form-control" id="startTime" name="startTime">
+                    <h5>Duration</h5>
+                    <input type="number" class="form-control" id="duration" name="duration">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-strava">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-	<!-- Modal -->
-	<div class="modal fade" id="sessionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="sessionModalLabel">New Session</h5>
-	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	      </div>
-	      <div class="modal-body">
-	        <form id="newSessions">
-				<h5>Title</h5>
-				<input type="text" class="form-control" id="title" name="title">
-				<h5>Sport</h5>
-				<input type="text" class="form-control" id="title" name="title">
-				<h5>Distance</h5>
-				<input type="number" class="form-control" id="distance" name="distance">
-				<h5>Start date</h5>
-				<input class="form-control flatpickr flatpickr-input" type="text" placeholder="Select Date.." id="startDate" name="startDate" readonly="readonly">
-				<h5>Start time</h5>
-				<input class="form-control flatpickr flatpickr-input" type="text" placeholder="Select Time.." id="startTime" name="startTime" readonly="readonly">
-				<h5>Duration</h5>
-				<input type="number" class="form-control" id="distance" name="distance">
-			</form>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Save changes</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-  </div>
-
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-  <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"></script>
-  <script src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  
-	<script>
-		new DataTable('#sessionTable');
-		
-		$('#startDate').flatpickr(		{
-		    enableTime: false,
-		    dateFormat: "Y-m-d",
-		});
-		
-		$('#startTime').flatpickr(		{
-		    enableTime: true,
-		    noCalendar: true,
-		    dateFormat: "H:i",
-		});
-	</script>
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 
