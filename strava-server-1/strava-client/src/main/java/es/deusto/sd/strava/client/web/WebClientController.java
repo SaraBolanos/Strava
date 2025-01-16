@@ -64,7 +64,7 @@ public class WebClientController {
 			workouts = stravaServiceProxy.getUserWorkout(user.getToken());
 			model.addAttribute("workouts", workouts);
 		} catch (RuntimeException e) {
-			model.addAttribute("errorMessage", "Failed to load articles for category: " + e.getMessage());
+			model.addAttribute("No training sessions ");
 			model.addAttribute("workouts", null);
 		}
 		

@@ -1,97 +1,151 @@
-<!doctype html>
-<html lang="en">
-
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-  <meta name="generator" content="Hugo 0.84.0">
-  <title>Signin Strava</title>
-
-  <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
-
-
-
-  <!-- Bootstrap core CSS -->
-  <link th:href="@{/assets/dist/css/bootstrap.min.css}" rel="stylesheet">
- 
-  <style>
-    .bd-placeholder-img {
-      font-size: 1.125rem;
-      text-anchor: middle;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      user-select: none;
-    }
-
-    @media (min-width: 768px) {
-      .bd-placeholder-img-lg {
-        font-size: 3.5rem;
-      }
-    }
-  </style>
-
-
-  <!-- Custom styles for this template -->
-  <link th:href="@{signin.css}"  rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font-awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .brand-logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fc4c02;
+        }
+        .main-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            padding: 20px;
+        }
+        .form-section {
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        .btn-primary {
+            background-color: #fc4c02;
+            border-color: #fc4c02;
+        }
+        footer {
+            background-color: #f8f9fa;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 14px;
+            color: #6c757d;
+        }
+        .footer-logo {
+            color: #fc4c02;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
+<body>
+    <header class="bg-white py-3 shadow-sm">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="/" class="d-flex align-items-center text-decoration-none">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Strava_Logo.svg/1024px-Strava_Logo.svg.png" alt="Logo" width="100" class="me-2">
+                <span class="brand-logo"></span>
+            </a>
+        </div>
+    </header>
 
-<body class="text-center">
+    <div class="main-section">
+        <!-- Form Section -->
+        <div class="form-section">
+            <h1 class="h3 mb-3 fw-normal">Sign up</h1>
+            <h1 class="form-title mb-4">Community-Powered Motivation</h1>
+            <p>Track your progress and cheer each other on. Join our community and start excercising now!</p>
 
-  <main class="form-signin">
-    <form id="signup" th:action="@{/signup}" method="post" >
-      <input type="hidden" name="method" id="method">
-      <img class="mb-4"
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Strava_Logo.svg/1024px-Strava_Logo.svg.png"
-        alt="" width="200">
-      <h1 class="h3 mb-3 fw-normal">Sign up</h1>
-	  <div class="form-floating">
-	    <input type="email" class="form-control" id="username" name="username" placeholder="User123" required>
-	  	<label for="floatingInput">Username*</label>
-	  </div>
-      <div class="form-floating">
-        <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
-        <label for="floatingInput">Email address*</label>
-      </div>
-      <div class="form-floating">
-        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-        <label for="floatingPassword">Password*</label>
-      </div>
-	  <div class="form-floating">
-	    <input type="number" min=0 class="form-control" id="weight" name="weight" required>
-	    <label for="floatingPassword">Weight</label>
-	  </div>
-	  <div class="form-floating">
-  	    <input type="number" min=0 class="form-control" id="height" name="height" required>
-  	    <label for="floatingPassword">Height</label>
-  	  </div>	
-	  <div class="form-floating">
-  	    <input type="number" min=0 class="form-control" id="maxheartrate" name="maxheartrate" required>
-  	    <label for="floatingPassword">Max heart rate</label>
-  	  </div>
-	  <div class="form-floating">
-	    <input type="number" min=0 class="form-control" id="restheartrate" name="restheartrate" required>
-	    <label for="floatingPassword">Rest heart rate</label>
-	  </div>
-	  <!-- Error message -->
-	  <p>Only fields marked with * are mandatory</p>
-	  <p th:if="${errorMessage}" th:text="${errorMessage}" class="text-danger mt-3"></p>
-	  <a class="mb-3" href="/signup">Already have an account? Log in</a>
-      <button class="w-100 btn btn-lg btn-primary mb-3 mt-3" type="button" onclick="signup('Google')">Google sign up</button>
-      <button class="w-100 btn btn-lg btn-primary" type="button" onclick="signup('Facebook')">Facebook sign up</button>
+            <div id="signup-options">
+                
+            </div>
+
+            <!-- Hidden Form for Email Signup -->
+            <form id="email-signup-form" class="mt-4" th:action="@{/signup}" method="post">
+				<input type="hidden" name="method" id="method">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="username" name="username" placeholder="User123" required>
+                    <label for="username">Username*</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+                    <label for="email">Email address*</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                    <label for="password">Password*</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="number" min="0" class="form-control" id="weight" name="weight" placeholder="Weight">
+                    <label for="weight">Weight</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="number" min="0" class="form-control" id="height" name="height" placeholder="Height">
+                    <label for="height">Height</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="number" min="0" class="form-control" id="restheartrate" name="restheartrate" placeholder="Rest Heart Rate">
+                    <label for="restheartrate">Rest Heart Rate</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="number" min="0" class="form-control" id="maxheartrate" name="maxheartrate" placeholder="Max Heart Rate">
+                    <label for="maxheartrate">Max Heart Rate</label>
+                </div>
+				<p th:if="${errorMessage}" th:text="${errorMessage}" class="text-danger mt-3"></p>
+				<div class="mb-3">
+                    <button type="button" class="btn btn-outline-dark w-100 mb-2" onclick="signup('Google')">
+                        <i class="fab fa-google me-2"></i>Sign Up With Google
+                    </button>
+                </div>
+                <div class="mb-3">
+                    <button type="button" class="btn btn-outline-dark w-100 mb-2" onclick="signup('Facebook')">
+                        <i class="fab fa-facebook me-2"></i>Sign Up With Facebook
+                    </button>
+                </div>
+                <p>Only fields marked with * are mandatory</p>
+            </form>
+
+            <p class="text-center mt-3">Already a Member? <a href="/" class="text-primary">Log In</a></p>
+            
+        </div>
+    </div>
+    <!-- Error message -->
+	
+	    
     </form>
-  </main>
+ 
+    <footer>
+        <div class="container">
+            <p class="footer-logo">STRAVA</p>
+            <p>Created for <strong>Software Design</strong> subject. <strong>University of Deusto </strong>(2024).</p>
+        </div>
+    </footer>
 
+    <!-- Bootstrap JS -->
 
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-  <script>
-    function signup(method) {
-      $('#method').val(method);
-      $('#signup').submit();
-    }
-  </script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+  function signup(method) {
+    $('#method').val(method);
+    $('#email-signup-form').submit();
+  }
+</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
 </body>
-
 </html>
