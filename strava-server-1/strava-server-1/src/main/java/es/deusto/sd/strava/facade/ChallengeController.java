@@ -91,7 +91,7 @@ public class ChallengeController {
     
     
     @PostMapping("/challenges/{challengeId}")
-    public ResponseEntity<ChallengeDTO> acceptChallenge(@PathVariable("challengeId") long challengeId, @Parameter(name = "token", description = "Authorization token", required = true, example = "1727786726773") @RequestBody String userToken) {
+    public ResponseEntity<ChallengeDTO> acceptChallenge(@PathVariable("challengeId") long challengeId, @Parameter(name = "token", description = "Authorization token", required = true, example = "1727786726773") @RequestParam String userToken) {
     	//User user = new User();  //en vez de esto luego busca el user con este userToken  //pasamos el usertoken y buscamos el usario entonces!!??
     	Optional<User> user = userService.getUserByToken(userToken);
     	

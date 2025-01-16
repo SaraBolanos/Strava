@@ -100,7 +100,10 @@
     </header>
 
     <div class="container mt-4">
+		<p th:if="${okMessage}" th:text="${okMessage}" class="text-success mt-3"></p>
+		<p th:if="${errorMessage}" th:text="${errorMessage}" class="text-danger mt-3"></p>
 		<h1 class="mb-4" th:text="${user.getUsername()}+'\'s Accepted Challenges'"></h1>
+		<input type="hidden" id="userToken" th:value="${user.getToken()}"/>
 		<div th:if="${challenges==null}">
             <p class="no-challenges-message">No challenges available at the moment. Please check back later.</p>
         </div>
@@ -138,7 +141,7 @@
 							<h5 th:text="${'Starts: '+challenge.getStartDate()}"></h5>
 							<h5 th:text="${'Ends: '+challenge.getEndDate()}"></h5>
 							<h5 th:text="${'Created by '+challenge.getCreator()}"></h5>
-							<button class="btn btn-primary w-100">Join Challenge</button>
+							<a class="btn btn-primary w-100" th:href="'/challenge/'+${challenge.id}+'/accept'">Join Challenge</a>
                         </div>
                     </div>
                 </a>
@@ -148,6 +151,11 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+	
+	<script>
+		
+	</script>
 </body>
 
 </html>

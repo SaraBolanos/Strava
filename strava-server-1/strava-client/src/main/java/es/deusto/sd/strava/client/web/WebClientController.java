@@ -22,6 +22,7 @@ import es.deusto.sd.strava.client.data.Challenge;
 import es.deusto.sd.strava.client.data.Credentials;
 import es.deusto.sd.strava.client.proxies.IStravaServiceProxy;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.websocket.server.PathParam;
 import es.deusto.sd.strava.client.data.SignupRequest;
 import es.deusto.sd.strava.client.data.User;
 import es.deusto.sd.strava.client.data.Workout;
@@ -151,6 +152,19 @@ public class WebClientController {
 
 		// Redirect to the specified URL after logout
 		return "redirect:/";
+	}
+	
+	@GetMapping("/challenge/{id}/accept")
+	public String performAcceptChallenge(@PathVariable("id") int id, Model model,RedirectAttributes redirectAttrs) {
+		try {
+			stravaServiceProxy.acceptChallenge(id, user.getToken());
+			redirectAttrs.addFlashAttribute("okMessage", "ChallengeAccepted");
+		} catch (RuntimeException e) {
+			redirectAttrs.addFlashAttribute("errorMessage", "Error when accepting challenge");
+		}
+
+		// Redirect to the specified URL after logout
+		return "redirect:/challenges";
 	}
 
 }
