@@ -10,7 +10,7 @@
   <title>Training Sessions</title>
 
   <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/starter-template/">
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
 
   <!-- Bootstrap core CSS -->
@@ -35,6 +35,7 @@
 
   <!-- Custom styles for this template -->
   <link th:href="@{/starter-template.css}" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.css" />
 </head>
 
 <body>
@@ -57,7 +58,20 @@
 
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#sessionModal">New Training Session</button>
 
-
+	  <table id="sessionTable" class="stripe" style="width:100%">
+	          <thead>
+	              <tr>
+	                  <th>Title</th>
+	                  <th>Sport</th>
+	                  <th>Distance</th>
+	                  <th>Start date</th>
+	                  <th>Start time</th>
+	                  <th>Duration</th>
+	              </tr>
+	          </thead>
+			  <tbody>
+			  </tbody>
+		</table>
     </main>
 
     <footer class="pt-5 my-5 text-muted border-top">
@@ -81,9 +95,9 @@
 				<h5>Distance</h5>
 				<input type="number" class="form-control" id="distance" name="distance">
 				<h5>Start date</h5>
-				<input type="number" class="form-control" id="distance" name="distance">
+				<input class="form-control flatpickr flatpickr-input" type="text" placeholder="Select Date.." id="startDate" name="startDate" readonly="readonly">
 				<h5>Start time</h5>
-				<input type="number" class="form-control" id="distance" name="distance">
+				<input class="form-control flatpickr flatpickr-input" type="text" placeholder="Select Time.." id="startTime" name="startTime" readonly="readonly">
 				<h5>Duration</h5>
 				<input type="number" class="form-control" id="distance" name="distance">
 			</form>
@@ -97,9 +111,25 @@
 	</div>
   </div>
 
-  
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"></script>
-
+  <script src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  
+	<script>
+		new DataTable('#sessionTable');
+		
+		$('#startDate').flatpickr(		{
+		    enableTime: false,
+		    dateFormat: "Y-m-d",
+		});
+		
+		$('#startTime').flatpickr(		{
+		    enableTime: true,
+		    noCalendar: true,
+		    dateFormat: "H:i",
+		});
+	</script>
 
 </body>
 
