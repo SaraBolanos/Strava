@@ -25,4 +25,6 @@ public interface IStravaServiceProxy {
     Workout createWorkout(Workout workout, String userToken);
     
     List<Challenge> getAcceptedChallenges(String userToken);
+    
+    List<Challenge> getAllChallenges(String userToken);
 }

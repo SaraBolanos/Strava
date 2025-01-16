@@ -123,11 +123,27 @@
         </div>
 		
         <h1 class="mb-4">All Challenges</h1>
-
-        <div th:if="${#lists.isEmpty(challenges)}">
+		<div th:if="${allchallenges==null}">
             <p class="no-challenges-message">No challenges available at the moment. Please check back later.</p>
         </div>
-
+		<div class="row">
+            <div class="col-md-4" th:each="challenge : ${allchallenges}">
+                <a th:href="@{/challenge/{id}(id=${challenge.id})}" class="text-decoration-none text-dark">
+                    <div class="card challenge-card">
+                        <div class="card-body">
+                            <h3 class="challenge-title" th:text="${challenge.getName()}"></h3>
+							<h4 th:text="'Target '+${challenge.getTarget()}"></h4>
+							<h4 th:text="'Type: '+${challenge.getTargetType().name()}"></h4>
+							<h5 th:text="${'Sport: '+challenge.getSport().name()}"></h5>
+							<h5 th:text="${'Starts: '+challenge.getStartDate()}"></h5>
+							<h5 th:text="${'Ends: '+challenge.getEndDate()}"></h5>
+							<h5 th:text="${'Created by '+challenge.getCreator()}"></h5>
+							<button class="btn btn-primary w-100">Join Challenge</button>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
         
     </div>
 
