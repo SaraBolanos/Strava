@@ -56,7 +56,7 @@
         <label for="floatingPassword">Password</label>
       </div>
 	  <!-- Error message -->
-	  <p th:if="${okMessage}" th:text="${errorMessage}" class="text-success mt-3"></p>
+	  <p th:if="${okMessage}" th:text="${okMessage}" class="text-success mt-3"></p>
 	  <p th:if="${errorMessage}" th:text="${errorMessage}" class="text-danger mt-3"></p>
 	  <a class="mb-3" href="/signup">Not registered? Click here to create an account</a>
       <button class="w-100 btn btn-lg btn-primary mb-3 mt-3" type="button" onclick="login('Google')">Google sign-in</button>

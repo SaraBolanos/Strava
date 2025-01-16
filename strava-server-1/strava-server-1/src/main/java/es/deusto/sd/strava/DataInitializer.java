@@ -14,8 +14,10 @@ import org.springframework.context.annotation.Configuration;
 import es.deusto.sd.strava.dao.ChallengeRepository;
 import es.deusto.sd.strava.dao.UserChallengeRepository;
 import es.deusto.sd.strava.dao.UserRepository;
+import es.deusto.sd.strava.dao.WorkoutRepository;
 import es.deusto.sd.strava.entity.Challenge;
 import es.deusto.sd.strava.entity.User;
+import es.deusto.sd.strava.entity.Workout;
 import es.deusto.sd.strava.enums.Sport;
 import es.deusto.sd.strava.enums.TargetType;
 import es.deusto.sd.strava.service.UserService;
@@ -28,7 +30,7 @@ public class DataInitializer {
     private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
 	
     @Bean
-    CommandLineRunner initData(ChallengeService challengeService, UserRepository userRepository, WorkoutService workoutService) {
+    CommandLineRunner initData(ChallengeService challengeService, UserRepository userRepository, WorkoutService workoutService,WorkoutRepository workoutRepository) {
         return args -> {
         	User user1;
         	User user2;
@@ -47,6 +49,18 @@ public class DataInitializer {
 				user1 = userRepository.findByEmail("peter.clement@advance.uk");
 				user2 = userRepository.findByEmail("m.sannadi@brkcf.com");
 			}
+        	if(workoutRepository.count()==0) {
+        		logger.info("Initializing test workouts...");
+        		Workout workout1 = new Workout(1, "Long Run", Sport.RUNNING, 20.0f, Date.valueOf("2024-12-02"), LocalTime.of(6, 30), 2.0f, user1);
+        		workoutRepository.save(workout1);
+        		Workout workout2 = new Workout(2, "Longer Run", Sport.RUNNING, 25.0f, Date.valueOf("2024-12-02"), LocalTime.of(6, 30), 2.0f, user1);
+        		workoutRepository.save(workout2);
+        		Workout workout3 = new Workout(3, "Mountain Route", Sport.CYCLING, 30.0f, Date.valueOf("2024-12-22"), LocalTime.of(8, 45), 2.0f, user2);
+        		workoutRepository.save(workout3);
+        		logger.info("Done");
+        	}else {
+        		logger.info("Workouts Exist");
+        	}
             
 
             // Add some example challenges and log the actions
@@ -91,17 +105,7 @@ public class DataInitializer {
 	            logger.info(challenge2.getName());
 	        });
 			
-			//Create some workouts and log the actions
-			logger.info("Initializing test challenges...");
 			
-			
-			workoutService.createWorkout(1, "Easy Run", Sport.RUNNING, 10.0f, Date.valueOf("2024-12-01"), LocalTime.of(6, 30), 1.0f, user2);
-            logger.info("'Easy Run' logged for user2");
-
-			workoutService.createWorkout(2, "Long Run", Sport.RUNNING, 20.0f, Date.valueOf("2024-12-02"), LocalTime.of(6, 30), 2.0f, user1);
-			 logger.info("'Long Run' logged for user1");
-			 
-			 logger.info("Runs saved:");
 			
 		};
 	}

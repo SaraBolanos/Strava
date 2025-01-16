@@ -10,6 +10,7 @@ import es.deusto.sd.strava.client.data.Category;
 import es.deusto.sd.strava.client.data.Credentials;
 import es.deusto.sd.strava.client.data.SignupRequest;
 import es.deusto.sd.strava.client.data.User;
+import es.deusto.sd.strava.client.data.Workout;
 
 public interface IStravaServiceProxy {
 	// Method for user login
@@ -20,4 +21,7 @@ public interface IStravaServiceProxy {
 	// Method for user logout
 	void logout(String token);
 	
+    List<Workout> getUserWorkout(String userToken);
+    
+    Workout createWorkout(Workout workout, String userToken);
 }

@@ -1,12 +1,12 @@
-package es.deusto.sd.strava.dto;
+package es.deusto.sd.strava.client.data;
 
 import java.sql.Date;
 import java.time.LocalTime;
 
 
-import es.deusto.sd.strava.enums.Sport;
+import es.deusto.sd.strava.client.enums.Sport;
 
-public class WorkoutDTO {
+public class Workout {
 	
 	private String Title;
 	private Sport sport;
@@ -16,10 +16,10 @@ public class WorkoutDTO {
 	private float duration;
 	
 
-	public WorkoutDTO() {
+	public Workout() {
 	}
 	
-	public WorkoutDTO(String title, Sport sport, float distance, Date startDate,LocalTime startTime,float duration) {
+	public Workout(String title, Sport sport, float distance, Date startDate,LocalTime startTime,float duration) {
 		super();
 		Title = title;
 		this.sport = sport;
@@ -73,7 +73,4 @@ public class WorkoutDTO {
 	public void setStartTime(LocalTime startTime) {
 		this.startTime = startTime;
 	}
-	
-	
-
 }

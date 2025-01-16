@@ -5,6 +5,7 @@
  */
 package es.deusto.sd.strava.client.proxies;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import es.deusto.sd.strava.client.data.Category;
 import es.deusto.sd.strava.client.data.Credentials;
 import es.deusto.sd.strava.client.data.SignupRequest;
 import es.deusto.sd.strava.client.data.User;
+import es.deusto.sd.strava.client.data.Workout;
 
 @Service
 public class RestTemplateServiceProxy implements IStravaServiceProxy{
@@ -44,7 +46,7 @@ public class RestTemplateServiceProxy implements IStravaServiceProxy{
             switch (e.getStatusCode().value()) {
             	case 400 -> throw new RuntimeException("Login failed: Missing parameters.");
                 case 403 -> throw new RuntimeException("Login failed: Invalid credentials.");
-                default -> throw new RuntimeException("Logout failed with status code: " + e.getStatusCode());
+                default -> throw new RuntimeException("Login failed with status code: " + e.getStatusCode());
             }
         }
     }
@@ -60,7 +62,7 @@ public class RestTemplateServiceProxy implements IStravaServiceProxy{
 	        	case 400 -> throw new RuntimeException("Sign up failed: Missing parameters.");
 	            case 403 -> throw new RuntimeException("Sign up failed: Invalid credentials.");
 	            case 409 -> throw new RuntimeException("Sign up failed: Email already registered.");
-	            default -> throw new RuntimeException("Logout failed with status code: " + e.getStatusCode());
+	            default -> throw new RuntimeException("Sign up failed with status code: " + e.getStatusCode());
 	        }
 	    }
     }
@@ -78,6 +80,37 @@ public class RestTemplateServiceProxy implements IStravaServiceProxy{
             }
         }
     }
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Workout> getUserWorkout(String userToken) {
+		String url = apiBaseUrl + "/workouts?userToken={userToken}";
+		try {
+        	return Arrays.asList(restTemplate.getForObject(url, Workout[].class, Map.of("userToken",userToken))) ;
+            //return restTemplate.postForObject(url, credentials, String.class);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 404 -> throw new RuntimeException("Fetch error: Not found.");
+                default -> throw new RuntimeException("Fetch error: with status code: " + e.getStatusCode());
+            }
+        }
+	}
+
+	@Override
+	public Workout createWorkout(Workout workout, String userToken) {
+		String url = apiBaseUrl + "/workouts?userToken={userToken}";
+		try {
+            return restTemplate.postForObject(url, workout, Workout.class, Map.of("userToken",userToken));
+        }catch (HttpStatusCodeException e) {
+	            switch (e.getStatusCode().value()) {
+	            case 400 -> throw new RuntimeException("Invalid date format");
+	            case 401 -> throw new RuntimeException("You can't be here.");
+	            case 403 -> throw new RuntimeException("Sign up failed: Invalid credentials.");
+	            case 409 -> throw new RuntimeException("Sign up failed: Email already registered.");
+	            default -> throw new RuntimeException("Sign up failed with status code: " + e.getStatusCode());
+	        }
+	    }
+	}
 
     
 }

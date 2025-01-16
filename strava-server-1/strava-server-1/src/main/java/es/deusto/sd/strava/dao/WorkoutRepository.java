@@ -15,8 +15,8 @@ import java.util.Optional;
 public interface WorkoutRepository extends JpaRepository<Workout, Long> {
 
     // Find workouts by creator (user who created the workout)
-    @Query(value = "SELECT * FROM Workout w WHERE w.user = :user",nativeQuery = true)
-    List<Workout> findByUser(@Param("user") User user);
+    @Query(value = "SELECT * FROM Workout w WHERE w.user_id = :user",nativeQuery = true)
+    List<Workout> findByUser(@Param("user") Long user_id);
     
     
 

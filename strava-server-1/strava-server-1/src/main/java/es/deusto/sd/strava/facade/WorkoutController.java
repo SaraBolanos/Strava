@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,7 +35,7 @@ public class WorkoutController {
     }
 
     // Get workouts for a specific user by token
-    @GetMapping("/user/workouts")
+    @GetMapping("/workouts")
     public ResponseEntity<List<WorkoutDTO>> getUserWorkouts(
             @RequestParam(value = "userToken", required = true) String userToken,
             @RequestParam(value = "sport", required = false) Sport sport,
@@ -60,13 +61,7 @@ public class WorkoutController {
 
     // Create a new workout
     @PostMapping("/workouts")
-    public ResponseEntity<WorkoutDTO> createWorkout(
-            @RequestParam("title") String title,
-            @RequestParam("distance") float distance,
-            @RequestParam("sport") Sport sport,
-            @RequestParam("duration") float duration,
-            @RequestParam("date") String date,
-            @RequestParam("startTime") String startTime, // Nuevo parámetro
+    public ResponseEntity<WorkoutDTO> createWorkout(@RequestBody WorkoutDTO workoutDto, // Nuevo parámetro
             @RequestParam("userToken") String userToken) {
 
         // Retrieve the user by token
@@ -77,10 +72,10 @@ public class WorkoutController {
         }
 
         // Parse the date
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+       /* SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         java.sql.Date startDate;
         try {
-            startDate = new java.sql.Date(formatter.parse(date).getTime());
+            startDate = new java.sql.Date(formatter.parse(workoutDto.getStartDate()).getTime());
         } catch (ParseException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Invalid date format
         }
@@ -91,11 +86,11 @@ public class WorkoutController {
             parsedStartTime = LocalTime.parse(startTime); // Convertir a LocalTime
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Invalid time format
-        }
+        }*/
 
         // Create and save the workout
-        Workout workout = new Workout(0, title, sport, distance, startDate, parsedStartTime, duration, user.get());
-        workout = workoutService.createWorkout(0, title, sport, distance, startDate, parsedStartTime, duration, user.get());
+        //Workout workout = new Workout(0, title, sport, distance, startDate, parsedStartTime, duration, user.get());
+        Workout workout = workoutService.createWorkout(0, workoutDto.getTitle(), workoutDto.getSport(), workoutDto.getDistance(), workoutDto.getStartDate(), workoutDto.getStartTime(), workoutDto.getDuration(), user.get());
 
         return new ResponseEntity<>(workoutToDTO(workout), HttpStatus.CREATED);
     }

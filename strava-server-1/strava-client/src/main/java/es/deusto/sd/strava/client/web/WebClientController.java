@@ -1,5 +1,9 @@
 package es.deusto.sd.strava.client.web;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +25,8 @@ import es.deusto.sd.strava.client.proxies.IStravaServiceProxy;
 import jakarta.servlet.http.HttpServletRequest;
 import es.deusto.sd.strava.client.data.SignupRequest;
 import es.deusto.sd.strava.client.data.User;
+import es.deusto.sd.strava.client.data.Workout;
+import es.deusto.sd.strava.client.enums.Sport;
 
 @Controller
 public class WebClientController {
@@ -29,6 +35,8 @@ public class WebClientController {
 	private IStravaServiceProxy stravaServiceProxy;
 
 	private User user; // Stores the session token
+	
+	private List<Workout> workouts;
 
 	// Add current URL and token to all views
 	@ModelAttribute
@@ -36,6 +44,7 @@ public class WebClientController {
 		String currentUrl = ServletUriComponentsBuilder.fromRequestUri(request).toUriString();
 		model.addAttribute("currentUrl", currentUrl); // Makes current URL available in all templates
 		model.addAttribute("user", user); // Makes token available in all templates
+		model.addAttribute("workouts", workouts);
 	}
 
 	@GetMapping("/")
@@ -50,7 +59,34 @@ public class WebClientController {
 	
 	@GetMapping("/sessions")
 	public String sessionspage(Model model) {
+		
+		try {
+			workouts = stravaServiceProxy.getUserWorkout(user.getToken());
+			model.addAttribute("workouts", workouts);
+		} catch (RuntimeException e) {
+			model.addAttribute("errorMessage", "Failed to load articles for category: " + e.getMessage());
+			model.addAttribute("workouts", null);
+		}
+		
 		return "sessions";
+	}
+	
+	@PostMapping("/sessions")
+	public String performCreateSession(@RequestParam("title") String title, @RequestParam("sport") String sport,
+			@RequestParam("distance")float distance,@RequestParam("startDate") String startDate, @RequestParam("startTime") String startTime,
+			@RequestParam("duration")float duration, Model model,RedirectAttributes redirectAttrs) throws ParseException {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Workout workout = new Workout(title, Sport.valueOf(sport.toUpperCase()), distance, new java.sql.Date(formatter.parse(startDate).getTime()) , LocalTime.parse(startTime), duration);
+		try {
+			stravaServiceProxy.createWorkout(workout, user.getToken());
+			redirectAttrs.addFlashAttribute("okMessage", "Session created");
+			// Redirect to the original page or root if redirectUrl is null
+			return "redirect:sessions";
+		} catch (RuntimeException e) {
+			redirectAttrs.addFlashAttribute("errorMessage", e.getMessage());
+			return "redirect:sessions"; // Return to login page with error message
+		}
+		
 	}
 	
 	@PostMapping("/signup")
@@ -65,6 +101,7 @@ public class WebClientController {
 			// Redirect to the original page or root if redirectUrl is null
 			return "redirect:sessions";
 		} catch (RuntimeException e) {
+			
 			model.addAttribute("errorMessage", e.getMessage());
 			return "signup"; // Return to login page with error message
 		}
