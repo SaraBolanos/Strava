@@ -30,7 +30,7 @@ public class DataInitializer {
     private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
 	
     @Bean
-    CommandLineRunner initData(ChallengeService challengeService, UserRepository userRepository, WorkoutService workoutService,WorkoutRepository workoutRepository) {
+    CommandLineRunner initData(ChallengeService challengeService,ChallengeRepository challengeRepository, UserRepository userRepository, WorkoutRepository workoutRepository) {
         return args -> {
         	User user1;
         	User user2;
@@ -61,49 +61,55 @@ public class DataInitializer {
         	}else {
         		logger.info("Workouts Exist");
         	}
-            
+            if(challengeRepository.count()==0) {
+            	logger.info("Initializing test challenges...");
+            	challengeService.createChallenge("5k Running Challenge", "2024-01-01", "2024-10-12", 30.0f, TargetType.TIME, Sport.RUNNING, user1);
+                logger.info("Challenge '5k Running Challenge' created for user1");
+
+                challengeService.createChallenge("Cycling Endurance", "2024-03-01", "2025-03-15", 200.0f, TargetType.DISTANCE, Sport.CYCLING, user2);
+                logger.info("Challenge 'Cycling Endurance' created for user2");
+                
+                
+
+                challengeService.createChallenge("10k Running Challenge", "2024-02-01", "2025-02-28", 45.0f, TargetType.TIME, Sport.RUNNING, user1);
+                logger.info("Challenge '10k Running Challenge' created for user1");
+
+                challengeService.createChallenge("Cycling Sprint Challenge", "2024-04-01", "2025-04-30", 150.0f, TargetType.DISTANCE, Sport.CYCLING, user2);
+                logger.info("Challenge 'Cycling Sprint Challenge' created for user2");
+
+                challengeService.createChallenge("1 Hour Running Challenge", "2024-05-01", "2025-05-15", 60.0f, TargetType.TIME, Sport.RUNNING, user1);
+                logger.info("Challenge '1 Hour Running Challenge' created for user1");
+                
+
+                // Simulate user accepting a challenge (for testing)
+                challengeService.acceptChallenge(2, user1); // Challenge ID 2 for user1
+                logger.info("User1 accepted challenge with ID 2");
+
+                // Log challenge acceptance for testing
+                logger.info("Challenges for user1 after acceptance:");
+                challengeService.getAcceptedChallenges(user1).forEach(challenge -> {
+                    logger.info("Accepted Challenge: " + challenge.getName());
+                });
+            	logger.info("Challenges saved:");
+            }else {
+            	logger.info("Challenges Exist");
+            }
 
             // Add some example challenges and log the actions
-            logger.info("Initializing test challenges...");
+            
 
-            challengeService.createChallenge("5k Running Challenge", "2024-01-01", "2024-10-12", 30.0f, TargetType.TIME, Sport.RUNNING, user1);
-            logger.info("Challenge '5k Running Challenge' created for user1");
-
-            challengeService.createChallenge("Cycling Endurance", "2024-03-01", "2025-03-15", 200.0f, TargetType.DISTANCE, Sport.CYCLING, user2);
-            logger.info("Challenge 'Cycling Endurance' created for user2");
             
             
 
-            challengeService.createChallenge("10k Running Challenge", "2024-02-01", "2025-02-28", 45.0f, TargetType.TIME, Sport.RUNNING, user1);
-            logger.info("Challenge '10k Running Challenge' created for user1");
 
-            challengeService.createChallenge("Cycling Sprint Challenge", "2024-04-01", "2025-04-30", 150.0f, TargetType.DISTANCE, Sport.CYCLING, user2);
-            logger.info("Challenge 'Cycling Sprint Challenge' created for user2");
-
-            challengeService.createChallenge("1 Hour Running Challenge", "2024-05-01", "2025-05-15", 60.0f, TargetType.TIME, Sport.RUNNING, user1);
-            logger.info("Challenge '1 Hour Running Challenge' created for user1");
-            
-
-            // Simulate user accepting a challenge (for testing)
-            challengeService.acceptChallenge(2, user1); // Challenge ID 2 for user1
-            logger.info("User1 accepted challenge with ID 2");
-
-            // Log challenge acceptance for testing
-            logger.info("Challenges for user1 after acceptance:");
-            challengeService.getAcceptedChallenges(user1).forEach(challenge -> {
-                logger.info("Accepted Challenge: " + challenge.getName());
-            });
-            
-
-
-			logger.info("Challenges saved:");
 			
 			
 			
 			
-			challengeService.getAllChallengesTEST().forEach(challenge2 -> {
+			
+			/*challengeService.getAllChallengesTEST().forEach(challenge2 -> {
 	            logger.info(challenge2.getName());
-	        });
+	        });*/
 			
 			
 			
