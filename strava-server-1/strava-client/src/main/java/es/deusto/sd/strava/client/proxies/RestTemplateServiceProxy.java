@@ -152,6 +152,22 @@ public class RestTemplateServiceProxy implements IStravaServiceProxy{
             }
         }
 	}
+	
+	@Override
+	public Challenge createChallenge(Challenge challenge, String userToken) {
+		String url = apiBaseUrl + "/challenges?userToken={userToken}";
+		try {
+            return restTemplate.postForObject(url, challenge, Challenge.class, Map.of("userToken",userToken));
+        }catch (HttpStatusCodeException e) {
+	            switch (e.getStatusCode().value()) {
+	            case 400 -> throw new RuntimeException("Invalid date format");
+	            case 401 -> throw new RuntimeException("You can't be here.");
+	            case 403 -> throw new RuntimeException("Sign up failed: Invalid credentials.");
+	            case 409 -> throw new RuntimeException("Sign up failed: Email already registered.");
+	            default -> throw new RuntimeException("Sign up failed with status code: " + e.getStatusCode());
+	        }
+	    }
+	}
 
     
 }

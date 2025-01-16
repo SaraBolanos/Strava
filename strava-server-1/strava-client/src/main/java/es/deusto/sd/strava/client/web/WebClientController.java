@@ -27,6 +27,7 @@ import es.deusto.sd.strava.client.data.SignupRequest;
 import es.deusto.sd.strava.client.data.User;
 import es.deusto.sd.strava.client.data.Workout;
 import es.deusto.sd.strava.client.enums.Sport;
+import es.deusto.sd.strava.client.enums.TargetType;
 
 @Controller
 public class WebClientController {
@@ -165,6 +166,23 @@ public class WebClientController {
 
 		// Redirect to the specified URL after logout
 		return "redirect:/challenges";
+	}
+	
+	@PostMapping("/challenges")
+	public String performCreateChallenge(@RequestParam("name") String name, @RequestParam("sport") String sport,
+			@RequestParam("targettype")String targettype,@RequestParam("target") float target, @RequestParam("startDate") String startDate,
+			@RequestParam("endDate")String endDate, Model model,RedirectAttributes redirectAttrs) throws ParseException {
+		Challenge challenge = new Challenge(0, name, startDate, endDate, target,TargetType.valueOf(targettype.toUpperCase()) ,Sport.valueOf(sport.toUpperCase()), user.getUsername());
+		try {
+			stravaServiceProxy.createChallenge(challenge, user.getToken());
+			redirectAttrs.addFlashAttribute("okMessage", "Challenge created");
+			// Redirect to the original page or root if redirectUrl is null
+			return "redirect:challenges";
+		} catch (RuntimeException e) {
+			redirectAttrs.addFlashAttribute("errorMessage", e.getMessage());
+			return "redirect:challenges"; // Return to login page with error message
+		}
+		
 	}
 
 }

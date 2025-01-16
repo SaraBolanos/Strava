@@ -54,26 +54,12 @@ public class ChallengeController {
 
     // Create a new challenge
     @PostMapping("/challenges")
-    public ResponseEntity<ChallengeDTO> createChallenge(
-    		@Parameter(name = "name", description = "name of the challenge", required = true)		
-    		@RequestParam("name") String name,
-			@Parameter(name = "startDate", description = "start date of the challenge in format yyyy-MM-dd", required = true, example = "2022-11-22")
-    		@RequestParam("startDate") String startDate,
-    		@Parameter(name = "endDate", description = "end date of the challenge in format yyyy-MM-dd", required = true, example = "2024-10-08")
-			@RequestParam("endDate") String endDate,
-			
-			@Parameter(name = "targetType", description = "the target type can be Kilometers or Time", required = true, example = "TIME")
-			@RequestParam("targetType") TargetType targetType,
-			@Parameter(name = "target", description = "the number of kilometers or minutes", required = true, example = "10")
-			@RequestParam("target") float target,
-			@Parameter(name = "sport", description = "sport that can be Cycling or Running", required = true, example = "Running")
-			@RequestParam("sport") Sport sport,
-    		@Parameter(name = "token", description = "Authorization token", required = true, example = "1727786726773")
-    		@RequestBody String userToken){
+    public ResponseEntity<ChallengeDTO> createChallenge(@RequestParam("userToken") String userToken,
+    		@RequestBody ChallengeDTO challengeDTO){
 		
     	Optional<User> user = userService.getUserByToken(userToken);
     	
-    	System.out.println("data:" + name + startDate + endDate + targetType + target + sport + userToken + user);
+    	//System.out.println("data:" + name + startDate + endDate + targetType + target + sport + userToken + user);
     	
     	
     	if (user == null) {
@@ -81,7 +67,7 @@ public class ChallengeController {
     	}
     	
     	Challenge challenge = user
-    	        .map(foundUser -> challengeService.createChallenge(name, startDate, endDate, target, targetType, sport, foundUser))
+    	        .map(foundUser -> challengeService.createChallenge(challengeDTO.getName(), challengeDTO.getStartDate(), challengeDTO.getEndDate(), challengeDTO.getTarget(), challengeDTO.getTargetType(), challengeDTO.getSport(), foundUser))
     	        .orElse(null); 
     	
         //ChallengeDTO newChallengedto = challengesToDTO(challengeService.createChallenge(name, startDate, endDate, target, targetType, sport, user));
