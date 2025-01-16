@@ -49,18 +49,7 @@
             
         }
 
-        .progress-bar-container {
-            background-color: #e6e6e6;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
-        .progress-bar {
-            height: 20px;
-            background-color: #fc4c02;
-            width: 0;
-            border-radius: 10px;
-        }
+       
 
         .challenge-actions {
             text-align: center;
@@ -130,12 +119,22 @@
         .details h5 {
             font-weight: bold;
         }
-        footer{
-            padding-top:100px;
+        footer {
+            background-color: #f8f9fa;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 14px;
+            color: #6c757d;
+        }
+        .footer-logo {
+            color: #fc4c02;
+            font-size: 18px;
+            font-weight: bold;
         }
     </style>
     
 </head>
+
 <body>
     <header class="bg-white shadow-sm">
         <nav class="navbar navbar-expand-lg">
@@ -159,62 +158,54 @@
                 </ul>
             </div>
         </nav>
-        
     </header>
-    
-<div class="container">
-    <div class="challenge-header">
-        <h1>January 10K Challenge 2025</h1>
-        <p>Complete 10 kilometers by the end of January 2025 and earn exclusive rewards!</p>
-    </div>
 
-    <div class="challenge-card">
-        <img src="https://dgalywyr863hv.cloudfront.net/challenges/4781/4781-cover.png" alt="Challenge Image">
-        <div class="card-body">
-            <h4>Challenge Overview</h4>
-            <p>Join the January 10K challenge and push yourself to run, walk, or cycle 10 kilometers this month! It's a great way to stay motivated and earn rewards along the way.</p>
+    <div class="container">
+        <div class="challenge-header">
+            <h1 th:text="${challenge.name}"></h1> <!-- Nombre del challenge -->
+            <p th:text="'Complete ' + ${challenge.distance} + ' kilometers by the end of ' + ${challenge.endDate} + ' and earn exclusive rewards!'"></p>
+        </div>
 
-            <div class="progress-bar-container">
-                <div class="progress-bar" style="width: 45%;"></div>
-            </div>
+        <div class="challenge-card">
+            <img th:src="images/4781-cover.png" alt="Challenge Image"> <!-- Imagen del challenge -->
+            <div class="card-body">
+                <h4>Challenge Overview</h4>
+                <p th:text="${challenge.description}"></p> <!-- Descripción del challenge -->
 
-            <div class="text-center">
-                <p><strong>45% Completed</strong></p>
-            </div>
 
-            <div class="challenge-actions">
-                <button class="btn btn-participate">Join the Challenge</button>
-                <button class="btn btn-details">Show Details</button>
-            </div>
+                <div class="challenge-actions">
+                    <button class="btn btn-participate">Join the Challenge</button>
+                    <button class="btn btn-details">Show Details</button>
+                </div>
 
-            <div class="details">
-                <h5>Challenge Details:</h5>
-                <ul>
-                    <li><strong>Start Date:</strong> January 1, 2025</li>
-                    <li><strong>End Date:</strong> January 31, 2025</li>
-                    <li><strong>Objective:</strong> Complete 10 kilometers</li>
-                    <li><strong>Sport:</strong> Running, Walking, Cycling</li>
-                </ul>
+                <div class="details">
+                    <h5>Challenge Details:</h5>
+                    <ul>
+                        <li><strong>Start Date:</strong> <span th:text="${challenge.startDate}"></span></li> <!-- Fecha de inicio -->
+                        <li><strong>End Date:</strong> <span th:text="${challenge.endDate}"></span></li> <!-- Fecha de fin -->
+                        <li><strong>Objective:</strong> <span th:text="${challenge.objective}"></span></li> <!-- Objetivo -->
+                        <li><strong>Sport:</strong> <span th:text="${challenge.sport}"></span></li> <!-- Deporte -->
+                    </ul>
+                </div>
             </div>
         </div>
+
+        <footer class="text-center">
+            <p>Powered by Strava | Challenge created for 2025 January event</p>
+        </footer>
     </div>
 
-    <footer class="text-center">
-        <p>Powered by Strava | Challenge created for 2025 January event</p>
-    </footer>
-</div>
-
-<!-- Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('.btn-details').on('click', function () {
-            $('.details').slideToggle(); 
-            $(this).text($(this).text() === 'Show Details' ? 'Hide Details' : 'Show Details'); 
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.btn-details').on('click', function () {
+                $('.details').slideToggle(); 
+                $(this).text($(this).text() === 'Show Details' ? 'Hide Details' : 'Show Details'); 
+            });
         });
-    });
-</script>
+    </script>
 
 </body>
 </html>
