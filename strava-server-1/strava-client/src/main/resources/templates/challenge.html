@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenge - January 10K 2025</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding-bottom:10px;
+            margin-bottom:100px;
+        }
+
+        .challenge-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .challenge-header h1 {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .challenge-header p {
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        .challenge-card {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            border-radius: 15px;
+            overflow: hidden;
+            padding: 20px;
+            max-width: 900px; 
+            margin: 0 auto; 
+            
+        }
+
+        .challenge-card img {
+            width: 100%;
+            height: 350px; 
+            object-fit: cover;
+            border-radius: 15px; 
+            
+        }
+
+        .progress-bar-container {
+            background-color: #e6e6e6;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background-color: #fc4c02;
+            width: 0;
+            border-radius: 10px;
+        }
+
+        .challenge-actions {
+            text-align: center;
+        }
+
+        .challenge-actions .btn {
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            border-radius: 50px;
+            margin: 10px;
+        }
+
+        .btn-participate {
+            background-color: #fc4c02;
+            color: white;
+        }
+
+        .btn-participate:hover {
+            background-color: #e03d00;
+        }
+
+        .btn-details {
+            background-color: #ddd;
+            color: #333;
+        }
+
+        .btn-details:hover {
+            background-color: #bbb;
+        }
+
+        .navbar {
+        padding: 0 1rem;
+         }
+        .navbar .navbar-brand img {
+        max-width: 100px;
+        }
+        .navbar-nav {
+        margin-left: 0 !important;
+        display: flex;
+        flex-direction: row;
+        }
+        .navbar-nav .nav-item {
+        margin-right: 1rem;
+        }
+        .navbar-nav a {
+        color: #555;
+         }
+        .navbar-nav a:hover {
+            color: #fc4c02;
+        }
+      .container {
+            margin-top: 50px;
+        }
+        .navbar{
+            margin-top:0px;
+        }
+        .details {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding-bottom:10px;
+        }
+
+        .details h5 {
+            font-weight: bold;
+        }
+        footer{
+            padding-top:100px;
+        }
+    </style>
+    
+</head>
+<body>
+    <header class="bg-white shadow-sm">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Strava_Logo.svg/1024px-Strava_Logo.svg.png" alt="Logo" width="100">
+                </a>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Activities</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Challenges</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        
+    </header>
+    
+<div class="container">
+    <div class="challenge-header">
+        <h1>January 10K Challenge 2025</h1>
+        <p>Complete 10 kilometers by the end of January 2025 and earn exclusive rewards!</p>
+    </div>
+
+    <div class="challenge-card">
+        <img src="https://dgalywyr863hv.cloudfront.net/challenges/4781/4781-cover.png" alt="Challenge Image">
+        <div class="card-body">
+            <h4>Challenge Overview</h4>
+            <p>Join the January 10K challenge and push yourself to run, walk, or cycle 10 kilometers this month! It's a great way to stay motivated and earn rewards along the way.</p>
+
+            <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 45%;"></div>
+            </div>
+
+            <div class="text-center">
+                <p><strong>45% Completed</strong></p>
+            </div>
+
+            <div class="challenge-actions">
+                <button class="btn btn-participate">Join the Challenge</button>
+                <button class="btn btn-details">Show Details</button>
+            </div>
+
+            <div class="details">
+                <h5>Challenge Details:</h5>
+                <ul>
+                    <li><strong>Start Date:</strong> January 1, 2025</li>
+                    <li><strong>End Date:</strong> January 31, 2025</li>
+                    <li><strong>Objective:</strong> Complete 10 kilometers</li>
+                    <li><strong>Sport:</strong> Running, Walking, Cycling</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center">
+        <p>Powered by Strava | Challenge created for 2025 January event</p>
+    </footer>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.btn-details').on('click', function () {
+            $('.details').slideToggle(); 
+            $(this).text($(this).text() === 'Show Details' ? 'Hide Details' : 'Show Details'); 
+        });
+    });
+</script>
+
+</body>
+</html>
