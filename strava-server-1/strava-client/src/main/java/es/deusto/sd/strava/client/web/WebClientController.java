@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import es.deusto.sd.strava.client.data.Article;
-import es.deusto.sd.strava.client.data.Category;
 import es.deusto.sd.strava.client.data.Credentials;
 import es.deusto.sd.strava.client.proxies.IStravaServiceProxy;
 import jakarta.servlet.http.HttpServletRequest;
@@ -124,18 +122,16 @@ public class WebClientController {
 	}
 
 	@GetMapping("/logout")
-	public String performLogout(@RequestParam(value = "redirectUrl", defaultValue = "/") String redirectUrl,
-			Model model) {
+	public String performLogout(Model model) {
 		try {
 			stravaServiceProxy.logout(user.getToken());
 			user = null; // Clear the token after logout
-			model.addAttribute("successMessage", "Logout successful.");
 		} catch (RuntimeException e) {
 			model.addAttribute("errorMessage", "Logout failed: " + e.getMessage());
 		}
 
 		// Redirect to the specified URL after logout
-		return "redirect:" + redirectUrl;
+		return "redirect:/";
 	}
 
 }

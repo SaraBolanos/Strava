@@ -5,8 +5,6 @@ import java.util.Optional;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
-import es.deusto.sd.strava.client.data.Article;
-import es.deusto.sd.strava.client.data.Category;
 import es.deusto.sd.strava.client.data.Credentials;
 import es.deusto.sd.strava.client.data.SignupRequest;
 import es.deusto.sd.strava.client.data.User;

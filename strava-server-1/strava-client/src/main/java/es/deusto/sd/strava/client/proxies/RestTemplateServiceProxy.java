@@ -16,8 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
-import es.deusto.sd.strava.client.data.Article;
-import es.deusto.sd.strava.client.data.Category;
 import es.deusto.sd.strava.client.data.Credentials;
 import es.deusto.sd.strava.client.data.SignupRequest;
 import es.deusto.sd.strava.client.data.User;
@@ -69,10 +67,10 @@ public class RestTemplateServiceProxy implements IStravaServiceProxy{
     
     @Override    
     public void logout(String token) {
-        String url = apiBaseUrl + "/auth/logout";
+        String url = apiBaseUrl + "/users/logout?sessiontoken={sessiontoken}";
         
         try {
-            restTemplate.postForObject(url, token, Void.class);
+            restTemplate.getForObject(url, Void.class, Map.of("sessiontoken", token));
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {
                 case 401 -> throw new RuntimeException("Logout failed: Invalid token.");
