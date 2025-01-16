@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
+import es.deusto.sd.strava.client.data.Challenge;
 import es.deusto.sd.strava.client.data.Credentials;
 import es.deusto.sd.strava.client.data.SignupRequest;
 import es.deusto.sd.strava.client.data.User;
@@ -22,4 +23,6 @@ public interface IStravaServiceProxy {
     List<Workout> getUserWorkout(String userToken);
     
     Workout createWorkout(Workout workout, String userToken);
+    
+    List<Challenge> getAcceptedChallenges(String userToken);
 }

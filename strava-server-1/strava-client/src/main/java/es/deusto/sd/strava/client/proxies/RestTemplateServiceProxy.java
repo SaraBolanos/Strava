@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
+import es.deusto.sd.strava.client.data.Challenge;
 import es.deusto.sd.strava.client.data.Credentials;
 import es.deusto.sd.strava.client.data.SignupRequest;
 import es.deusto.sd.strava.client.data.User;
@@ -108,6 +109,20 @@ public class RestTemplateServiceProxy implements IStravaServiceProxy{
 	            default -> throw new RuntimeException("Sign up failed with status code: " + e.getStatusCode());
 	        }
 	    }
+	}
+
+	@Override
+	public List<Challenge> getAcceptedChallenges(String userToken) {
+		String url = apiBaseUrl + "/challenges/{userToken}";
+		try {
+        	return Arrays.asList(restTemplate.getForObject(url, Challenge[].class, Map.of("userToken",userToken))) ;
+            //return restTemplate.postForObject(url, credentials, String.class);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 404 -> throw new RuntimeException("Fetch error: Not found.");
+                default -> throw new RuntimeException("Fetch error: with status code: " + e.getStatusCode());
+            }
+        }
 	}
 
     

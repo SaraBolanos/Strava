@@ -1,9 +1,13 @@
-package es.deusto.sd.strava.dto;
+package es.deusto.sd.strava.client.data;
 
-import es.deusto.sd.strava.enums.Sport;
-import es.deusto.sd.strava.enums.TargetType;
 
-public class ChallengeDTO {
+
+import java.util.Date;
+
+import es.deusto.sd.strava.client.enums.Sport;
+import es.deusto.sd.strava.client.enums.TargetType;
+
+public class Challenge {
 	
 	private long id; 
 	private String name;
@@ -14,12 +18,12 @@ public class ChallengeDTO {
 	private Sport sport;
 	private String creator; //only name
 	
-	public ChallengeDTO()
+	public Challenge()
 	{
 		
 	}
 
-	public ChallengeDTO(long id, String name, String startDate, String endDate, float target, TargetType targetType,
+	public Challenge(long id, String name, String startDate, String endDate, float target, TargetType targetType,
 			Sport sport, String creator) {
 		super();
 		this.id = id;

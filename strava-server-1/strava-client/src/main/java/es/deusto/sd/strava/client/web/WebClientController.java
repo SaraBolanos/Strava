@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import es.deusto.sd.strava.client.data.Challenge;
 import es.deusto.sd.strava.client.data.Credentials;
 import es.deusto.sd.strava.client.proxies.IStravaServiceProxy;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +36,7 @@ public class WebClientController {
 	private User user; // Stores the session token
 	
 	private List<Workout> workouts;
-
+	private List<Challenge> challenges;
 	// Add current URL and token to all views
 	@ModelAttribute
 	public void addAttributes(Model model, HttpServletRequest request) {
@@ -43,6 +44,7 @@ public class WebClientController {
 		model.addAttribute("currentUrl", currentUrl); // Makes current URL available in all templates
 		model.addAttribute("user", user); // Makes token available in all templates
 		model.addAttribute("workouts", workouts);
+		model.addAttribute("challenges", challenges);
 	}
 
 	@GetMapping("/")
@@ -62,11 +64,24 @@ public class WebClientController {
 			workouts = stravaServiceProxy.getUserWorkout(user.getToken());
 			model.addAttribute("workouts", workouts);
 		} catch (RuntimeException e) {
-			model.addAttribute("No training sessions ");
+			model.addAttribute("errorMessage","No training sessions ");
 			model.addAttribute("workouts", null);
 		}
 		
 		return "sessions";
+	}
+	
+	@GetMapping("/challenges")
+	public String challengespage(Model model) {
+		
+		try {
+			challenges = stravaServiceProxy.getAcceptedChallenges(user.getToken());
+			model.addAttribute("challenges", challenges);
+		} catch (RuntimeException e) {
+			model.addAttribute("challenges", null);
+		}
+		
+		return "challenges";
 	}
 	
 	@PostMapping("/sessions")
