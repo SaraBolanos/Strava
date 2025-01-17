@@ -67,6 +67,10 @@ public class ChallengeService {
         return challengeRepository.findChallenge(challengeId);
     }
     
+    public UserChallenge getUserChallenge(long challengeId) {
+        
+        return userChallengeRepository.findByChallengeId(challengeId);
+    }
     
     
     
@@ -101,7 +105,7 @@ public class ChallengeService {
         return (percentage != null) ? percentage : 0f;
     }
     
-    public float getPercentageOfAchievement2(List<Workout> workouts, float target, TargetType targetType) {
+    public float getPercentageOfAchievement2(List<Workout> workouts, float target, TargetType targetType, long userChallengeId) {
     	if(target == 0) {
     		return 0f;
     	}
@@ -125,10 +129,20 @@ public class ChallengeService {
             return 0f;
            
     	}
+		System.out.println("target is: " + target);
+
 		System.out.println("progress is: " + progress);
 		System.out.println("target is: " + target);
 
+		System.out.println("target maybe met");
       
+	    if (progress >= target) {	
+	    	System.out.println("target met1");
+	    	userChallengeRepository.markAsFinished(userChallengeId);
+			System.out.println("target met");
+		}
+		
+		
         // If the result is null, return 0f
         return (progress/target*100f);
     

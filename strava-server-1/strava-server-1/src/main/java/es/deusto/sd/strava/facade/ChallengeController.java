@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.deusto.sd.strava.dto.ChallengeDTO;
 import es.deusto.sd.strava.entity.Challenge;
 import es.deusto.sd.strava.entity.User;
+import es.deusto.sd.strava.entity.UserChallenge;
 import es.deusto.sd.strava.entity.Workout;
 import es.deusto.sd.strava.enums.Sport;
 import es.deusto.sd.strava.enums.TargetType;
@@ -144,6 +145,11 @@ public class ChallengeController {
     	Optional<User> user = userService.getUserByToken(userToken);
     	Challenge challenge;
     	challenge=challengeService.getChallenge(challengeId);
+    	UserChallenge userchallenge;
+    	userchallenge = challengeService.getUserChallenge(challengeId);
+    	if (userchallenge == null) {
+	        return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
+	    }  
     	if (challenge == null) {
 	        return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
 	    }    		
@@ -153,7 +159,7 @@ public class ChallengeController {
     		    })
     			.orElse(Collections.emptyList());
     	
-    		float percentage = challengeService.getPercentageOfAchievement2(workouts, challenge.getTarget(), challenge.getTargetType());
+    		float percentage = challengeService.getPercentageOfAchievement2(workouts, challenge.getTarget(), challenge.getTargetType(), userchallenge.getId());
     	
         	if (percentage == -1f) {
     	        return new ResponseEntity<>(HttpStatus.NOT_FOUND); 

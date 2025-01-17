@@ -10,7 +10,15 @@ public class UserChallenge {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
+    public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	@ManyToOne
     @JoinColumn(name = "challenge_id", nullable = false)
     private Challenge challenge;
 
@@ -75,4 +83,6 @@ public class UserChallenge {
     public void setFinished(boolean finished) {
         this.finished = finished;
     }
+    
+   
 }
