@@ -107,6 +107,28 @@ public class WebClientController {
 		return "challenge";
 	}
 	
+	@GetMapping("/challenge/{id}/accepted")
+	public String acceptedChallengeDetailPage(@PathVariable("id") long id, Model model) {
+		try {
+			
+			Challenge challenge;
+			
+			challenge = stravaServiceProxy.getChallengeDetails(id);
+			
+			int percentage = (int) stravaServiceProxy.getPercentage(id, user.getToken());
+			
+			model.addAttribute("challenge", challenge);
+			model.addAttribute("percentage", percentage);
+
+		} catch (RuntimeException e) {
+		    model.addAttribute("errorMessage", "There was an error when loading the accepted challenge.");
+			model.addAttribute("challenge", null);
+			model.addAttribute("percentage", null);
+		}
+
+		return "challengeAccepted";
+	}
+	
 	@PostMapping("/sessions")
 	public String performCreateSession(@RequestParam("title") String title, @RequestParam("sport") String sport,
 			@RequestParam("distance")float distance,@RequestParam("startDate") String startDate, @RequestParam("startTime") String startTime,

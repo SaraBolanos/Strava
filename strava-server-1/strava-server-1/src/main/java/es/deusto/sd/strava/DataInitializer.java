@@ -63,15 +63,15 @@ public class DataInitializer {
         	}
             if(challengeRepository.count()==0) {
             	logger.info("Initializing test challenges...");
-            	challengeService.createChallenge("5k Running Challenge", "2024-01-01", "2024-10-12", 30.0f, TargetType.TIME, Sport.RUNNING, user1);
-                logger.info("Challenge '5k Running Challenge' created for user1");
+            	challengeService.createChallenge("30 Running Challenge", "2024-01-01", "2024-10-12", 30.0f, TargetType.TIME, Sport.RUNNING, user1);
+                logger.info("Challenge '30 Running Challenge' created for user1");
 
                 challengeService.createChallenge("Cycling Endurance", "2024-03-01", "2025-03-15", 200.0f, TargetType.DISTANCE, Sport.CYCLING, user2);
                 logger.info("Challenge 'Cycling Endurance' created for user2");
                 
                 
 
-                challengeService.createChallenge("10k Running Challenge", "2024-02-01", "2025-02-28", 45.0f, TargetType.TIME, Sport.RUNNING, user1);
+                challengeService.createChallenge("45k Running Challenge", "2024-02-01", "2025-02-28", 45.0f, TargetType.DISTANCE, Sport.RUNNING, user1);
                 logger.info("Challenge '10k Running Challenge' created for user1");
 
                 challengeService.createChallenge("Cycling Sprint Challenge", "2024-04-01", "2025-04-30", 150.0f, TargetType.DISTANCE, Sport.CYCLING, user2);

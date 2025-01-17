@@ -42,6 +42,13 @@
             margin-bottom: 15px;
             color: #008cff; /* Blue title */
         }
+		
+		.challenge-details h6 {
+		            font-size: 2.5rem;
+		            font-weight: 700;
+		            margin-bottom: 15px;
+		            color: #88ff00; /* green title */
+		        }
 
         .challenge-details h3, 
         .challenge-details h4, 
@@ -85,6 +92,39 @@
         .btn-primary:hover {
             background-color: #006bb3;
         }
+		
+		
+		.circle-progress {
+		    position: relative;
+		    width: 120px;
+		    height: 120px;
+		}
+
+		.progress-ring__background {
+		    stroke: #e0e0e0;
+		    stroke-width: 10;
+		}
+
+		.progress-ring__circle {
+		    stroke: #4caf50;
+		    stroke-width: 10;
+		    stroke-dasharray: 314; /* Circumference of the circle (2 * π * radius) */
+		    stroke-dashoffset: 314; /* Full circle hidden initially */
+		    transition: stroke-dashoffset 0.3s ease-in-out;
+		}
+
+		.progress-text {
+		    position: absolute;
+		    top: 50%;
+		    left: 50%;
+		    transform: translate(-50%, -50%);
+		    font-size: 18px;
+		    font-weight: bold;
+		}
+		
+		
+		
+		
 
        
 
@@ -129,9 +169,17 @@
             <h5 th:text="'Starts: ' + ${challenge.getStartDate()}">Starts: Jan 1, 2025</h5>
             <h5 th:text="'Ends: ' + ${challenge.getEndDate()}">Ends: Jan 31, 2025</h5>
             <h5 th:text="'Created by: ' + ${challenge.getCreator()}">Created by: John Doe</h5>
-			<br/>
-			<a class="btn btn-primary w-100" th:href="'/challenge/'+${challenge.id}+'/accept'">Join Challenge</a>
 
+			<br/>
+			<h6 th:text="'Progress: ' + ${percentage} + '%'">Progress:</h6>
+			
+			<br/>
+			<div style="width: 100%; background-color: #e0e0e0; border-radius: 5px; overflow: hidden; height: 20px;">
+			    <div th:style="'width: ' + ${percentage} + '%; background-color: #4caf50; height: 100%; text-align: center; color: white; line-height: 20px;'">
+			        <span th:text="${percentage} + '%'"></span>
+			    </div>
+			</div>
+			
         </div>
     </div>
 

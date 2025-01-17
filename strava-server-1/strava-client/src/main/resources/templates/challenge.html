@@ -129,6 +129,8 @@
             <h5 th:text="'Starts: ' + ${challenge.getStartDate()}">Starts: Jan 1, 2025</h5>
             <h5 th:text="'Ends: ' + ${challenge.getEndDate()}">Ends: Jan 31, 2025</h5>
             <h5 th:text="'Created by: ' + ${challenge.getCreator()}">Created by: John Doe</h5>
+			<br/>
+			<a class="btn btn-primary w-100" th:href="'/challenge/'+${challenge.id}+'/accept'">Join Challenge</a>
 
         </div>
     </div>

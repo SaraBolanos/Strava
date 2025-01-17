@@ -106,7 +106,7 @@ public class ChallengeService {
     		return 0f;
     	}
     	
-    	long progress = 0;
+    	float progress = 0;
     	switch (targetType) {
         case TIME:
         	for (Workout workout : workouts) {
@@ -126,6 +126,7 @@ public class ChallengeService {
            
     	}
 		System.out.println("progress is: " + progress);
+		System.out.println("target is: " + target);
 
       
         // If the result is null, return 0f

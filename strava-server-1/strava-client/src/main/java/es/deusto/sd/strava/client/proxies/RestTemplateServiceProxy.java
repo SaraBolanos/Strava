@@ -183,5 +183,19 @@ public class RestTemplateServiceProxy implements IStravaServiceProxy{
         }
 	}
 
+	@Override
+	public float getPercentage(long challengeId, String userToken) {
+		String url = apiBaseUrl + "/challenge/{challengeId}/percentage?token={userToken}";
+		try {
+			
+        	return restTemplate.getForObject(url, float.class, Map.of("challengeId",challengeId,"userToken",userToken)) ;
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 404 -> throw new RuntimeException("Fetch error: Not found.");
+                default -> throw new RuntimeException("Fetch error: with status code: " + e.getStatusCode());
+            }
+        }
+	}
+
     
 }
