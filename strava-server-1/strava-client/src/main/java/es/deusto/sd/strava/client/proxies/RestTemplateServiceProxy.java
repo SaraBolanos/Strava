@@ -173,7 +173,7 @@ public class RestTemplateServiceProxy implements IStravaServiceProxy{
 	public Challenge getChallengeDetails(long challengeId) {
 		String url = apiBaseUrl + "/challenge/{challengeId}";
 		try {
-			System.out.println("heyjo" + challengeId);
+			
         	return restTemplate.getForObject(url, Challenge.class, Map.of("challengeId",challengeId)) ;
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {

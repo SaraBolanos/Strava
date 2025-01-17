@@ -94,9 +94,9 @@ public class WebClientController {
 	public String challengeDetailPage(@PathVariable("id") long id, Model model) {
 		try {
 			Challenge challenge;
-			System.out.println("hi" + id);
+			
 			challenge = stravaServiceProxy.getChallengeDetails(id);
-			System.out.println("das ist die id: " + id);
+			
 			model.addAttribute("challenge", challenge);
 
 		} catch (RuntimeException e) {

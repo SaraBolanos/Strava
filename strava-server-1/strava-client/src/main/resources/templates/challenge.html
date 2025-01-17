@@ -7,37 +7,91 @@
     <title>Challenge Details</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            margin: 0;
-            padding: 0;
-        }
-
+		body {
+		            font-family: Arial, sans-serif;
+		            background-color: #f7f7f7;
+		            display: flex;
+		            flex-direction: column;
+		            min-height: 100vh;
+		            margin: 0;
+		            padding: 0;
+		        }
+				
+				.navbar-brand img {
+				            height: 30px;
+				        }
         .container {
             flex-grow: 1;
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
         }
 
         .challenge-details {
+            background: linear-gradient(135deg, #ffffff, #f7f7f7);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
-        }
-
-        footer {
-            background-color: #f8f9fa;
-            padding: 20px 0;
             text-align: center;
-            font-size: 14px;
-            color: #6c757d;
-            margin-top: auto;
         }
 
-        .footer-logo {
-            color: #fc4c02;
+        .challenge-details h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #008cff; /* Blue title */
+        }
+
+        .challenge-details h3, 
+        .challenge-details h4, 
+        .challenge-details h5 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .challenge-details h5 {
+            font-style: italic;
+        }
+
+        .btn-back {
+            background-color: #fc4c02;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background-color: #e84300;
+            color: #fff;
+        }
+
+        .btn-primary {
+            background-color: #008cff;
+            border: none;
+            padding: 12px 20px;
             font-size: 18px;
             font-weight: bold;
+            border-radius: 5px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #006bb3;
+        }
+
+       
+
+        @media (max-width: 576px) {
+            .challenge-details {
+                text-align: left;
+            }
         }
     </style>
 </head>
@@ -47,7 +101,7 @@
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Strava_Logo.svg/1024px-Strava_Logo.svg.png" alt="Logo" height="30">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Strava_Logo.svg/1024px-Strava_Logo.svg.png" alt="Logo">
                 </a>
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -65,25 +119,21 @@
     </header>
 
     <div class="container mt-4">
-        <p th:if="${okMessage}" th:text="${okMessage}" class="text-success mt-3"></p>
-        <p th:if="${errorMessage}" th:text="${errorMessage}" class="text-danger mt-3"></p>
+        <button class="btn btn-back" onclick="history.back()">← Back</button>
 
-        <h1 class="mb-4" th:text="${challenge.getName()}"></h1>
         <div class="challenge-details">
-            <h3 th:text="'Target: ' + ${challenge.getTarget()}"></h3>
-            <h4 th:text="'Type: ' + ${challenge.getTargetType().name()}"></h4>
-            <h5 th:text="'Sport: ' + ${challenge.getSport().name()}"></h5>
-            <h5 th:text="'Starts: ' + ${challenge.getStartDate()}"></h5>
-            <h5 th:text="'Ends: ' + ${challenge.getEndDate()}"></h5>
-            <h5 th:text="'Created by: ' + ${challenge.getCreator()}"></h5>
-        </div>
+            <h1 th:text="${challenge.getName()}">Challenge Name</h1>
+            <h3 th:text="'Target: ' + ${challenge.getTarget()}">Target: 100 km</h3>
+            <h4 th:text="'Type: ' + ${challenge.getTargetType().name()}">Type: Distance</h4>
+            <h5 th:text="'Sport: ' + ${challenge.getSport().name()}">Sport: Running</h5>
+            <h5 th:text="'Starts: ' + ${challenge.getStartDate()}">Starts: Jan 1, 2025</h5>
+            <h5 th:text="'Ends: ' + ${challenge.getEndDate()}">Ends: Jan 31, 2025</h5>
+            <h5 th:text="'Created by: ' + ${challenge.getCreator()}">Created by: John Doe</h5>
 
-        <a class="btn btn-primary mt-3" th:href="'/challenge/'+${challenge.getId()+'/accept'}">Join Challenge</a>
+        </div>
     </div>
 
-    <footer>
-        <p>&copy; 2025 Strava Challenges</p>
-    </footer>
+   
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

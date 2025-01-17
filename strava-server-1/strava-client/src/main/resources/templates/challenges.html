@@ -118,9 +118,9 @@
 							<h4 th:text="'Target '+${challenge.getTarget()}"></h4>
 							<h4 th:text="'Type: '+${challenge.getTargetType().name()}"></h4>
 							<h5 th:text="${'Sport: '+challenge.getSport().name()}"></h5>
-							<h5 th:text="${'Starts: '+challenge.getStartDate()}"></h5>
+							<!--h5 th:text="${'Starts: '+challenge.getStartDate()}"></h5-->
 							<h5 th:text="${'Ends: '+challenge.getEndDate()}"></h5>
-							<h5 th:text="${'Created by '+challenge.getCreator()}"></h5>
+							<!--h5 th:text="${'Created by '+challenge.getCreator()}"></h5-->
                         </div>
                     </div>
                 </a>
@@ -140,9 +140,9 @@
 							<h4 th:text="'Target '+${challenge.getTarget()}"></h4>
 							<h4 th:text="'Type: '+${challenge.getTargetType().name()}"></h4>
 							<h5 th:text="${'Sport: '+challenge.getSport().name()}"></h5>
-							<h5 th:text="${'Starts: '+challenge.getStartDate()}"></h5>
+							<!--h5 th:text="${'Starts: '+challenge.getStartDate()}"></h5-->
 							<h5 th:text="${'Ends: '+challenge.getEndDate()}"></h5>
-							<h5 th:text="${'Created by '+challenge.getCreator()}"></h5>
+							<!--h5 th:text="${'Created by '+challenge.getCreator()}"></h5-->
 							<a class="btn btn-primary w-100" th:href="'/challenge/'+${challenge.id}+'/accept'">Join Challenge</a>
                         </div>
                     </div>
