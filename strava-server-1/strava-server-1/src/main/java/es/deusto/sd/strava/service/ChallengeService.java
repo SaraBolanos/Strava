@@ -67,9 +67,9 @@ public class ChallengeService {
         return challengeRepository.findChallenge(challengeId);
     }
     
-    public UserChallenge getUserChallenge(long challengeId) {
+    public UserChallenge getUserChallenge(User user, long challengeId) {
         
-        return userChallengeRepository.findByChallengeId(challengeId);
+        return userChallengeRepository.findByUserAndChallengeId(user, challengeId);
     }
     
     
@@ -88,7 +88,11 @@ public class ChallengeService {
     // Accept a challenge
     public Challenge acceptChallenge(long id, User user) {
         Optional<Challenge> challengeToAccept = challengeRepository.findById(id);
-
+        try{
+        	if(getUserChallenge(user, id)!=null) {return null;}
+        	}catch(Exception e) {
+        		return null;
+        	}
         challengeToAccept.ifPresent(challenge -> {
         	UserChallenge userChallenge = new UserChallenge(challenge, user);
             userChallengeRepository.save(userChallenge);  // Save the association to the database

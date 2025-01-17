@@ -111,6 +111,7 @@ public class ChallengeController {
     	    }
         return new ResponseEntity<>(challengesToDTOs(challenges), HttpStatus.OK);
     }
+    
     @GetMapping("/challenge/{challengeId}")	
     public ResponseEntity<ChallengeDTO> getChallenge(@PathVariable("challengeId") long challengeId) {
     		Challenge challenge = challengeService.getChallenge(challengeId);
@@ -141,31 +142,46 @@ public class ChallengeController {
     public ResponseEntity<Float> getPercentageOfChallenge(
         @PathVariable("challengeId") long challengeId,
         @RequestParam("token") String userToken) {   
-    	System.out.println("helloo");
-    	Optional<User> user = userService.getUserByToken(userToken);
-    	Challenge challenge;
-    	challenge=challengeService.getChallenge(challengeId);
-    	UserChallenge userchallenge;
-    	userchallenge = challengeService.getUserChallenge(challengeId);
-    	if (userchallenge == null) {
-	        return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
-	    }  
-    	if (challenge == null) {
-	        return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
-	    }    		
-    	List<Workout> workouts = user.map(foundUser -> {
-    		        // Ensure the workouts list is not null and handle it
-    		        return workoutService.getFilteredWorkouts2(foundUser, challenge.getStartDate(), challenge.getEndDate(), challenge.getSport());
-    		    })
-    			.orElse(Collections.emptyList());
-    	
-    		float percentage = challengeService.getPercentageOfAchievement2(workouts, challenge.getTarget(), challenge.getTargetType(), userchallenge.getId());
-    	
-        	if (percentage == -1f) {
-    	        return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
-    	    }
-        return new ResponseEntity<>(percentage, HttpStatus.OK);
+        System.out.println("helloo");
+
+        // Get the user from the token
+        Optional<User> userOptional = userService.getUserByToken(userToken);
+
+        if (userOptional.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // User not found
+        }
+
+        User user = userOptional.get(); // Unwrap the Optional<User>
+
+        // Get the challenge by ID
+        Challenge challenge = challengeService.getChallenge(challengeId);
+        if (challenge == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Challenge not found
+        }
+
+        // Find the UserChallenge using the user object and challenge ID
+        UserChallenge userChallenge = challengeService.getUserChallenge(user, challengeId);
+        if (userChallenge == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // UserChallenge not found
+        }
+
+        // Retrieve the workouts for the user within the challenge's date range and sport
+        List<Workout> workouts = workoutService.getFilteredWorkouts2(
+            user, challenge.getStartDate(), challenge.getEndDate(), challenge.getSport()
+        );
+
+        // Calculate the percentage of achievement
+        float percentage = challengeService.getPercentageOfAchievement2(
+            workouts, challenge.getTarget(), challenge.getTargetType(), userChallenge.getId()
+        );
+
+        if (percentage == -1f) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Percentage calculation failed
+        }
+
+        return new ResponseEntity<>(percentage, HttpStatus.OK); // Success
     }
+
     
  // Converts an Challenge to an ChallengeDTO
  	private ChallengeDTO challengeToDTO(Challenge challenge) {
