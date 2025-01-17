@@ -159,8 +159,7 @@
     </header>
 
     <div class="container mt-4">
-        <button class="btn btn-back" onclick="history.back()">← Back</button>
-
+			<a class="btn btn-back" th:href="'/challenges'">← Back</a>
         <div class="challenge-details">
             <h1 th:text="${challenge.getName()}">Challenge Name</h1>
             <h3 th:text="'Target: ' + ${challenge.getTarget()}">Target: 100 km</h3>

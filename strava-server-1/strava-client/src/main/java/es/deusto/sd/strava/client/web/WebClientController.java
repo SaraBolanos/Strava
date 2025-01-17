@@ -40,6 +40,7 @@ public class WebClientController {
 	private List<Workout> workouts;
 	private List<Challenge> challenges;
 	private List<Challenge> allchallenges;
+	private List<Challenge> finishedchallenges;
 	// Add current URL and token to all views
 	@ModelAttribute
 	public void addAttributes(Model model, HttpServletRequest request) {
@@ -81,8 +82,12 @@ public class WebClientController {
 		try {
 			challenges = stravaServiceProxy.getAcceptedChallenges(user.getToken());
 			allchallenges = stravaServiceProxy.getAllChallenges(user.getToken());
+			finishedchallenges = stravaServiceProxy.getFinishedChallenges(user.getToken());
 			model.addAttribute("challenges", challenges);
 			model.addAttribute("allchallenges", allchallenges);
+			model.addAttribute("finishedchallenges", finishedchallenges);
+
+			
 		} catch (RuntimeException e) {
 			model.addAttribute("challenges", null);
 		}

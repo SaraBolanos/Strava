@@ -138,6 +138,20 @@ public class ChallengeController {
         return new ResponseEntity<>(challengesToDTOs(challenges), HttpStatus.OK);
     }
     
+    @GetMapping("/challenges/{userToken}/finished")	
+    public ResponseEntity<List<ChallengeDTO>> getFinishedChallenges(@PathVariable("userToken") String userToken) {
+            //User user = new User(); //en vez de esto luego busca el user con este userToken 
+    	Optional<User> user = userService.getUserByToken(userToken);
+    	List<Challenge> challenges = user
+        	        .map(foundUser -> challengeService.getFinishedChallenges(foundUser))
+        	        .orElse(null); 
+        	    
+        	if (challenges == null) {
+    	        return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
+    	    }
+        return new ResponseEntity<>(challengesToDTOs(challenges), HttpStatus.OK);
+    }
+    
     @GetMapping("/challenge/{challengeId}/percentage")
     public ResponseEntity<Float> getPercentageOfChallenge(
         @PathVariable("challengeId") long challengeId,

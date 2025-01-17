@@ -127,7 +127,7 @@ public class RestTemplateServiceProxy implements IStravaServiceProxy{
 	
 	@Override
 	public List<Challenge> getFinishedChallenges(String userToken) {
-		String url = apiBaseUrl + "/challenges/{userToken}";
+		String url = apiBaseUrl + "/challenges/{userToken}/finished";
 		try {
         	return Arrays.asList(restTemplate.getForObject(url, Challenge[].class, Map.of("userToken",userToken))) ;
             //return restTemplate.postForObject(url, credentials, String.class);
@@ -138,6 +138,8 @@ public class RestTemplateServiceProxy implements IStravaServiceProxy{
             }
         }
 	}
+	
+
 	
 	@Override
 	public List<Challenge> getAllChallenges(String userToken) {

@@ -84,6 +84,10 @@ public class ChallengeService {
     public List<Challenge> getUnfinishedChallenges(User user) {
     	return userChallengeRepository.findUnfinishedChallengesForUser(user.getId());
     }
+    
+    public List<Challenge> getFinishedChallenges(User user) {
+    	return userChallengeRepository.findFinishedChallengesForUser(user.getId());
+    }
 
     // Accept a challenge
     public Challenge acceptChallenge(long id, User user) {
