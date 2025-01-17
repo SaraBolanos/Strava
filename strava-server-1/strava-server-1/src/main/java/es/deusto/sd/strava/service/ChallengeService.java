@@ -14,6 +14,7 @@ import es.deusto.sd.strava.dao.UserRepository;
 import es.deusto.sd.strava.entity.Challenge;
 import es.deusto.sd.strava.entity.User;
 import es.deusto.sd.strava.entity.UserChallenge;
+import es.deusto.sd.strava.entity.Workout;
 import es.deusto.sd.strava.enums.Sport;
 import es.deusto.sd.strava.enums.TargetType;
 
@@ -95,8 +96,41 @@ public class ChallengeService {
     // Get percentage of achievement for a challenge
     public float getPercentageOfAchievement(long id, User user) {
     	Float percentage = userChallengeRepository.getPercentageOfAchievement(user.getId(), id);
-
+    	
         // If the result is null, return 0f
         return (percentage != null) ? percentage : 0f;
     }
+    
+    public float getPercentageOfAchievement2(List<Workout> workouts, float target, TargetType targetType) {
+    	if(target == 0) {
+    		return 0f;
+    	}
+    	
+    	long progress = 0;
+    	switch (targetType) {
+        case TIME:
+        	for (Workout workout : workouts) {
+        		System.out.println("added workout to progress: " + workout.getTitle());
+        		progress += workout.getDuration();
+        	}
+            break;
+        case DISTANCE:
+        	for (Workout workout : workouts) {
+        		System.out.println("added workout to progress: " + workout.getTitle());
+
+        		progress += workout.getDistance();
+        	}
+            break;
+        default:
+            return 0f;
+           
+    	}
+		System.out.println("progress is: " + progress);
+
+      
+        // If the result is null, return 0f
+        return (progress/target*100f);
+    
 }
+}
+

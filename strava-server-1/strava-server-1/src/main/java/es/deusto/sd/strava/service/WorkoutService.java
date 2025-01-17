@@ -53,6 +53,24 @@ public class WorkoutService {
                 })
                 .toList();
     }
+    
+    public List<Workout> getFilteredWorkouts2(User user, String filterDateStart, String filterDateEnd, Sport sport) {
+        List<Workout> userWorkouts = workoutRepository.findByUser(user.getId()); // Fetch workouts for the user
+
+        return userWorkouts.stream()
+                .filter(workout -> sport == null || sport.equals(workout.getSport())) // Filter by sport if specified
+                .filter(workout -> {                                        
+                    try {
+                        LocalDate parsedStartDate = LocalDate.parse(filterDateStart); // Parse the filter date
+                        LocalDate parsedEndDate = LocalDate.parse(filterDateEnd); // Parse the filter date
+                        LocalDate workoutDate = workout.getStartDate().toLocalDate(); // Convert SQL Date to LocalDate
+                        return (!workoutDate.isBefore(parsedStartDate) && !workoutDate.isAfter(parsedEndDate));                    
+                        } catch (Exception e) {
+                        	return false;
+                        }
+                })
+                .toList();
+    }
 
 
     // Retrieves all workouts created by a specific user

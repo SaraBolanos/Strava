@@ -1,6 +1,7 @@
 package es.deusto.sd.strava.facade;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,10 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import es.deusto.sd.strava.dto.ChallengeDTO;
 import es.deusto.sd.strava.entity.Challenge;
 import es.deusto.sd.strava.entity.User;
+import es.deusto.sd.strava.entity.Workout;
 import es.deusto.sd.strava.enums.Sport;
 import es.deusto.sd.strava.enums.TargetType;
 import es.deusto.sd.strava.service.ChallengeService;
 import es.deusto.sd.strava.service.UserService;
+import es.deusto.sd.strava.service.WorkoutService;
 import io.swagger.v3.oas.annotations.Parameter;
 
 @RestController
@@ -27,10 +30,12 @@ public class ChallengeController {
 
 	private final ChallengeService challengeService;
 	private final UserService userService;
+	 private final WorkoutService workoutService;
 	
-    public ChallengeController(ChallengeService challengeService, UserService userService) {
+    public ChallengeController(ChallengeService challengeService, UserService userService, WorkoutService workoutService) {
         this.challengeService = challengeService;
         this.userService = userService;
+        this.workoutService = workoutService;
     }
     
    
@@ -131,14 +136,25 @@ public class ChallengeController {
         return new ResponseEntity<>(challengesToDTOs(challenges), HttpStatus.OK);
     }
     
-    @GetMapping("/challenges/{challengeId}/{userToken}/percentage")	
-    public ResponseEntity<Float> getPercentageOfChallenge(@PathVariable("userToken") String userToken, @PathVariable("challengeId") long challengeId ) {
-            //User user = new User(); //en vez de esto luego busca el user con este userToken   
+    @GetMapping("/challenge/{challengeId}/percentage")
+    public ResponseEntity<Float> getPercentageOfChallenge(
+        @PathVariable("challengeId") long challengeId,
+        @RequestParam("token") String userToken) {   
+    	System.out.println("helloo");
     	Optional<User> user = userService.getUserByToken(userToken);
-    	float percentage = user
-        	        .map(foundUser -> challengeService.getPercentageOfAchievement(challengeId, foundUser))
-        	        .orElse(-1f); //porque no hay null y no puedo usar 0
-        	    
+    	Challenge challenge;
+    	challenge=challengeService.getChallenge(challengeId);
+    	if (challenge == null) {
+	        return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
+	    }    		
+    	List<Workout> workouts = user.map(foundUser -> {
+    		        // Ensure the workouts list is not null and handle it
+    		        return workoutService.getFilteredWorkouts2(foundUser, challenge.getStartDate(), challenge.getEndDate(), challenge.getSport());
+    		    })
+    			.orElse(Collections.emptyList());
+    	
+    		float percentage = challengeService.getPercentageOfAchievement2(workouts, challenge.getTarget(), challenge.getTargetType());
+    	
         	if (percentage == -1f) {
     	        return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
     	    }
