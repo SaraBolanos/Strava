@@ -90,6 +90,23 @@ public class WebClientController {
 		return "challenges";
 	}
 	
+	@GetMapping("/challenge/{id}")
+	public String challengeDetailPage(@PathVariable("id") long id, Model model) {
+		try {
+			Challenge challenge;
+			System.out.println("hi" + id);
+			challenge = stravaServiceProxy.getChallengeDetails(id);
+			System.out.println("das ist die id: " + id);
+			model.addAttribute("challenge", challenge);
+
+		} catch (RuntimeException e) {
+		    model.addAttribute("errorMessage", "There was an error when loading the challenge.");
+			model.addAttribute("challenge", null);
+		}
+
+		return "challenge";
+	}
+	
 	@PostMapping("/sessions")
 	public String performCreateSession(@RequestParam("title") String title, @RequestParam("sport") String sport,
 			@RequestParam("distance")float distance,@RequestParam("startDate") String startDate, @RequestParam("startTime") String startTime,
@@ -167,6 +184,8 @@ public class WebClientController {
 		// Redirect to the specified URL after logout
 		return "redirect:/challenges";
 	}
+	
+
 	
 	@PostMapping("/challenges")
 	public String performCreateChallenge(@RequestParam("name") String name, @RequestParam("sport") String sport,

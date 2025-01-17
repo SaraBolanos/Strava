@@ -105,6 +105,17 @@ public class ChallengeController {
     	    }
         return new ResponseEntity<>(challengesToDTOs(challenges), HttpStatus.OK);
     }
+    @GetMapping("/challenge/{challengeId}")	
+    public ResponseEntity<ChallengeDTO> getChallenge(@PathVariable("challengeId") long challengeId) {
+    		Challenge challenge = challengeService.getChallenge(challengeId);
+        	       
+        	if (challenge == null) {
+    	        return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
+    	    }
+        return new ResponseEntity<>(challengeToDTO(challenge), HttpStatus.OK);
+    }
+    
+    
     
     @GetMapping("/challenges/{userToken}/unfinished")	
     public ResponseEntity<List<ChallengeDTO>> getUnfinishedChallenges(@PathVariable("userToken") String userToken) {

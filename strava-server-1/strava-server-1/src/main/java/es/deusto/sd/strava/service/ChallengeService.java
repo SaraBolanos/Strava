@@ -60,6 +60,15 @@ public class ChallengeService {
 
         return challengeRepository.findActiveChallenges();
     }
+    
+    public Challenge getChallenge(long challengeId) {
+      
+        return challengeRepository.findChallenge(challengeId);
+    }
+    
+    
+    
+    
 
     // Get accepted challenges for a user
     public List<Challenge> getAcceptedChallenges(User user) {

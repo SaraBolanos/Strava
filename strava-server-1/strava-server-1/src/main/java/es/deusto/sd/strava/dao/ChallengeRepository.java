@@ -48,6 +48,7 @@ List<Challenge> findActiveChallengesBySport(@Param("sport") String sport);
     nativeQuery = true) //esto necesito para usar TO_DATE(x, 'YYYY-MM-DD'), para compararlo
     List<Challenge> findActiveChallenges();
     
-    
+    @Query(value = "SELECT * FROM challenge WHERE id = :challengeId", nativeQuery =true)
+    Challenge findChallenge(long challengeId);
     
 }
